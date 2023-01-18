@@ -1,3 +1,7 @@
+Version 0.9.2 (2023-01-12)
+========================
+* RCH Fork
+
 Version 0.9.1 (2022-12-XX)
 ========================
 * Adjust alert volume using ambient noise level
