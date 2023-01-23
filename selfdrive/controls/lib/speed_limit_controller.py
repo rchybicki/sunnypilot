@@ -10,6 +10,7 @@ from selfdrive.controls.lib.drive_helpers import LIMIT_ADAPT_ACC, LIMIT_MIN_ACC,
 from selfdrive.controls.lib.events import Events, ET
 from selfdrive.modeld.constants import T_IDXS
 
+_LIMIT_MIN_ACC = -0.8
 
 _PARAMS_UPDATE_PERIOD = 2.  # secs. Time between parameter updates.
 _TEMP_INACTIVE_GUARD_PERIOD = 1.  # secs. Time to wait after activation before considering temp deactivation signal.
@@ -375,7 +376,7 @@ class SpeedLimitController():
       a_target = self._v_offset / T_IDXS[CONTROL_N]
 
     # Keep solution limited.
-    self._a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
+    self._a_target = np.clip(a_target, _LIMIT_MIN_ACC, LIMIT_MAX_ACC)
 
   def _update_events(self, events):
     if not self.is_active:
