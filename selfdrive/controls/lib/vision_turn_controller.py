@@ -267,7 +267,7 @@ class VisionTurnController():
         # when overshooting, target the acceleration needed to achieve the overshoot speed at
         # the required distance
         a_target = min((self._v_overshoot**2 - self._v_ego**2) / (2 * self._v_overshoot_distance), a_target)
-         a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
+        a_target = np.clip(a_target, _ACTIVE_LIMIT_MIN_ACC, _ACTIVE_LIMIT_MAX_ACC)
       _debug(f'TVC Entering: Overshooting: {self._lat_acc_overshoot_ahead}')
       _debug(f'    Decel: {a_target:.2f}, target v: {self.v_turn * CV.MS_TO_KPH}')
     # TURNING
