@@ -15,8 +15,8 @@ _PARAMS_UPDATE_PERIOD = 2.  # secs. Time between parameter updates.
 _TEMP_INACTIVE_GUARD_PERIOD = 1.  # secs. Time to wait after activation before considering temp deactivation signal.
 
 # Lookup table for speed limit percent offset depending on speed.
-_LIMIT_PERC_OFFSET_V = [0.1, 0.05, 0.038]  # 55, 105, 135 km/h
-_LIMIT_PERC_OFFSET_BP = [13.9, 27.8, 36.1]  # 50, 100, 130 km/h
+_LIMIT_PERC_OFFSET_V = [10, 15, 15, 20]  # 55, 105, 135 km/h
+_LIMIT_PERC_OFFSET_BP = [60, 61, 99, 100] # 50, 100, 130 km/h
 
 SpeedLimitControlState = log.LongitudinalPlan.SpeedLimitControlState
 EventName = car.CarEvent.EventName
@@ -273,7 +273,7 @@ class SpeedLimitController():
   @property
   def speed_limit_offset(self):
     if self._offset_enabled:
-      return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V) * self._speed_limit
+      return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V) + self._speed_limit
     return 0.
 
   @property
