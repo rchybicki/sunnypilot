@@ -75,7 +75,7 @@ def limit_accel_in_turns(v_ego, angle_steers, a_target, CP, lat_planner_data):
   a_y = v_ego ** 2 * angle_steers * CV.DEG_TO_RAD / (CP.steerRatio * CP.wheelbase)
   a_x_allowed = math.sqrt(max(a_total_max ** 2 - a_y ** 2, 0.))
 
-  if lat_planner_data.laneChangeState != LaneChangeState.off and v_ego > 25. :
+  if lat_planner_data is not None and lat_planner_data.laneChangeState != LaneChangeState.off and v_ego > 25. :
     a_x_allowed = a_target[1]
 
   return [a_target[0], min(a_target[1], a_x_allowed)]
