@@ -231,7 +231,7 @@ class LongitudinalPlanner:
     longitudinalPlan.distToTurn = float(self.turn_speed_controller.distance)
     longitudinalPlan.turnSign = int(self.turn_speed_controller.turn_sign)
 
-    longitudinalPlan.desiredTF = self.mpc.desired_TF
+    longitudinalPlan.desiredTF = float(self.mpc.desired_TF)
     longitudinalPlan.e2eX = self.mpc.e2e_x.tolist()
 
     pm.send('longitudinalPlan', plan_send)
