@@ -269,12 +269,12 @@ class LongitudinalMpc:
   def get_cost_multipliers(self, v_lead0, v_lead1):
     v_ego = self.x0[1]
     v_ego_bps = [0, 10]
-    TFs = [1.0, 1.25, T_FOLLOW, 1.8]
+    TFs = [0.8, 1.0, 1.2, T_FOLLOW]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudial.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.1, .8, 1., 1.1])
-    j_ego_tf = interp(self.desired_TF, TFs, [.6, .8, 1., 1.1])
-    d_zone_tf = interp(self.desired_TF, TFs, [1.6, 1.3, 1., 1.])
+    a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1.])
+    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1.])
+    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1.])
     # KRKeegan adjustments to improve sluggish acceleration
     # do not apply to deceleration
     j_ego_v_ego = 1
@@ -351,13 +351,13 @@ class LongitudinalMpc:
     if gap_adjust_cruise and self.mode == 'acc':
       if CP.carName == "hyundai":
         if carstate.gapAdjustCruiseTr == 4:
-          self.desired_TF = 1.8
-        elif carstate.gapAdjustCruiseTr == 3:
           self.desired_TF = T_FOLLOW
-        elif carstate.gapAdjustCruiseTr == 2:
+        elif carstate.gapAdjustCruiseTr == 3:
           self.desired_TF = 1.2
-        elif carstate.gapAdjustCruiseTr == 1:
+        elif carstate.gapAdjustCruiseTr == 2:
           self.desired_TF = 1.0
+        elif carstate.gapAdjustCruiseTr == 1:
+          self.desired_TF = 0.8
       elif CP.carName == "toyota":
         if carstate.gapAdjustCruiseTr == 1:
           self.desired_TF = 1.8
