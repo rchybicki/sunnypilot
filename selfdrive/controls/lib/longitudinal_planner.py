@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import math
 import numpy as np
-from cereal import car
+from cereal import car, log
 from common.numpy_fast import clip, interp
 
 import cereal.messaging as messaging
@@ -21,29 +21,64 @@ from selfdrive.controls.lib.events import Events
 from system.swaglog import cloudlog
 
 EventName = car.CarEvent.EventName
-
+LaneChangeState = log.LateralPlan.LaneChangeState
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2  # car smoothly decel at .2m/s^2 when user is distracted
-A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS = [1.6, 1.2, 0.8, 0.6]
-A_CRUISE_MAX_BP = [0., 10.0, 25., 40.]
+
+A_CRUISE_MIN = -0.75 # was -1.2
+
+A_CRUISE_MAX_VAL_GAP4 = [ 0.8, 1.0, 1.1, 1.2, 1.2, 1.1, 0.9,  0.7,  0.5,  0.4,  0.2]
+A_CRUISE_MAX_VAL_GAP3 = [ 0.9, 1.1, 1.2, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
+A_CRUISE_MAX_VAL_GAP2 = [ 1.0, 1.2, 1.3, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
+A_CRUISE_MAX_VAL_GAP1 = [ 1.2, 1.4, 1.5, 1.5, 1.5, 1.4, 1.2,  1.0,  0.8,  0.7,  0.5]
+             # in kph      0  3.6   7.2   18   28   39   54    72    90   108   195
+A_CRUISE_MAX_BP =       [ 0., 1.,   2.,   5.,  8.,  11., 15.,  20.,  25.,  30., 55.]
+
+# _DP_CRUISE_MAX_V =       [3.5, 3.4, 2.1, 1.6, 1.1, 0.91, 0.68, 0.44, 0.34, 0.13]
+# _DP_CRUISE_MAX_V_ECO =   [3.0, 1.7, 1.3, 0.7, 0.6, 0.44, 0.32, 0.22, 0.16, 0.0078]
+# _DP_CRUISE_MAX_V_SPORT = [3.5, 3.5, 3.4, 3.0, 2.1, 1.61, 1.1,  0.63, 0.50, 0.33]
+# _DP_CRUISE_MAX_BP =      [0.,  3,   6.,  8.,  11., 15.,  20.,  25.,  30.,  55.]
+
+#A_CRUISE_MAX_VALS = [1.4, 1.0, 0.7, 0.5] # was [1.6, 1.2, 0.8, 0.6]
+#A_CRUISE_MAX_BP = [0., 10.0, 25., 40.] # 0km/h, 36km/h, 90km/h, 144km/h
+
+CRUISE_MIN_VAL_GAP4 =       [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75 ]
+CRUISE_MIN_VAL_GAP3 =       [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75 ]
+CRUISE_MIN_VAL_GAP2 =       [-0.65,  -0.60,  -0.93, -0.95,  -1.0,  -1.4  ]
+CRUISE_MIN_VAL_GAP1 =       [-0.65,  -0.60,  -1.0,  -1.1,   -1.2,  -1.5  ]
+#                              0       0.5       36     72      108   195
+CRUISE_MIN_BP =             [ 0.,     0.07,   10.,   20.,    30.,   55.  ]
+
+# _DP_CRUISE_MIN_V =       [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75]
+# _DP_CRUISE_MIN_V_ECO =   [-0.65,  -0.60,  -0.70, -0.70,  -0.65, -0.65]
+# _DP_CRUISE_MIN_V_SPORT = [-0.70,  -0.80,  -0.90, -0.90,  -0.80, -0.70]
+# _DP_CRUISE_MIN_BP =      [0.,     0.07,   10.,   20.,    30.,   55.]
 
 # Lookup table for turns
 _A_TOTAL_MAX_V = [1.7, 3.2]
 _A_TOTAL_MAX_BP = [20., 40.]
 
 
-def get_max_accel(v_ego, CP):
+def get_min_max_accel(v_ego, CP, carstate):
   if CP.carName == "toyota":
     a_cruise_max_vals = [1.4, 1.2, 0.7, 0.6]  # Sets the limits of the planner accel, PID may exceed
     a_cruise_max_bp = [0., 10., 25., 40.]
-    return interp(v_ego, a_cruise_max_bp, a_cruise_max_vals)
+    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, a_cruise_max_bp, a_cruise_max_vals)]
+  elif CP.carName == "hyundai":
+    if carstate.gapAdjustCruiseTr == 4:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    elif carstate.gapAdjustCruiseTr == 3:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    elif carstate.gapAdjustCruiseTr == 2:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    elif carstate.gapAdjustCruiseTr == 1:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
   else:
-    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VALS)
+    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
 
 
-def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
+def limit_accel_in_turns(v_ego, angle_steers, a_target, CP, lat_planner_data):
   """
   This function returns a limited long acceleration allowed, depending on the existing lateral acceleration
   this should avoid accelerating when losing the target in turns
@@ -54,6 +89,9 @@ def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
   a_total_max = interp(v_ego, _A_TOTAL_MAX_BP, _A_TOTAL_MAX_V)
   a_y = v_ego ** 2 * angle_steers * CV.DEG_TO_RAD / (CP.steerRatio * CP.wheelbase)
   a_x_allowed = math.sqrt(max(a_total_max ** 2 - a_y ** 2, 0.))
+
+  if lat_planner_data is not None and lat_planner_data.laneChangeState != LaneChangeState.off and v_ego > 25. :
+    a_x_allowed = a_target[1]
 
   return [a_target[0], min(a_target[1], a_x_allowed)]
 
@@ -66,7 +104,7 @@ class LongitudinalPlanner:
 
     self.a_desired = init_a
     self.v_desired_filter = FirstOrderFilter(init_v, 2.0, DT_MDL)
-    self.v_model_scale = 0.0
+    self.v_model_error = 0.0
 
     self.v_desired_trajectory = np.zeros(CONTROL_N)
     self.a_desired_trajectory = np.zeros(CONTROL_N)
@@ -84,12 +122,12 @@ class LongitudinalPlanner:
     self.e2e_status_set = False
 
   @staticmethod
-  def parse_model(model_msg, model_scale):
+  def parse_model(model_msg, model_error):
     if (len(model_msg.position.x) == 33 and
        len(model_msg.velocity.x) == 33 and
        len(model_msg.acceleration.x) == 33):
-      x = np.interp(T_IDXS_MPC, T_IDXS, model_msg.position.x) * model_scale * T_IDXS_MPC
-      v = np.interp(T_IDXS_MPC, T_IDXS, model_msg.velocity.x) * model_scale
+      x = np.interp(T_IDXS_MPC, T_IDXS, model_msg.position.x) - model_error * T_IDXS_MPC
+      v = np.interp(T_IDXS_MPC, T_IDXS, model_msg.velocity.x) - model_error
       a = np.interp(T_IDXS_MPC, T_IDXS, model_msg.acceleration.x)
       j = np.zeros(len(T_IDXS_MPC))
     else:
@@ -109,6 +147,7 @@ class LongitudinalPlanner:
 
     long_control_off = sm['controlsState'].longControlState == LongCtrlState.off
     force_slow_decel = sm['controlsState'].forceDecel
+    lat_planner_data = sm['lateralPlan'] if sm.valid.get('lateralPlan', False) else None
 
     # Reset current state when not engaged, or user is controlling the speed
     reset_state = long_control_off if self.CP.openpilotLongitudinalControl else not (sm['controlsState'].enabled and sm['carState'].cruiseState.enabled)
@@ -121,8 +160,8 @@ class LongitudinalPlanner:
                                                                         self.a_desired, v_cruise, sm)
 
     if self.mpc.mode == 'acc':
-      accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego, self.CP)]
-      accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP)
+      accel_limits = get_min_max_accel(v_ego, self.CP, sm['carState'])
+      accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP, lat_planner_data)
     else:
       accel_limits = [MIN_ACCEL, MAX_ACCEL]
       accel_limits_turns = [MIN_ACCEL, MAX_ACCEL]
@@ -134,11 +173,9 @@ class LongitudinalPlanner:
 
     # Prevent divergence, smooth in current v_ego
     self.v_desired_filter.x = max(0.0, self.v_desired_filter.update(v_ego))
-    
-    self.v_model_scale = 1.0 #default scale at 1.0
-    # Compute model v_ego scale and scale e2e
-    if len(sm['modelV2'].temporalPose.trans) and sm['modelV2'].temporalPose.trans[0] > 0 and v_ego > 0:
-      self.v_model_scale = v_ego / sm['modelV2'].temporalPose.trans[0]
+    # Compute model v_ego error
+    if len(sm['modelV2'].temporalPose.trans):
+      self.v_model_error = sm['modelV2'].temporalPose.trans[0] - v_ego
 
     if force_slow_decel:
       # if required so, force a smooth deceleration
@@ -150,7 +187,7 @@ class LongitudinalPlanner:
 
     self.mpc.set_accel_limits(accel_limits_turns[0], accel_limits_turns[1])
     self.mpc.set_cur_state(self.v_desired_filter.x, self.a_desired)
-    x, v, a, j = self.parse_model(sm['modelV2'], self.v_model_scale)
+    x, v, a, j = self.parse_model(sm['modelV2'], self.v_model_error)
     self.mpc.update(self.CP, sm['carState'], sm['radarState'], v_cruise_sol, x, v, a, j, prev_accel_constraint)
 
     self.v_desired_trajectory = np.interp(T_IDXS[:CONTROL_N], T_IDXS_MPC, self.mpc.v_solution)
@@ -207,7 +244,7 @@ class LongitudinalPlanner:
     longitudinalPlan.distToTurn = float(self.turn_speed_controller.distance)
     longitudinalPlan.turnSign = int(self.turn_speed_controller.turn_sign)
 
-    longitudinalPlan.desiredTF = self.mpc.desired_TF
+    longitudinalPlan.desiredTF = float(self.mpc.desired_TF)
     longitudinalPlan.e2eX = self.mpc.e2e_x.tolist()
 
     pm.send('longitudinalPlan', plan_send)
