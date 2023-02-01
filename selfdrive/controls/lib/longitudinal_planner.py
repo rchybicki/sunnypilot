@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import math
 import numpy as np
-from cereal import car
+from cereal import car, log
 from common.numpy_fast import clip, interp
 
 import cereal.messaging as messaging
@@ -21,7 +21,7 @@ from selfdrive.controls.lib.events import Events
 from system.swaglog import cloudlog
 
 EventName = car.CarEvent.EventName
-
+LaneChangeState = log.LateralPlan.LaneChangeState
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2  # car smoothly decel at .2m/s^2 when user is distracted
@@ -63,7 +63,7 @@ def get_max_accel(v_ego, CP):
     return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VALS)
 
 
-def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
+def limit_accel_in_turns(v_ego, angle_steers, a_target, CP, lat_planner_data):
   """
   This function returns a limited long acceleration allowed, depending on the existing lateral acceleration
   this should avoid accelerating when losing the target in turns
@@ -74,6 +74,9 @@ def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
   a_total_max = interp(v_ego, _A_TOTAL_MAX_BP, _A_TOTAL_MAX_V)
   a_y = v_ego ** 2 * angle_steers * CV.DEG_TO_RAD / (CP.steerRatio * CP.wheelbase)
   a_x_allowed = math.sqrt(max(a_total_max ** 2 - a_y ** 2, 0.))
+
+  if lat_planner_data.laneChangeState != LaneChangeState.off and v_ego > 25. :
+    a_x_allowed = a_target[1]
 
   return [a_target[0], min(a_target[1], a_x_allowed)]
 
@@ -129,6 +132,7 @@ class LongitudinalPlanner:
 
     long_control_off = sm['controlsState'].longControlState == LongCtrlState.off
     force_slow_decel = sm['controlsState'].forceDecel
+    lat_planner_data = sm['lateralPlan'] if sm.valid.get('lateralPlan', False) else None
 
     # Reset current state when not engaged, or user is controlling the speed
     reset_state = long_control_off if self.CP.openpilotLongitudinalControl else not (sm['controlsState'].enabled and sm['carState'].cruiseState.enabled)
@@ -142,7 +146,7 @@ class LongitudinalPlanner:
 
     if self.mpc.mode == 'acc':
       accel_limits = [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_V), get_max_accel(v_ego, self.CP)]
-      accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP)
+      accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP, lat_planner_data)
     else:
       accel_limits = [MIN_ACCEL, MAX_ACCEL]
       accel_limits_turns = [MIN_ACCEL, MAX_ACCEL]
