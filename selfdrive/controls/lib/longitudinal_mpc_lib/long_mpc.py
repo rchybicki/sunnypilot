@@ -44,6 +44,14 @@ LIMIT_COST = 1e6
 ACADOS_SOLVER_TYPE = 'SQP_RTI'
 
 
+DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
+DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
+DIST_V_GAP2 = [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
+DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
+   # in kph       0    16    32    48    64    80    96   112   128   144   160
+DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
+
+
 # Fewer timestamps don't hurt performance and lead to
 # much better convergence of the MPC with low iterations
 N = 12
@@ -351,25 +359,13 @@ class LongitudinalMpc:
     if gap_adjust_cruise and self.mode == 'acc':
       if CP.carName == "hyundai":
         if carstate.gapAdjustCruiseTr == 4:
-          # in mph ~=  0    10    20    30    40    50    60    70    80    90   100
-          x_vel = [    0,  4.5,    9, 13.5,   18, 22.5,   27, 31.5,   36, 40.5,   45]
-          y_dist = [1.15, 1.20, 1.25, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45]
-          self.desired_TF = np.interp(carstate.vEgo, x_vel, y_dist)
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
         elif carstate.gapAdjustCruiseTr == 3:
-          # in mph ~=  0    10    20    30    40    50    60    70    80    90   100
-          x_vel = [    0,  4.5,    9, 13.5,   18, 22.5,   27, 31.5,   36, 40.5,   45]
-          y_dist = [0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25]
-          self.desired_TF = np.interp(carstate.vEgo, x_vel, y_dist)
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
         elif carstate.gapAdjustCruiseTr == 2:
-          # in mph ~=  0    10    20    30    40    50    60    70    80    90   100
-          x_vel = [    0,  4.5,    9, 13.5,   18, 22.5,   27, 31.5,   36, 40.5,   45]
-          y_dist = [ 0.5,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0]
-          self.desired_TF = np.interp(carstate.vEgo, x_vel, y_dist)
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
         elif carstate.gapAdjustCruiseTr == 1:
-          # in mph ~=  0    10    20    30    40    50    60    70    80    90   100
-          x_vel = [    0,  4.5,    9, 13.5,   18, 22.5,   27, 31.5,   36, 40.5,   45]
-          y_dist = [ 0.5,  0.5,  0.6,  0.7,  0.8,  0.8,  0.8,  0.8,  0.8,  0.8,  0.8]
-          self.desired_TF = np.interp(carstate.vEgo, x_vel, y_dist)
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
       elif CP.carName == "toyota":
         if carstate.gapAdjustCruiseTr == 1:
           self.desired_TF = 1.8
