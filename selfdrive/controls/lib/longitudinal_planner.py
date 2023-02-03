@@ -65,7 +65,7 @@ def get_min_max_accel(v_ego, CP, carstate):
     a_cruise_max_vals = [1.4, 1.2, 0.7, 0.6]  # Sets the limits of the planner accel, PID may exceed
     a_cruise_max_bp = [0., 10., 25., 40.]
     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, a_cruise_max_bp, a_cruise_max_vals)]
-  else if CP.carName == "hyundai":
+  elif CP.carName == "hyundai":
     if carstate.gapAdjustCruiseTr == 4:
       return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
     elif carstate.gapAdjustCruiseTr == 3:
