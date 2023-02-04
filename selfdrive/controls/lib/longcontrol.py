@@ -7,7 +7,7 @@ from selfdrive.modeld.constants import T_IDXS
 
 LongCtrlState = car.CarControl.Actuators.LongControlState
 
-STOPPING_ACCEL =    [-1, -0.17, -0.5]
+STOPPING_ACCEL =    [-1, -0.25, -0.5]
 STOPPING_BP =       [0.,  0.01,  0.5]
 
 # STOPPING_ACCEL =    [-1, -0.15, -0.2, -0.5]
