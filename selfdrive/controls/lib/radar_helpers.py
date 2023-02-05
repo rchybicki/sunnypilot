@@ -133,13 +133,7 @@ class Cluster():
       "aLeadTau": float(self.aLeadTau)
     }
 
-  def get_RadarState_from_vision(self, lead_msg, lead_index, v_ego, vision_v_ego):
-     # Learn vision model velocity error to correct vlead
-    corrected_v_lead = lead_msg.v[0]
-    if v_ego > 0 and vision_v_ego > 0:
-      vision_velocity_factor = v_ego / vision_v_ego
-      corrected_v_lead = lead_msg.v[0] * vision_velocity_factor
-
+  def get_RadarState_from_vision(self, lead_msg, lead_index, v_ego):
     # Learn if constant acceleration
     if abs(float(lead_msg.a[0])) < 0.5:
       _vision_lead_aTau[lead_index] = _LEAD_ACCEL_TAU
@@ -149,9 +143,9 @@ class Cluster():
     return {
       "dRel": float(lead_msg.x[0] - RADAR_TO_CAMERA),
       "yRel": float(-lead_msg.y[0]),
-      "vRel": float(corrected_v_lead - v_ego),
-      "vLead": float(corrected_v_lead),
-      "vLeadK": float(corrected_v_lead),
+      "vRel": float(lead_msg.v[0] - v_ego),
+      "vLead": float(lead_msg.v[0]),
+      "vLeadK": float(lead_msg.v[0]),
       "aLeadK": float(lead_msg.a[0]),
       "aLeadTau": _vision_lead_aTau[lead_index],
       "fcw": False,
