@@ -109,19 +109,19 @@ class LongControl:
       output_accel = 0.
 
     elif self.long_control_state == LongCtrlState.stopping:  
-      # output_accel = min(output_accel, 0.0)
-      # stopping_accel = [-0.01, -0.1, -0.5, -2.0,-2.5]
-      #         # km/h     0      0.36  3.6   9    15
-      # stopping_v_bp =  [ 0.,    0.1,  1.0,  2.5, 4.0 ]
-      # stopping_step =        [0.1, 0.5, 1.  ]
-      # stopping_step_v_bp =   [0.5, 1.0, 2.5 ]
-      # expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
-      # stopping_step_val = interp(CS.vEgo, stopping_step_v_bp, stopping_step)
-      # if CS.aEgo > expected_accel * 1.05:
-      #   output_accel -= stopping_step_val * DT_CTRL
-      # elif CS.aEgo < expected_accel * 0.95:
-      #   output_accel += stopping_step_val * DT_CTRL
-      # output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+      output_accel = min(output_accel, 0.0)
+      stopping_accel = [-0.05, -0.1, -1., -2.0,-2.5]
+              # km/h     0      0.36  3.6   9    15
+      stopping_v_bp =  [ 0.,    0.1,  1.0,  2.5, 4.0 ]
+      stopping_step =        [0.1, 0.5, 1.  ]
+      stopping_step_v_bp =   [0.5, 1.0, 2.5 ]
+      expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
+      stopping_step_val = 2.0 #interp(CS.vEgo, stopping_step_v_bp, stopping_step)
+      if CS.aEgo > expected_accel * 1.05:
+        output_accel -= stopping_step_val * DT_CTRL
+      elif CS.aEgo < expected_accel * 0.95:
+        output_accel += stopping_step_val * DT_CTRL
+      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
 
       # old
       # output_accel = min(output_accel, 0.0)
@@ -135,10 +135,10 @@ class LongControl:
       #   output_accel = self.CP.stopAccel
 
       # stock
-      output_accel = min(output_accel, 0.0)
-      if output_accel > self.CP.stopAccel:
-        output_accel = min(output_accel, 0.0)
-        output_accel -= self.CP.stoppingDecelRate * DT_CTRL
+      # output_accel = min(output_accel, 0.0)
+      # if output_accel > self.CP.stopAccel:
+      #   output_accel = min(output_accel, 0.0)
+      #   output_accel -= self.CP.stoppingDecelRate * DT_CTRL
         
       self.reset(CS.vEgo)
 
