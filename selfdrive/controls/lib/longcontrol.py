@@ -114,12 +114,12 @@ class LongControl:
       stopping_v_bp =  [ 0.,    2.5 ]
       stopping_step =        [0.5,    1.  ]
       stopping_step_v_bp =   [0.5,    2.5 ]
-      let expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
-      let stopping_step = interp(CS.vEgo, stopping_step_v_bp, stopping_step)
+      expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
+      stopping_step_val = interp(CS.vEgo, stopping_step_v_bp, stopping_step)
       if CS.aEgo > expected_accel * 1.1:
-        output_accel -= stopping_step * DT_CTRL
+        output_accel -= stopping_step_val * DT_CTRL
       elif CS.aEgo < expected_accel * 0.9:
-        output_accel += stopping_step * DT_CTRL
+        output_accel += stopping_step_val * DT_CTRL
       # if CS.vEgo > 1. and output_accel > self.CP.stopAccel:
       #   output_accel -= 1. * DT_CTRL
       # if CS.vEgo > 0.5 and output_accel > self.CP.stopAccel:
