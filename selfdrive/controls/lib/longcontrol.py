@@ -120,7 +120,7 @@ class LongControl:
       if CS.aEgo > expected_accel * 1.05:
         output_accel -= stopping_step_val * DT_CTRL
       elif CS.aEgo < expected_accel * 0.95:
-        output_accel += stopping_step_val . * DT_CTRL
+        output_accel += stopping_step_val * DT_CTRL
       # if CS.vEgo > 1. and output_accel > self.CP.stopAccel:
       #   output_accel -= 1. * DT_CTRL
       # if CS.vEgo > 0.5 and output_accel > self.CP.stopAccel:
