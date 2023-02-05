@@ -121,6 +121,10 @@ class LongControl:
       #   output_accel -= stopping_step_val * DT_CTRL
       # elif CS.aEgo < expected_accel * 0.95:
       #   output_accel += stopping_step_val * DT_CTRL
+      # output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+
+      # old
+      # output_accel = min(output_accel, 0.0)
       # if CS.vEgo > 1. and output_accel > self.CP.stopAccel:
       #   output_accel -= 1. * DT_CTRL
       # if CS.vEgo > 0.5 and output_accel > self.CP.stopAccel:
@@ -129,10 +133,13 @@ class LongControl:
       #   output_accel = interp(CS.vEgo, STOPPING_BP, STOPPING_ACCEL)
       # else:
       #   output_accel = self.CP.stopAccel
-      # output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+
+      # stock
+      output_accel = min(output_accel, 0.0)
       if output_accel > self.CP.stopAccel:
         output_accel = min(output_accel, 0.0)
         output_accel -= self.CP.stoppingDecelRate * DT_CTRL
+        
       self.reset(CS.vEgo)
 
     elif self.long_control_state == LongCtrlState.starting:
