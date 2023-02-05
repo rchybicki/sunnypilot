@@ -68,14 +68,15 @@ COMFORT_BRAKE = 2.5
 STOP_DISTANCE = 5.5 # was 5.5
 
 def get_stopped_equivalence_factor(v_lead, v_ego, t_follow=T_FOLLOW):
-  # KRKeegan this offset rapidly decreases the following distance when the lead pulls
-  # away, resulting in an early demand for acceleration.
-  v_diff_offset = 0
-  if np.all(v_lead - v_ego > 0):
-    v_diff_offset = ((v_lead - v_ego) * 1.)
-    v_diff_offset = np.clip(v_diff_offset, 0, STOP_DISTANCE / 2)
-    v_diff_offset = np.maximum(v_diff_offset * ((10 - v_ego)/10), 0)
-  distance = (v_lead**2) / (2 * COMFORT_BRAKE) + v_diff_offset
+  # # KRKeegan this offset rapidly decreases the following distance when the lead pulls
+  # # away, resulting in an early demand for acceleration.
+  # v_diff_offset = 0
+  # if np.all(v_lead - v_ego > 0):
+  #   v_diff_offset = ((v_lead - v_ego) * 1.)
+  #   v_diff_offset = np.clip(v_diff_offset, 0, STOP_DISTANCE / 2)
+  #   v_diff_offset = np.maximum(v_diff_offset * ((10 - v_ego)/10), 0)
+  # distance = (v_lead**2) / (2 * COMFORT_BRAKE) + v_diff_offset  
+  distance = (v_lead**2) / (2 * COMFORT_BRAKE)
   return distance
 
 def get_safe_obstacle_distance(v_ego, t_follow=T_FOLLOW):
@@ -275,25 +276,26 @@ class LongitudinalMpc:
       self.solver.cost_set(i, 'Zl', Zl)
 
   def get_cost_multipliers(self, v_lead0, v_lead1):
-    v_ego = self.x0[1]
-    v_ego_bps = [0, 10]
-    TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
-    # KRKeegan adjustments to costs for different TFs
-    # these were calculated using the test_longitudial.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1., 1.1])
-    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
-    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
-    # KRKeegan adjustments to improve sluggish acceleration
-    # do not apply to deceleration
-    j_ego_v_ego = 1
-    a_change_v_ego = 1
-    if (v_lead0 - v_ego >= 0) and (v_lead1 - v_ego >= 0):
-      j_ego_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
-      a_change_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
-    # Select the appropriate min/max of the options
-    j_ego = min(j_ego_tf, j_ego_v_ego)
-    a_change = min(a_change_tf, a_change_v_ego)
-    return a_change, j_ego, d_zone_tf
+    # v_ego = self.x0[1]
+    # v_ego_bps = [0, 10]
+    # TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
+    # # KRKeegan adjustments to costs for different TFs
+    # # these were calculated using the test_longitudial.py deceleration tests
+    # a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1., 1.1])
+    # j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
+    # d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
+    # # KRKeegan adjustments to improve sluggish acceleration
+    # # do not apply to deceleration
+    # j_ego_v_ego = 1
+    # a_change_v_ego = 1
+    # if (v_lead0 - v_ego >= 0) and (v_lead1 - v_ego >= 0):
+    #   j_ego_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    #   a_change_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    # # Select the appropriate min/max of the options
+    # j_ego = min(j_ego_tf, j_ego_v_ego)
+    # a_change = min(a_change_tf, a_change_v_ego)
+    # return a_change, j_ego, d_zone_tf
+    return 1.0, 1.0, 1.0
 
   def set_weights(self, prev_accel_constraint=True, v_lead0=0, v_lead1=0):
     cost_multipliers = self.get_cost_multipliers(v_lead0, v_lead1)
