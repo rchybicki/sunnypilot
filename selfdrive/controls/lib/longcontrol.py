@@ -110,8 +110,8 @@ class LongControl:
 
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
-      stopping_accel = [-0.01, -2.5 ]
-      stopping_v_bp =  [ 0.,    2.5 ]
+      stopping_accel = [-0.01, -0.3,  -2.5 ]
+      stopping_v_bp =  [ 0.,    0.1,   2.5 ]
       stopping_step =        [0.5,    1.  ]
       stopping_step_v_bp =   [0.5,    2.5 ]
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
@@ -119,7 +119,7 @@ class LongControl:
       if CS.aEgo > expected_accel * 1.1:
         output_accel -= stopping_step_val * DT_CTRL
       elif CS.aEgo < expected_accel * 0.9:
-        output_accel += stopping_step_val * DT_CTRL
+        output_accel += stopping_step_val * 2. * DT_CTRL
       # if CS.vEgo > 1. and output_accel > self.CP.stopAccel:
       #   output_accel -= 1. * DT_CTRL
       # if CS.vEgo > 0.5 and output_accel > self.CP.stopAccel:
