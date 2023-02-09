@@ -105,8 +105,8 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
       stopping_accel = [-0.01, -0.1,  -0.5,   -2.5 ]
-              # km/h            0.72   2.7     14
-      stopping_v_bp =  [ 0.,    0.2,  0.75,    4.0 ]
+              # km/h            0.72   1.8     10.8
+      stopping_v_bp =  [ 0.,    0.2,   0.5,    3.0 ]
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
       if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
