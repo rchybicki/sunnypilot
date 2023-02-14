@@ -44,10 +44,10 @@ LIMIT_COST = 1e6
 ACADOS_SOLVER_TYPE = 'SQP_RTI'
 
 
-DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
 DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
-DIST_V_GAP2 = [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
-DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
+DIST_V_GAP4 = DIST_V_GAP3 # [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
+DIST_V_GAP2 = DIST_V_GAP3 # [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
+DIST_V_GAP1 = DIST_V_GAP3 # [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
    # in kph       0    16    32    48    64    80    96   112   128   144   160
 DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
 
@@ -72,7 +72,7 @@ def get_stopped_equivalence_factor(v_lead, v_ego, t_follow=T_FOLLOW):
   # away, resulting in an early demand for acceleration.
   v_diff_offset = 0
   if np.all(v_lead - v_ego > 0):
-    v_diff_offset = ((v_lead - v_ego) * 1.)
+    v_diff_offset = ((v_lead - v_ego) * 0.7)
     v_diff_offset = np.clip(v_diff_offset, 0, STOP_DISTANCE / 2)
     v_diff_offset = np.maximum(v_diff_offset * ((10 - v_ego)/10), 0)
   distance = (v_lead**2) / (2 * COMFORT_BRAKE) + v_diff_offset  
