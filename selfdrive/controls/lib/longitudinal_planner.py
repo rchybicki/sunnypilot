@@ -30,8 +30,8 @@ A_CRUISE_MIN = -0.75 # was -1.2
 
 A_CRUISE_MAX_VAL_GAP4 = [ 0.8, 1.0, 1.1, 1.2, 1.2, 1.1, 0.9,  0.7,  0.5,  0.4,  0.2]
 A_CRUISE_MAX_VAL_GAP3 = [ 0.9, 1.1, 1.2, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
-A_CRUISE_MAX_VAL_GAP2 = [ 1.0, 1.2, 1.3, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
-A_CRUISE_MAX_VAL_GAP1 = [ 1.2, 1.4, 1.5, 1.5, 1.5, 1.4, 1.2,  1.0,  0.8,  0.7,  0.5]
+A_CRUISE_MAX_VAL_GAP2 = [ 1.0, 1.2, 1.3, 1.4, 1.4, 1.3, 1.1,  0.9,  0.7,  0.6,  0.4]
+A_CRUISE_MAX_VAL_GAP1 = [ 1.1, 1.3, 1.4, 1.5, 1.5, 1.4, 1.2,  1.0,  0.8,  0.7,  0.5]
              # in kph      0  3.6   7.2   18   28   39   54    72    90   108   195
 A_CRUISE_MAX_BP =       [ 0., 1.,   2.,   5.,  8.,  11., 15.,  20.,  25.,  30., 55.]
 
@@ -71,9 +71,9 @@ def get_min_max_accel(v_ego, CP, carstate):
     elif carstate.gapAdjustCruiseTr == 3:
       return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
     elif carstate.gapAdjustCruiseTr == 2:
-      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)]
     elif carstate.gapAdjustCruiseTr == 1:
-      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
   else:
     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
 
