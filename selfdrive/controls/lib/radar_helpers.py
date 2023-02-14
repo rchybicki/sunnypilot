@@ -146,14 +146,28 @@ class Cluster():
       vision_velocity_factor = v_ego / vision_v_ego
       corrected_v_lead = lead_msg.v[0] * vision_velocity_factor
 
+    # return {
+    #   "dRel": float(lead_msg.x[0] - RADAR_TO_CAMERA),
+    #   "yRel": float(-lead_msg.y[0]),
+    #   "vRel": float(corrected_v_lead - v_ego),
+    #   "vLead": float(corrected_v_lead),
+    #   "vLeadK": float(corrected_v_lead),
+    #   "aLeadK": float(lead_msg.a[0]),
+    #   "aLeadTau": _vision_lead_aTau[lead_index],
+    #   "fcw": False,
+    #   "modelProb": float(lead_msg.prob),
+    #   "radar": False,
+    #   "status": True
+    # }
+    
     return {
       "dRel": float(lead_msg.x[0] - RADAR_TO_CAMERA),
       "yRel": float(-lead_msg.y[0]),
-      "vRel": float(corrected_v_lead - v_ego),
-      "vLead": float(corrected_v_lead),
-      "vLeadK": float(corrected_v_lead),
-      "aLeadK": float(lead_msg.a[0]),
-      "aLeadTau": _vision_lead_aTau[lead_index],
+      "vRel": float(lead_msg.v[0] - v_ego),
+      "vLead": float(lead_msg.v[0]),
+      "vLeadK": float(lead_msg.v[0]),
+      "aLeadK": float(0),
+      "aLeadTau": _LEAD_ACCEL_TAU,
       "fcw": False,
       "modelProb": float(lead_msg.prob),
       "radar": False,
