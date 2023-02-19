@@ -228,9 +228,16 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kiV = [0.0]
       ret.experimentalLongitudinalAvailable = candidate in (HYBRID_CAR | EV_CAR) and candidate not in CANFD_RADAR_SCC_CAR
     else:
-      ret.longitudinalTuning.kpBP = [0., 5., 20.]
-      ret.longitudinalTuning.kpV = [0.05, 0.025, 0.01]
-      ret.longitudinalTuning.kiV = [0.0]
+      # ret.longitudinalTuning.kpBP = [0., 5., 20.]
+      # ret.longitudinalTuning.kpV = [0.05, 0.025, 0.01]
+      # ret.longitudinalTuning.kpV = [0.1]
+      # ret.longitudinalTuning.kiV = [0.0]
+      ret.longitudinalTuning.kpBP = [0., 10., 40.]
+      ret.longitudinalTuning.kpV = [0.5, 0.025, 0.025]
+      ret.longitudinalTuning.kiBP = [0., 10., 30., 40.]
+      ret.longitudinalTuning.kiV = [0.2, 0.02, 0.01, 0.005]
+      ret.longitudinalTuning.deadzoneBP = [0., 40]
+      ret.longitudinalTuning.deadzoneV = [0., 0.02]
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
     ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
     ret.pcmCruise = not ret.openpilotLongitudinalControl
@@ -241,10 +248,9 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = True
     ret.startingState = True
-    ret.vEgoStarting = 0.25       # was 0.1
-    ret.vEgoStopping = 0.5        # was 0.1
+    ret.vEgoStarting = 0.1       # was 0.1
+    ret.vEgoStopping = 0.1        # was 0.1
     ret.startAccel = 0.5
-    ret.stopAccel  = -2.5
     ret.longitudinalActuatorDelayLowerBound = 0.5
     ret.longitudinalActuatorDelayUpperBound = 0.5
 

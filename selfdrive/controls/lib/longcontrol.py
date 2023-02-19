@@ -7,6 +7,7 @@ from selfdrive.modeld.constants import T_IDXS
 
 LongCtrlState = car.CarControl.Actuators.LongControlState
 
+
 def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
                              v_target_1sec, brake_pressed, cruise_standstill):
   # Ignore cruise standstill if car has a gas interceptor
@@ -29,10 +30,8 @@ def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
     long_control_state = LongCtrlState.off
 
   else:
-    if long_control_state == LongCtrlState.off:
+    if long_control_state in (LongCtrlState.off, LongCtrlState.pid):
       long_control_state = LongCtrlState.pid
-
-    elif long_control_state == LongCtrlState.pid:
       if stopping_condition:
         long_control_state = LongCtrlState.stopping
 
@@ -103,15 +102,19 @@ class LongControl:
       output_accel = 0.
 
     elif self.long_control_state == LongCtrlState.stopping:  
+      # if output_accel > self.CP.stopAccel:
+      #   output_accel = min(output_accel, 0.0)
+      #   output_accel -= self.CP.stoppingDecelRate * DT_CTRL
+        
       output_accel = min(output_accel, 0.0)
-      stopping_accel = [-0.01, -0.1,  -0.5,   -2.5 ]
-              # km/h            0.72   1.8     10.8
-      stopping_v_bp =  [ 0.,    0.2,   0.5,    3.0 ]
+      stopping_accel = [-0.1,    -0.005, -0.25, -0.5,   -2.0 ]
+      stopping_step =  [ 2.,      0.01,   0.1,   0.7,    1.  ]
+                        # km/h            0.36   1.8     7.2
+      stopping_v_bp =  [ 0.008,   0.01,   0.1,   0.5,    2.0 ]
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
-      if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
-        step_factor = 1. if CS.aEgo < expected_accel else 0.5
-        output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
+      step_factor = interp(CS.vEgo, stopping_v_bp, stopping_step)
+      output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
         
