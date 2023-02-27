@@ -8,10 +8,6 @@ from selfdrive.controls.lib.drive_helpers import LIMIT_ADAPT_ACC, LIMIT_MIN_SPEE
 from selfdrive.modeld.constants import T_IDXS
 
 
-_ACTIVE_LIMIT_MIN_ACC = -0.5  # m/s^2 Maximum deceleration allowed while active.
-_ACTIVE_LIMIT_MAX_ACC = 0.5   # m/s^2 Maximum acelration allowed while active.
-
-
 _DEBUG = False
 
 TurnSpeedControlState = log.LongitudinalPlan.SpeedLimitControlState
@@ -225,7 +221,7 @@ class TurnSpeedController():
       # When active we are trying to keep the speed constant around the control time horizon.
       # but under constrained acceleration limits since we are in a turn.
       a_target = self._v_offset / T_IDXS[CONTROL_N]
-      a_target = np.clip(a_target, _ACTIVE_LIMIT_MIN_ACC, _ACTIVE_LIMIT_MAX_ACC)
+      a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
 
     # update solution values.
     self._a_target = a_target

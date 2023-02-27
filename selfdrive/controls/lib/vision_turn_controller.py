@@ -6,12 +6,9 @@ from common.params import Params
 from common.realtime import sec_since_boot
 from common.conversions import Conversions as CV
 from selfdrive.controls.lib.lateral_planner import TRAJECTORY_SIZE
-from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX
+from selfdrive.controls.lib.drive_helpers import LIMIT_MIN_ACC, LIMIT_MAX_ACC, V_CRUISE_MAX
 
 LaneChangeState = log.LateralPlan.LaneChangeState
-
-_ACTIVE_LIMIT_MIN_ACC = -0.5  # m/s^2 Maximum deceleration allowed while active.
-_ACTIVE_LIMIT_MAX_ACC = 0.5   # m/s^2 Maximum acelration allowed while active
 
 _MIN_V = 5.6  # Do not operate under 20km/h
 
@@ -269,7 +266,7 @@ class VisionTurnController():
         # when overshooting, target the acceleration needed to achieve the overshoot speed at
         # the required distance
         a_target = min((self._v_overshoot**2 - self._v_ego**2) / (2 * self._v_overshoot_distance), a_target)
-        a_target = np.clip(a_target, _ACTIVE_LIMIT_MIN_ACC, _ACTIVE_LIMIT_MAX_ACC)
+        a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
       _debug(f'TVC Entering: Overshooting: {self._lat_acc_overshoot_ahead}')
       _debug(f'    Decel: {a_target:.2f}, target v: {self.v_turn * CV.MS_TO_KPH}')
     # TURNING

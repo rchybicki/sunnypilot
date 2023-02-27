@@ -10,8 +10,6 @@ from selfdrive.controls.lib.drive_helpers import LIMIT_ADAPT_ACC, LIMIT_MIN_ACC,
 from selfdrive.controls.lib.events import Events, ET
 from selfdrive.modeld.constants import T_IDXS
 
-_LIMIT_MIN_ACC = -0.75
-_LIMIT_ADAPT_ACC = -1.2
 
 _PARAMS_UPDATE_PERIOD = 2.  # secs. Time between parameter updates.
 _TEMP_INACTIVE_GUARD_PERIOD = 1.  # secs. Time to wait after activation before considering temp deactivation signal.
@@ -135,8 +133,8 @@ class SpeedLimitResolver():
     self._next_speed_limit_prev = 0.
 
     # Calculated the time needed to adapt to the new limit and the corresponding distance.
-    adapt_time = (next_speed_limit - self._v_ego) / _LIMIT_ADAPT_ACC
-    adapt_distance = self._v_ego * adapt_time + 0.5 * _LIMIT_ADAPT_ACC * adapt_time**2
+    adapt_time = (next_speed_limit - self._v_ego) / LIMIT_ADAPT_ACC
+    adapt_distance = self._v_ego * adapt_time + 0.5 * LIMIT_ADAPT_ACC * adapt_time**2
 
     # When we detect we are close enough, we provide the next limit value and track it.
     if distance_to_speed_limit_ahead <= adapt_distance:
@@ -377,7 +375,7 @@ class SpeedLimitController():
       a_target = self._v_offset / T_IDXS[CONTROL_N]
 
     # Keep solution limited.
-    self._a_target = np.clip(a_target, _LIMIT_MIN_ACC, LIMIT_MAX_ACC)
+    self._a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
 
   def _update_events(self, events):
     if not self.is_active:
