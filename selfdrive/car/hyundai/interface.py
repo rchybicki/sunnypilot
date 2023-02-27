@@ -322,9 +322,9 @@ class CarInterface(CarInterfaceBase):
     if CP.flags & HyundaiFlags.ENABLE_BLINKERS:
       disable_ecu(logcan, sendcan, bus=5, addr=0x7B1, com_cont_req=b'\x28\x83\x01')
 
-    # for cars that have a radar that turns off when the car is off
-    if CP.carFingerprint in [CAR.SANTA_FE_HEV_2022]:
-      enable_radar_tracks(CP, logcan, sendcan)
+    # # for cars that have a radar that turns off when the car is off
+    # if CP.carFingerprint in [CAR.SANTA_FE_HEV_2022]:
+    #   enable_radar_tracks(CP, logcan, sendcan)
 
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
