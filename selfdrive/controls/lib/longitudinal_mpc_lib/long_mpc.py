@@ -329,14 +329,14 @@ class LongitudinalMpc:
 
   def update_TF(self, carstate):
     gac_tr = carstate.gapAdjustCruiseTr
-    if gac_tr == 4:
-       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
-    elif gac_tr == 3:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+    if gac_tr == 1:
+       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
     elif gac_tr == 2:
       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+    elif gac_tr == 4:
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
     else:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
 
   def update(self, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
     v_ego = self.x0[1]
