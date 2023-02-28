@@ -28,8 +28,39 @@ _A_TOTAL_MAX_V = [1.7, 3.2]
 _A_TOTAL_MAX_BP = [20., 40.]
 
 
-def get_max_accel(v_ego):
-  return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VALS)
+A_CRUISE_MAX_VAL_GAP4 = [ 0.8, 1.0, 1.1, 1.2, 1.2, 1.1, 0.9,  0.7,  0.5,  0.4,  0.2]
+A_CRUISE_MAX_VAL_GAP3 = [ 0.9, 1.1, 1.2, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
+A_CRUISE_MAX_VAL_GAP2 = [ 1.2, 1.3, 1.4, 1.4, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
+A_CRUISE_MAX_VAL_GAP1 = [ 1.4, 1.5, 1.6, 1.5, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
+             # in kph      0  3.6   7.2   18   28   39   54    72    90   108   195
+A_CRUISE_MAX_BP =       [ 0., 1.,   2.,   5.,  8.,  11., 15.,  20.,  25.,  30., 55.]
+
+
+CRUISE_MIN_VAL_GAP3 =       [-0.65,  -0.60,  -0.9,  -1.0,   -1.1,  -1.5 ]
+CRUISE_MIN_VAL_GAP4 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75 ]
+CRUISE_MIN_VAL_GAP2 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.3,  -1.2,   -1.6,  -2.0  ]
+CRUISE_MIN_VAL_GAP1 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.5,  -1.7,   -2.0,  -2.5  ]
+#                              0       0.5       36     72      108   195
+CRUISE_MIN_BP =             [ 0.,     0.07,   10.,   20.,    30.,   55.  ]
+
+
+
+def get_min_max_accel(v_ego, CP, carstate):
+  if CP.carName == "toyota":
+    a_cruise_max_vals = [1.4, 1.2, 0.7, 0.6]  # Sets the limits of the planner accel, PID may exceed
+    a_cruise_max_bp = [0., 10., 25., 40.]
+    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, a_cruise_max_bp, a_cruise_max_vals)]
+  elif CP.carName == "hyundai":
+    if carstate.gapAdjustCruiseTr == 4:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
+    elif carstate.gapAdjustCruiseTr == 3:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    elif carstate.gapAdjustCruiseTr == 2:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP2), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)]
+    elif carstate.gapAdjustCruiseTr == 1:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP1), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
+  else:
+    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
 
 
 def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
@@ -102,7 +133,7 @@ class LongitudinalPlanner:
     prev_accel_constraint = not (reset_state or sm['carState'].standstill)
 
     if self.mpc.mode == 'acc':
-      accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego)]
+      accel_limits = get_min_max_accel(v_ego, self.CP, sm['carState'])
       accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, self.CP)
     else:
       accel_limits = [MIN_ACCEL, MAX_ACCEL]
@@ -172,7 +203,7 @@ class LongitudinalPlanner:
     longitudinalPlan.solverExecutionTime = self.mpc.solve_time
 
     longitudinalPlan.e2eX = self.mpc.e2e_x.tolist()
-    longitudinalPlan.desiredTF = self.mpc.desired_TF
+    longitudinalPlan.desiredTF = float(self.mpc.desired_TF)
 
     longitudinalPlan.visionTurnControllerState = self.vision_turn_controller.state
     longitudinalPlan.visionTurnSpeed = float(self.vision_turn_controller.v_turn)

@@ -58,6 +58,13 @@ T_FOLLOW = 1.45
 COMFORT_BRAKE = 2.5
 STOP_DISTANCE = 6.0
 
+DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
+DIST_V_GAP4 = DIST_V_GAP3 # [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
+DIST_V_GAP2 = DIST_V_GAP3 # [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
+DIST_V_GAP1 = DIST_V_GAP3 # [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
+   # in kph       0    16    32    48    64    80    96   112   128   144   160
+DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
+
 def get_stopped_equivalence_factor(v_lead):
   return (v_lead**2) / (2 * COMFORT_BRAKE)
 
@@ -253,12 +260,12 @@ class LongitudinalMpc:
       self.solver.cost_set(i, 'Zl', Zl)
 
   def get_cost_multipliers(self):
-    TFs = [1.0, 1.25, T_FOLLOW]
+    TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudinal.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.1, .8, 1.])
-    j_ego_tf = interp(self.desired_TF, TFs, [.6, .8, 1.])
-    d_zone_tf = interp(self.desired_TF, TFs, [1.6, 1.3, 1.])
+    a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1., 1.1])
+    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
+    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
     return a_change_tf, j_ego_tf, d_zone_tf
 
   def set_weights(self, prev_accel_constraint=True):
@@ -322,12 +329,14 @@ class LongitudinalMpc:
 
   def update_TF(self, carstate):
     gac_tr = carstate.gapAdjustCruiseTr
-    if gac_tr == 1:
-      self.desired_TF = 1.0
+    if gac_tr == 4:
+       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+    elif gac_tr == 3:
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
     elif gac_tr == 2:
-      self.desired_TF = 1.25
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
     else:
-      self.desired_TF = T_FOLLOW
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
 
   def update(self, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
     v_ego = self.x0[1]
