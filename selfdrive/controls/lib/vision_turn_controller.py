@@ -193,8 +193,8 @@ class VisionTurnController():
        and lat_planner_data.dPathWLinesX[0] > 0:
       path_poly = np.polyfit(lat_planner_data.dPathWLinesX, lat_planner_data.dPathWLinesY, 3)
 
-    # 3. If no polynomial derived from lanes or driving path or mid lane change, then provide a straight line poly.
-    if path_poly is None or lat_planner_data.laneChangeState != LaneChangeState.off:
+    # 3. If no polynomial derived from lanes then provide a straight line poly.
+    if path_poly is None:
       path_poly = np.array([0., 0., 0., 0.])
 
     current_curvature = abs(

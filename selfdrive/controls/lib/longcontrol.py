@@ -57,8 +57,12 @@ class LongControl:
     self.pid = PIDController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
-    self.stopping_pid = PIDController((0., 0.5),
-                                      (0., 0.1),
+    kpBP = [ 0. ]
+    kpV = [ 0.5 ]
+    kiBP = [ 0. ]
+    kiV = [ 0.1 ]
+    self.stopping_pid = PIDController((kpBP, kpV),
+                                      (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
