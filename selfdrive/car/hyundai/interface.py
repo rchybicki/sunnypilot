@@ -235,7 +235,7 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpBP = [ 0.01, 0.05,  0.2,  0.3, 10.,  20.,   40.]
       ret.longitudinalTuning.kpV =  [ 1.,   0.025, 0.05, 0.1,  0.05, 0.01,  0.005]
       ret.longitudinalTuning.kiV =  [ 0.1,  0.005, 0.01, 0.02, 0.01, 0.0005,0.0001]
-      ret.longitudinalTuning.kiBP = kpBP
+      ret.longitudinalTuning.kiBP = ret.longitudinalTuning.kpBP
       ret.longitudinalTuning.deadzoneBP = [0., 40]
       ret.longitudinalTuning.deadzoneV = [0., 0.02]
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
