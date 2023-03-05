@@ -93,9 +93,13 @@ class LongControl:
     self.pid.pos_limit = accel_limits[1]
 
     output_accel = self.last_output_accel
-    self.long_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
+    new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
                                                        v_target, v_target_1sec, CS.brakePressed,
                                                        CS.cruiseState.standstill)
+    if self.long_control_state = LongCtrlState.pid and  new_control_state == LongCtrlState.stopping:                                       
+      output_accel -= 0.1
+
+    self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
