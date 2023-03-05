@@ -57,6 +57,9 @@ class LongControl:
     self.pid = PIDController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
+    self.stopping_pid = PIDController((0., 0.5),
+                                      (0., 0.1),
+                             k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
 
@@ -111,15 +114,16 @@ class LongControl:
       # step_factor = interp(CS.vEgo, stopping_v_bp, stopping_step)
       # output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
       error = expected_accel - CS.aEgo
-      output_accel = self.pid.update(error, speed=CS.vEgo)
+      output_accel = self.stopping_pid.update(error, speed=CS.vEgo)
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
         
-      # self.reset(CS.vEgo)
+      self.reset(CS.vEgo)
 
     elif self.long_control_state == LongCtrlState.starting:
       output_accel = self.CP.startAccel
       self.reset(CS.vEgo)
+      self.stopping_pid.reset()
 
     elif self.long_control_state == LongCtrlState.pid:
       self.v_pid = v_target_now
@@ -138,5 +142,6 @@ class LongControl:
                                      freeze_integrator=freeze_integrator)
 
     self.last_output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
+    self.stopping_pid.reset()
 
     return self.last_output_accel
