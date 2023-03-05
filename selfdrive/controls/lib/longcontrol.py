@@ -110,7 +110,8 @@ class LongControl:
 
       # step_factor = interp(CS.vEgo, stopping_v_bp, stopping_step)
       # output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
-      output_accel = self.pid.update(expected_accel, speed=CS.vEgo)
+      error = expected_accel - CS.aEgo
+      output_accel = self.pid.update(error, speed=CS.vEgo)
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
         
