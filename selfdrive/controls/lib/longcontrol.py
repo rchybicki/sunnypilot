@@ -59,7 +59,6 @@ class LongControl:
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
-    self.stopping_bump = False
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -98,12 +97,8 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed,
                                                        CS.cruiseState.standstill)
 
-    if self.stopping_bump:
-      self.stopping_bump = False
-      output_accel -= 0.2
-    elif self.long_control_state == LongCtrlState.pid and new_control_state == LongCtrlState.stopping:                                       
-      output_accel += 0.2 
-      self.stopping_bump = True
+    if self.long_control_state == LongCtrlState.pid and new_control_state == LongCtrlState.stopping:                                       
+      output_accel -= 0.1
     
     self.long_control_state = new_control_state
 
@@ -114,7 +109,7 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
       stopping_accel = [-0.2, -0.1,  -0.1,  -0.25, -0.5,   -2.0  ] 
-      stopping_step =  [ 2.,   1.,    1.5,   1.5,   1.,     2.   ]
+      stopping_step =  [ 3.,   2.,    2.5,   2.5,   2.,     3.   ]
       stopping_v_bp =  [ 0.01, 0.05,  0.2,   0.3,   0.5,    2.0  ]
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
