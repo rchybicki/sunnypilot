@@ -39,9 +39,9 @@ def manager_init() -> None:
 
   default_params: List[Tuple[str, Union[str, bytes]]] = [
     ("AccMadsCombo", "1"),
-    ("AutoLaneChangeTimer", "0"),
+    ("AutoLaneChangeTimer", "2"),
     ("BelowSpeedPause", "0"),
-    ("BrakeLights", "0"),
+    ("BrakeLights", "1"),
     ("BrightnessControl", "0"),
     ("CustomTorqueLateral", "0"),
     ("CameraControl", "2"),
@@ -66,7 +66,7 @@ def manager_init() -> None:
     ("EnhancedScc", "0"),
     ("GapAdjustCruise", "1"),
     ("GapAdjustCruiseMode", "0"),
-    ("GapAdjustCruiseTr", "4"),
+    ("GapAdjustCruiseTr", "3"),
     ("GpxDeleteAfterUpload", "1"),
     ("GpxDeleteIfUploaded", "1"),
     ("GsmMetered", "1"),
@@ -80,7 +80,7 @@ def manager_init() -> None:
     ("OnroadScreenOffBrightness", "50"),
     ("OpenpilotEnabledToggle", "1"),
     ("PathOffset", "0"),
-    ("ReverseAccChange", "0"),
+    ("ReverseAccChange", "1"),
     ("ShowDebugUI", "1"),
     ("SpeedLimitControl", "1"),
     ("SpeedLimitPercOffset", "1"),
@@ -92,7 +92,7 @@ def manager_init() -> None:
     ("TorqueFriction", "1"),
     ("TorqueMaxLatAccel", "250"),
     ("TurnSpeedControl", "1"),
-    ("TurnVisionControl", "0"),
+    ("TurnVisionControl", "1"),
     ("VisionCurveLaneless", "0"),
     ("VwAccType", "0"),
   ]

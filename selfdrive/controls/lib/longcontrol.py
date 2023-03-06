@@ -102,7 +102,7 @@ class LongControl:
       self.stopping_bump = False
       output_accel -= 0.2
       self.long_control_state = LongCtrlState.stopping
-    elif self.long_control_state = LongCtrlState.pid and  new_control_state == LongCtrlState.stopping:                                       
+    elif self.long_control_state == LongCtrlState.pid and new_control_state == LongCtrlState.stopping:                                       
       output_accel += 0.2 
       self.stopping_bump = True
     else
