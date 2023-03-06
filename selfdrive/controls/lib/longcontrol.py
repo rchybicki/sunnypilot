@@ -101,12 +101,11 @@ class LongControl:
     if self.stopping_bump:
       self.stopping_bump = False
       output_accel -= 0.2
-      self.long_control_state = LongCtrlState.stopping
     elif self.long_control_state == LongCtrlState.pid and new_control_state == LongCtrlState.stopping:                                       
       output_accel += 0.2 
       self.stopping_bump = True
-    else:
-      self.long_control_state = new_control_state
+    
+    self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
@@ -115,7 +114,7 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
       stopping_accel = [-0.2, -0.1,  -0.1,  -0.25, -0.5,   -2.0  ] 
-      stopping_step =  [ 2.,   0.1,   0.2,   0.3,   0.4,    0.5  ]
+      stopping_step =  [ 2.,   0.5,   1.,    1.,    1.,     2.   ]
       stopping_v_bp =  [ 0.01, 0.05,  0.2,   0.3,   0.5,    2.0  ]
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 

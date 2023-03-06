@@ -59,7 +59,7 @@ def manager_init() -> None:
     ("DisengageLateralOnBrake", "0"),
     ("DisengageOnAccelerator", "0"),
     ("DynamicLaneProfile", "2"),
-    ("DynamicLaneProfileToggle", "1"),
+    ("DynamicLaneProfileToggle", "0"),
     ("EnableMads", "1"),
     ("EndToEndLongAlert", "0"),
     ("EndToEndLongToggle", "1"),
