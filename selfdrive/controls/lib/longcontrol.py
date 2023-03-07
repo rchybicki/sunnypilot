@@ -97,8 +97,10 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed,
                                                        CS.cruiseState.standstill)
 
-    if self.long_control_state == LongCtrlState.pid and new_control_state == LongCtrlState.stopping:                                       
-      output_accel -= 0.1
+    if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
+      stopping_accel = [-0.2, -0.1,  -0.1,  -0.2, min(CS.aEgo, -0.3) ] 
+      # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
+      stopping_v_bp =  [ 0,   0.05,   0.2,   0.3, max(CS.vEgo, 0.3)  ]
     
     self.long_control_state = new_control_state
 
@@ -108,12 +110,10 @@ class LongControl:
 
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
-      stopping_accel = [-0.2, -0.1,  -0.1,  -0.2, -0.5,  -2.0  ] 
-      stopping_step =  [ 3.,   1.,    2.,    2.,   3.,    3.   ]
-      stopping_v_bp =  [ 0.01, 0.05,  0.2,   0.3,  0.5,   2.0  ]
+
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
-      step_factor = interp(CS.vEgo, stopping_v_bp, stopping_step)
+      step_factor = 2. #interp(CS.vEgo, stopping_v_bp, stopping_step)
       output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)

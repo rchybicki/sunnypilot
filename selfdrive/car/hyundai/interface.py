@@ -241,8 +241,8 @@ class CarInterface(CarInterfaceBase):
       # ret.longitudinalTuning.deadzoneBP = [0., 40]
       # ret.longitudinalTuning.deadzoneV = [0., 0.02]
 
-      ret.longitudinalTuning.kpBP = [ 0.,  1.,  5.,  20.  ]
-      ret.longitudinalTuning.kpV =  [ 2.,  2., 0.8, 0.25 ]
+      ret.longitudinalTuning.kpBP = [ 0.,  1.,   5.,  20.  ]
+      ret.longitudinalTuning.kpV =  [ 2.5, 2.25, 1.,  0.25 ]
       ret.longitudinalTuning.kiV =  [ 0.0 ]
 
       # My old tune, didn't stop well
@@ -261,9 +261,9 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = True
     ret.startingState = True
-    ret.vEgoStarting = 0.5       # was 0.1
-    ret.vEgoStopping = 0.5       # was 0.1
-    ret.startAccel = 0.25
+    ret.vEgoStarting = 0.4       # was 0.1
+    ret.vEgoStopping = 0.75      # was 0.1
+    ret.startAccel = 0.2
     ret.longitudinalActuatorDelayLowerBound = 0.5
     ret.longitudinalActuatorDelayUpperBound = 0.5
 
