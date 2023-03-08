@@ -59,8 +59,6 @@ class LongControl:
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
-    self.stopping_accel = []
-    self.stopping_v_bp = []
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -95,37 +93,18 @@ class LongControl:
     self.pid.pos_limit = accel_limits[1]
 
     output_accel = self.last_output_accel
-    new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
+    self.long_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
-
-    if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
-      # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0,    0.05,  0.2,   0.3, max(CS.vEgo, 0.3)  ]
-    
-    self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
       output_accel = 0.
 
-    elif self.long_control_state == LongCtrlState.stopping:  
-      output_accel = min(output_accel, 0.0)
-
-      expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
-
-      step_factor = 1. #interp(CS.vEgo, stopping_v_bp, stopping_step)
-      output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
-
-      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
-        
-      self.reset(CS.vEgo)
-
     elif self.long_control_state == LongCtrlState.starting:
       output_accel = self.CP.startAccel
       self.reset(CS.vEgo)
 
-    elif self.long_control_state == LongCtrlState.pid:
+    elif self.long_control_state in (LongCtrlState.stopping, LongCtrlState.pid):
       self.v_pid = v_target_now
 
       # Toyota starts braking more when it thinks you want to stop
