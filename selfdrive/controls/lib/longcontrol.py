@@ -96,13 +96,12 @@ class LongControl:
 
     output_accel = self.last_output_accel
     new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
-                                                       v_target, v_target_1sec, CS.brakePressed,
-                                                       CS.cruiseState.standstill)
+                                                       v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
       self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0,   0.05,   0.2,   0.3, max(CS.vEgo, 0.3)  ]
+      self.stopping_v_bp =  [ 0,    0.05,  0.2,   0.3, max(CS.vEgo, 0.3)  ]
     
     self.long_control_state = new_control_state
 
@@ -141,6 +140,10 @@ class LongControl:
       output_accel = self.pid.update(error_deadzone, speed=CS.vEgo,
                                      feedforward=a_target,
                                      freeze_integrator=freeze_integrator)
+      
+      max_pos_step = 0.0005
+      if output_accel > 0. and output_accel > self.last_output_accel and output_accel - self.last_output_accel > max_pos_step:
+        output_accel = self.last_output_accel + max_pos_step
 
     self.last_output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
 
