@@ -120,7 +120,7 @@ class LongControl:
                                      feedforward=a_target,
                                      freeze_integrator=freeze_integrator)
       
-      max_pos_step = 0.002
+      max_pos_step = 0.005
       if output_accel > 0. and output_accel > self.last_output_accel and output_accel - self.last_output_accel > max_pos_step:
         output_accel = self.last_output_accel + max_pos_step
 
