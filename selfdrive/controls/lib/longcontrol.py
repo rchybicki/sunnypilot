@@ -100,7 +100,7 @@ class LongControl:
                                                        CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      self.stopping_accel = [-0.2, -0.1,  -0.1,  -0.2, min(CS.aEgo, -0.3) ] 
+      self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
       self.stopping_v_bp =  [ 0,   0.05,   0.2,   0.3, max(CS.vEgo, 0.3)  ]
     
