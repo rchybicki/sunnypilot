@@ -228,21 +228,30 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kiV = [0.0]
       ret.experimentalLongitudinalAvailable = candidate in (HYBRID_CAR | EV_CAR) and candidate not in CANFD_RADAR_SCC_CAR
     else:
+      #some dudes tune
       # ret.longitudinalTuning.kpBP = [0., 5., 20.]
       # ret.longitudinalTuning.kpV = [0.05, 0.025, 0.01]
       # ret.longitudinalTuning.kpV = [0.1]
       # ret.longitudinalTuning.kiV = [0.0]
 
-      # longBP =                      [ 0.01, 0.05,  0.2,  0.3, 10.,  20.,    40.]
-      # ret.longitudinalTuning.kpV =  [ 1.,   0.025, 0.05, 0.5,  0.1,  0.01,   0.005]
-      # ret.longitudinalTuning.kiV =  [ 0.1,  0.005, 0.01, 0.02, 0.01, 0.0005, 0.0001]
-      # ret.longitudinalTuning.kiV =  [ 0.1,  0.005, 0.01, 0.02, 0.01, 0.0005, 0.0001]
-      # ret.longitudinalTuning.kiBP = longBP
-      # ret.longitudinalTuning.kpBP = longBP
-      
-      ret.longitudinalTuning.kpBP = [0.,  10.,  20.  ] 
-      ret.longitudinalTuning.kpV =  [0.5, 0.25, 0.25 ]
-      ret.longitudinalTuning.kiV = [0.0]
+      #Sunny's old tested tune
+      # ret.longitudinalTuning.kpBP = [0., 10., 40.]
+      # ret.longitudinalTuning.kpV = [1.2, 0.6, 0.2]
+      # ret.longitudinalTuning.kiBP = [0., 10., 30., 40.]
+      # ret.longitudinalTuning.kiV = [0.05, 0.02, 0.01, 0.005]
+      # ret.longitudinalTuning.deadzoneBP = [0., 40]
+      # ret.longitudinalTuning.deadzoneV = [0., 0.02]
+
+      ret.longitudinalTuning.kpBP = [ 0.,      1.,    5.,    20.  ]
+      ret.longitudinalTuning.kiBP = [ 0.,      1.,    5.,    20.  ]
+      ret.longitudinalTuning.kpV =  [ 1.25,    1.5,   0.5,   0.25 ]
+      ret.longitudinalTuning.kiV =  [ 0.00625, 0.075, 0.025, 0.0125 ]
+
+      # My old tune, didn't stop well
+      # ret.longitudinalTuning.kpBP = [0., 10.,  20.,   40.]
+      # ret.longitudinalTuning.kpV = [0.3,  0.05, 0.01,  0.005]
+      # ret.longitudinalTuning.kiBP = [0., 10.,   40.]
+      # ret.longitudinalTuning.kiV = [0.08, 0.01, 0.0005]
 
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
     ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
@@ -254,9 +263,9 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = True
     ret.startingState = True
-    ret.vEgoStarting = 0.1       # was 0.1
-    ret.vEgoStopping = 0.1        # was 0.1
-    ret.startAccel = 1.0
+    ret.vEgoStarting = 0.3       # was 0.1
+    ret.vEgoStopping = 0.75      # was 0.1
+    ret.startAccel = 0.1
     ret.longitudinalActuatorDelayLowerBound = 0.5
     ret.longitudinalActuatorDelayUpperBound = 0.5
 
