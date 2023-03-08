@@ -24,7 +24,7 @@ def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
                         accelerating and
                         not cruise_standstill and
                         not brake_pressed)
-  started_condition = v_ego > CP.vEgoStarting
+  started_condition = v_ego > 0.1
 
   if not active:
     long_control_state = LongCtrlState.off
@@ -150,7 +150,7 @@ class LongControl:
       output_accel = self.pid.update(error_deadzone, speed=CS.vEgo,
                                      feedforward=a_target,
                                      freeze_integrator=freeze_integrator)
-      max_pos_step = 0.0005
+      max_pos_step = 0.001
       if output_accel > 0. and output_accel > self.last_output_accel and output_accel - self.last_output_accel > max_pos_step:
         output_accel = self.last_output_accel + max_pos_step
 
