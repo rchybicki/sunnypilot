@@ -115,7 +115,7 @@ class LongControl:
 
       expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
 
-      step_factor = 2. #interp(CS.vEgo, stopping_v_bp, stopping_step)
+      step_factor = 1. #interp(CS.vEgo, stopping_v_bp, stopping_step)
       output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
