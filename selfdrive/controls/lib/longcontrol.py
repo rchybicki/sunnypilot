@@ -106,9 +106,9 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
+      self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, float(min(CS.aEgo, -0.3)) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0,    0.05,  0.2,   0.3, max(CS.vEgo, 0.3)  ]
+      self.stopping_v_bp =  [ 0.,    0.05,  0.2,   0.3, float(max(CS.vEgo, 0.4))  ]
       self.stopping_pid.set_i(output_accel)
     
     self.long_control_state = new_control_state
@@ -119,7 +119,7 @@ class LongControl:
 
     elif self.long_control_state == LongCtrlState.stopping:
       
-      if CS.aEgo < 0.:
+      if float(CS.aEgo) < 0.:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
@@ -156,11 +156,18 @@ class LongControl:
       
       # might not be the best way to do this, but it limits acceleration jerk 
       # while not limiting braking, smooth as butter!
-      step_limit_bp = [0.,  0.75]
-      step_limit_v = [0.01, 0.005]
-      max_pos_step = interp(CS.aEgo, step_limit_bp, step_limit_v)
-      if output_accel > 0. and output_accel > self.last_output_accel and output_accel - self.last_output_accel > max_pos_step:
-        output_accel = self.last_output_accel + max_pos_step
+      if output_accel > 0. and output_accel > self.last_output_accel:
+        step_limit_a_bp = [0.,  0.5]
+        step_limit_a_k = [0.02, 0.005]
+        max_pos_step = interp(CS.aEgo, step_limit_a_bp, step_limit_a_k)
+        if output_accel - self.last_output_accel > max_pos_step:
+          output_accel = self.last_output_accel + max_pos_step
+
+        step_limit_v_bp = [0.,  10]
+        step_limit_v_k = [0.02, 0.005]
+        max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
+        if output_accel - self.last_output_accel > max_pos_step:
+          output_accel = self.last_output_accel + max_pos_step
       self.stopping_pid.reset()
 
     self.last_output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
