@@ -117,18 +117,17 @@ class LongControl:
       self.reset(CS.vEgo)
       output_accel = 0.
 
-    elif self.long_control_state == LongCtrlState.stopping:  
-      #output_accel = min(output_accel, 0.0)
-
-      expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
-
-      # step_factor = interp(CS.vEgo, stopping_v_bp, stopping_step)
-      # output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
-      error = expected_accel - CS.aEgo
+    elif self.long_control_state == LongCtrlState.stopping:
+      
       if CS.aEgo < 0.:
+        # smooth expected stopping accel
+        expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
+        error = expected_accel - CS.aEgo
         output_accel = self.stopping_pid.update(error, speed=CS.vEgo)
       else:
+        #cancel out the car wanting to start when stopping
         output_accel -= 0.8 * DT_CTRL
+        self.stopping_pid.set_i(output_accel)
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
         
@@ -155,6 +154,8 @@ class LongControl:
                                      feedforward=a_target,
                                      freeze_integrator=freeze_integrator)
       
+      # might not be the best way to do this, but it limits acceleration jerk 
+      # while not limiting braking, smooth as butter!
       step_limit_bp = [0.,  0.75]
       step_limit_v = [0.01, 0.005]
       max_pos_step = interp(CS.aEgo, step_limit_bp, step_limit_v)
