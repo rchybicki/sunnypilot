@@ -108,7 +108,7 @@ class LongControl:
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
       self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, float(min(CS.aEgo, -0.3)) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0.,    0.05,  0.2,   0.3, float(max(CS.vEgo, 0.4))  ]
+      self.stopping_v_bp =  [ 0.,   0.05,  0.2,   0.3, float(max(CS.vEgo, 0.4))  ]
       self.stopping_pid.set_i(output_accel)
     
     self.long_control_state = new_control_state
