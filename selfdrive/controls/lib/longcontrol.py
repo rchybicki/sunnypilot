@@ -113,6 +113,7 @@ class LongControl:
       self.stopping_pid.set_i(output_accel)
       
       print(f"Starting to stop at vEgo {CS.vEgo} output_accel {output_accel}")
+      self.logcounter = 0
       
     
     self.long_control_state = new_control_state
@@ -128,13 +129,13 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         prev_output_accel = output_accel
-        output_accel = self.stopping_pid.update(error, speed=CS.vEgo, log = (self.logcounter in [0, 20, 40]))
-        if self.logcounter == 0:
-          print(f"Stopping at vEgo {CS.vEgo} aEgo {CS.aEgo} expected_accel {expected_accel} error {error}")
-          print(f"prev_output_accel {prev_output_accel} output_accel {output_accel} output accel delta {output_accel - prev_output_accel}")
-        self.logcounter += 1
-        if self.logcounter == 59:
-          self.logcounter = 0
+        # if self.logcounter == 0:
+        print(f"Stopping at vEgo {CS.vEgo} aEgo {CS.aEgo} expected_accel {expected_accel} error {error}")
+         #self.logcounter in [0, 20, 40]))
+        print(f"prev_output_accel {prev_output_accel} output_accel {output_accel} output accel delta {output_accel - prev_output_accel}")
+        # self.logcounter += 1
+        # if self.logcounter == 59:
+        #   self.logcounter = 0
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.8 * DT_CTRL
