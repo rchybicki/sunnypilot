@@ -132,6 +132,7 @@ class LongControl:
         # if self.logcounter == 0:
         print(f"Stopping at vEgo {CS.vEgo} aEgo {CS.aEgo} expected_accel {expected_accel} error {error}")
          #self.logcounter in [0, 20, 40]))
+        output_accel = self.stopping_pid.update(error, speed=CS.vEgo, log = True) #(self.logcounter in [0, 20, 40]))
         print(f"prev_output_accel {prev_output_accel} output_accel {output_accel} output accel delta {output_accel - prev_output_accel}")
         # self.logcounter += 1
         # if self.logcounter == 59:
