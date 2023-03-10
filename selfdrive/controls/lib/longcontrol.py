@@ -68,6 +68,7 @@ class LongControl:
     self.last_output_accel = 0.0
     self.stopping_accel = []
     self.stopping_v_bp = []
+    self.logcounter = 0
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -110,6 +111,9 @@ class LongControl:
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
       self.stopping_v_bp =  [ 0.,   0.05,  0.2,   0.3, float(max(CS.vEgo, 0.4))  ]
       self.stopping_pid.set_i(output_accel)
+      
+      print(f"Starting to stop at vEgo {CS.vEgo} output_accel {output_accel}")
+      
     
     self.long_control_state = new_control_state
 
@@ -123,7 +127,14 @@ class LongControl:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
+        prev_output_accel = output_accel
         output_accel = self.stopping_pid.update(error, speed=CS.vEgo)
+        if self.logcounter == 0:
+          print(f"Stopping at vEgo {CS.vEgo} aEgo {CS.aEgo} expected_accel {expected_accel} error {error}")
+          print(f"prev_output_accel {prev_output_accel} output_accel {output_accel} output accel delta {output_accel - prev_output_accel}")
+        self.logcounter += 1
+        if self.logcounter == 50:
+          self.logcounter = 0
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.8 * DT_CTRL
@@ -163,7 +174,7 @@ class LongControl:
         if output_accel - self.last_output_accel > max_pos_step:
           output_accel = self.last_output_accel + max_pos_step
 
-        step_limit_v_bp = [0.,  10]
+        step_limit_v_bp = [0.,  8]
         step_limit_v_k = [0.02, 0.005]
         max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
         if output_accel - self.last_output_accel > max_pos_step:
