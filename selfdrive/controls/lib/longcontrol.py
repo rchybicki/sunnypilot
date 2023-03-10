@@ -58,9 +58,9 @@ class LongControl:
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     kpBP = [ 0. ]
-    kpV = [ 1. ]
+    kpV = [ 0.5 ]
     kiBP = [ 0. ]
-    kiV = [ 0.1 ]
+    kiV = [ 0.05 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
@@ -68,7 +68,6 @@ class LongControl:
     self.last_output_accel = 0.0
     self.stopping_accel = []
     self.stopping_v_bp = []
-    self.logcounter = 0
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -107,13 +106,10 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      self.stopping_accel = [-0.2, -0.15, -0.15, -0.2, float(min(CS.aEgo, -0.3)) ] 
+      self.stopping_accel = [-0.15, -0.2, min(CS.aEgo, -0.3) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0.,   0.05,  0.2,   0.3, float(max(CS.vEgo, 0.4))  ]
+      self.stopping_v_bp =  [ 0.2,   0.3, max(CS.vEgo, 0.4)  ]
       self.stopping_pid.set_i(output_accel)
-      
-      print(f"Starting to stop at vEgo {CS.vEgo} output_accel {output_accel}")
-      self.logcounter = 0
       
     
     self.long_control_state = new_control_state
@@ -124,19 +120,12 @@ class LongControl:
 
     elif self.long_control_state == LongCtrlState.stopping:
       
-      if float(CS.aEgo) < 0.:
+      if CS.aEgo < 0.:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
-        prev_output_accel = output_accel
-        # if self.logcounter == 0:
-        print(f"Stopping at vEgo {CS.vEgo} aEgo {CS.aEgo} expected_accel {expected_accel} error {error}")
-         #self.logcounter in [0, 20, 40]))
-        output_accel = self.stopping_pid.update(error, speed=CS.vEgo, log = True) #(self.logcounter in [0, 20, 40]))
-        print(f"prev_output_accel {prev_output_accel} output_accel {output_accel} output accel delta {output_accel - prev_output_accel}")
-        # self.logcounter += 1
-        # if self.logcounter == 59:
-        #   self.logcounter = 0
+        next = interp(CS.vEgo + expected_accel, self.stopping_v_bp, self.stopping_accel) - expected_accel
+        output_accel = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.8 * DT_CTRL

@@ -52,13 +52,12 @@ class PIDController():
   def set_i(self, i):
     self.i = i
 
-  def update(self, error, error_rate=0.0, speed=0.0, override=False, feedforward=0., freeze_integrator=False, log=False):
+  def update(self, error, error_rate=0.0, speed=0.0, override=False, feedforward=0., freeze_integrator=False):
     self.speed = speed
 
     self.p = float(error) * self.k_p
     self.f = feedforward * self.k_f
     self.d = error_rate * self.k_d
-    prev_i = self.i
 
     if override:
       self.i -= self.i_unwind_rate * float(np.sign(self.i))
@@ -74,9 +73,6 @@ class PIDController():
         self.i = i
 
     control = self.p + self.i + self.d + self.f
-
-    if log:
-      print(f"error {error} i {self.i} i delta {self.i - prev_i} control {control} control delta {control - self.control}")
 
     self.control = clip(control, self.neg_limit, self.pos_limit)
     return self.control
