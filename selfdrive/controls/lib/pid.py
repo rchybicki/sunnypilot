@@ -23,8 +23,7 @@ class PIDController():
     self.i_unwind_rate = 0.3 / rate
     self.i_rate = 1.0 / rate
     self.speed = 0.0
-    self.logcounter = 0
-
+    
     self.reset()
 
   @property
@@ -53,7 +52,7 @@ class PIDController():
   def set_i(self, i):
     self.i = i
 
-  def update(self, error, error_rate=0.0, speed=0.0, override=False, feedforward=0., freeze_integrator=False):
+  def update(self, error, error_rate=0.0, speed=0.0, override=False, feedforward=0., freeze_integrator=False, log=False):
     self.speed = speed
 
     self.p = float(error) * self.k_p
@@ -77,11 +76,8 @@ class PIDController():
 
     control = self.p + self.i + self.d + self.f
 
-    if self.logcounter == 0:
+    if log:
       print(f"error {error} p {self.p} prev i {prev_i} i {self.i} control {control}")
-    self.logcounter += 1
-    if self.logcounter == 25:
-      self.logcounter = 0
 
     self.control = clip(control, self.neg_limit, self.pos_limit)
     return self.control
