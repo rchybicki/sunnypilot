@@ -23,6 +23,7 @@ class PIDController():
     self.i_unwind_rate = 0.3 / rate
     self.i_rate = 1.0 / rate
     self.speed = 0.0
+    self.logcounter = 0
 
     self.reset()
 
@@ -59,6 +60,8 @@ class PIDController():
     self.f = feedforward * self.k_f
     self.d = error_rate * self.k_d
 
+    prev_i = self.i
+
     if override:
       self.i -= self.i_unwind_rate * float(np.sign(self.i))
     else:
@@ -73,6 +76,12 @@ class PIDController():
         self.i = i
 
     control = self.p + self.i + self.d + self.f
+
+    if self.logcounter == 0:
+      print(f"error {error} p {self.p} prev i {prev_i} i {self.i} control {control}")
+    self.logcounter += 1
+    if self.logcounter == 25:
+      self.logcounter = 0
 
     self.control = clip(control, self.neg_limit, self.pos_limit)
     return self.control
