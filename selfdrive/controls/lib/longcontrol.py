@@ -58,9 +58,9 @@ class LongControl:
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     kpBP = [ 0. ]
-    kpV = [ 0.5 ]
+    kpV = [ 1.5 ]
     kiBP = [ 0. ]
-    kiV = [ 0.05 ]
+    kiV = [ 0.3 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
@@ -161,13 +161,13 @@ class LongControl:
       # while not limiting braking, smooth as butter!
       if output_accel > 0. and output_accel > self.last_output_accel:
         step_limit_a_bp = [0.,  0.5]
-        step_limit_a_k = [0.02, 0.005]
+        step_limit_a_k = [0.03, 0.005]
         max_pos_step = interp(CS.aEgo, step_limit_a_bp, step_limit_a_k)
         if output_accel - self.last_output_accel > max_pos_step:
           output_accel = self.last_output_accel + max_pos_step
 
         step_limit_v_bp = [0.,  8]
-        step_limit_v_k = [0.02, 0.005]
+        step_limit_v_k = [0.03, 0.005]
         max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
         if output_accel - self.last_output_accel > max_pos_step:
           output_accel = self.last_output_accel + max_pos_step
