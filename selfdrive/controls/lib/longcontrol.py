@@ -68,6 +68,7 @@ class LongControl:
     self.last_output_accel = 0.0
     self.stopping_accel = []
     self.stopping_v_bp = []
+    self.stopping_output_accel = 0.0
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -109,7 +110,7 @@ class LongControl:
       self.stopping_accel = [-0.15, -0.2, min(CS.aEgo, -0.3) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
       self.stopping_v_bp =  [ 0.2,   0.3, max(CS.vEgo, 0.4)  ]
-      self.stopping_pid.set_i(output_accel)
+      self.stopping_output_accel = output_accel
       
     
     self.long_control_state = new_control_state
@@ -125,11 +126,11 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         next = interp(CS.vEgo + expected_accel, self.stopping_v_bp, self.stopping_accel) - expected_accel
-        output_accel = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
+        output_accel = self.stopping_output_accel + self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.8 * DT_CTRL
-        self.stopping_pid.set_i(output_accel)
+        self.stopping_output_accel = output_accel
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
         
