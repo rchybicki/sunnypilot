@@ -125,7 +125,7 @@ class LongControl:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
-        next = interp(CS.vEgo + expected_accel, self.stopping_v_bp, self.stopping_accel) - expected_accel
+        next = interp(CS.vEgo + expected_accel * DT_CTRL, self.stopping_v_bp, self.stopping_accel) - expected_accel
         output_accel = self.stopping_output_accel + self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
       else:
         #cancel out the car wanting to start when stopping
