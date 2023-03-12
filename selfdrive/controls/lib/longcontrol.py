@@ -60,7 +60,7 @@ class LongControl:
     kpBP = [ 0. ]
     kpV = [ 1.0 ]
     kiBP = [ 0. ]
-    kiV = [ 1.0 ]
+    kiV = [ 0.75 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
