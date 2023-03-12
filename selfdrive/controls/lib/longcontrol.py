@@ -8,7 +8,7 @@ from selfdrive.modeld.constants import T_IDXS
 LongCtrlState = car.CarControl.Actuators.LongControlState
 
 
-def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
+def long_control_state_trans(CP, active, long_control_state, v_ego, a_ego, v_target,
                              v_target_1sec, brake_pressed, cruise_standstill):
   # Ignore cruise standstill if car has a gas interceptor
   cruise_standstill = cruise_standstill and not CP.enableGasInterceptor
@@ -24,7 +24,7 @@ def long_control_state_trans(CP, active, long_control_state, v_ego, v_target,
                         accelerating and
                         not cruise_standstill and
                         not brake_pressed)
-  started_condition = v_ego > 0.1
+  started_condition = v_ego > 0.03 or a_ego > 0.1
 
   if not active:
     long_control_state = LongCtrlState.off
@@ -58,9 +58,9 @@ class LongControl:
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     kpBP = [ 0. ]
-    kpV = [ 1.2 ]
+    kpV = [ 0.2 ]
     kiBP = [ 0. ]
-    kiV = [ 0.75 ]
+    kiV = [ 1.2 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
@@ -102,7 +102,7 @@ class LongControl:
     self.pid.pos_limit = accel_limits[1]
 
     output_accel = self.last_output_accel
-    new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
+    new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo, CS.aEgo,
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
