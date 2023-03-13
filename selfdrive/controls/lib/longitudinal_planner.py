@@ -28,7 +28,7 @@ AWARENESS_DECEL = -0.2  # car smoothly decel at .2m/s^2 when user is distracted
 
 A_CRUISE_MIN = -0.75 # was -1.2
 
-A_CRUISE_MAX_VAL_GAP4 = [ 0.8, 1.0, 1.1, 1.2, 1.2, 1.1, 0.9,  0.7,  0.5,  0.4,  0.2]
+A_CRUISE_MAX_VAL_GAP4 = [ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,  0.5,  0.5,  0.4,  0.2]
 A_CRUISE_MAX_VAL_GAP3 = [ 0.9, 1.1, 1.2, 1.3, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
 A_CRUISE_MAX_VAL_GAP2 = [ 1.2, 1.3, 1.4, 1.4, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
 A_CRUISE_MAX_VAL_GAP1 = [ 1.4, 1.5, 1.6, 1.5, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
