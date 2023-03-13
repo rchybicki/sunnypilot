@@ -58,9 +58,9 @@ class LongControl:
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     kpBP = [ 0. ]
-    kpV = [ 1. ]
+    kpV = [ 0.25 ]
     kiBP = [ 0. ]
-    kiV = [ 0.2 ]
+    kiV = [ 0.05 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
@@ -128,7 +128,7 @@ class LongControl:
         output_accel += self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
       else:
         #cancel out the car wanting to start when stopping
-        output_accel -= 0.8 * DT_CTRL
+        output_accel -= 0.5 * DT_CTRL
         # self.stopping_pid.set_i(output_accel)
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
