@@ -58,9 +58,9 @@ class LongControl:
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     kpBP = [ 0. ]
-    kpV = [ 0.01 ]
+    kpV = [ 0.012 ]
     kiBP = [ 0. ]
-    kiV = [ 0.001 ]
+    kiV = [ 0.0006 ]
     self.stopping_pid = PIDController((kpBP, kpV),
                                       (kiBP, kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
@@ -106,9 +106,9 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      self.stopping_accel = [-0.15, -0.2, min(CS.aEgo, -0.3) ] 
+      self.stopping_accel = [-0.05, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
       # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      self.stopping_v_bp =  [ 0.2,   0.3, max(CS.vEgo, 0.4)  ]
+      self.stopping_v_bp =  [ 0,     0.2,   0.3, max(CS.vEgo, 0.4)  ]
       # self.stopping_pid.set_i(output_accel)
       
     
@@ -124,7 +124,7 @@ class LongControl:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
-        next = 0. #interp(CS.vEgo + expected_accel * 0.05, self.stopping_v_bp, self.stopping_accel) - expected_accel
+        next = interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
         output_accel += self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
       else:
         #cancel out the car wanting to start when stopping
