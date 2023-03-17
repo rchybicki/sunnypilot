@@ -231,8 +231,8 @@ class CarInterface(CarInterfaceBase):
  
       ret.longitudinalTuning.kpBP = [ 0.,     5.,     20.  ]
       ret.longitudinalTuning.kiBP = [ 0.,     5.,     20.  ]
-      ret.longitudinalTuning.kpV =  [ 0.6,   0.1,     0.2   ]
-      ret.longitudinalTuning.kiV =  [ 0.03,  0.015,   0.0125 ]
+      ret.longitudinalTuning.kpV =  [ 0.4,   0.1,     0.2   ]
+      ret.longitudinalTuning.kiV =  [ 0.02,  0.015,   0.0125 ]
 
 
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
@@ -245,8 +245,8 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = True
     ret.startingState = True
-    ret.vEgoStarting = 0.1       # was 0.1
-    ret.vEgoStopping = 0.75      # was 0.1
+    ret.vEgoStarting = 0.2      # was 0.1
+    ret.vEgoStopping = 0.75     # was 0.1
     ret.startAccel = 0.4
     ret.longitudinalActuatorDelayLowerBound = 0.5
     ret.longitudinalActuatorDelayUpperBound = 0.5
