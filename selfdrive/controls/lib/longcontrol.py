@@ -57,12 +57,9 @@ class LongControl:
     self.pid = PIDController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
-    kpBP = [ 0. ]
-    kpV = [ 0.012 ]
-    kiBP = [ 0. ]
-    kiV = [ 0.0006 ]
-    self.stopping_pid = PIDController((kpBP, kpV),
-                                      (kiBP, kiV),
+
+    self.stopping_pid = PIDController(([0.], [0.]),
+                                      ([0.], [0.]),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
@@ -106,13 +103,21 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:                                       
-      # self.stopping_accel = [-0.05, -0.15, -0.2, min(CS.aEgo, -0.3) ] 
-      self.stopping_accel = [-0.2, min(CS.aEgo, -0.2) ] 
-      # stopping_step =  [ 3.,   1.,    2.,    2.,   3. ]
-      # self.stopping_v_bp =  [ 0,     0.2,   0.3, max(CS.vEgo, 0.4)  ]
-      self.stopping_v_bp =  [ 0.4, 0.41 ]
-      # self.stopping_pid.set_i(output_accel)
-      
+      self.stopping_v_bp =  [ 0.15, 0.20, 0.21,                0.5,               max(CS.vEgo, 0.7) ]
+      self.stopping_accel = [-0.10,-0.15, max(CS.aEgo, -0.5), max(CS.aEgo, -0.5), min(CS.aEgo, -0.3) ] 
+
+      # stopping_a_bp = [ -1.0,    -0.4 ]
+      # stoping_a_k =   [ 0.020,  0.012 ]
+      # kpV = [ interp(CS.aEgo, stopping_a_bp, stoping_a_k), 0.012 ]
+      kpV = [ 0.01, 0.1, 0.01, 0.01, 0.015]
+
+      kiBP = [ 0. ]
+      kiV = [ 0.0004 ]
+ 
+      self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+      self.stopping_pid._k_i = (kiBP, kiV)
+      output_accel -= 0.05
+
     
     self.long_control_state = new_control_state
 
@@ -133,7 +138,7 @@ class LongControl:
         output_accel -= 0.5 * DT_CTRL
         # self.stopping_pid.set_i(output_accel)
 
-      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+      output_accel = clip(output_accel, self.CP.stopAccel, -0.2)
         
       self.reset(CS.vEgo)
 
