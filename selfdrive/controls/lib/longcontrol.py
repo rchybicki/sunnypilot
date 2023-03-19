@@ -65,6 +65,7 @@ class LongControl:
     self.last_output_accel = 0.0
     self.stopping_accel = []
     self.stopping_v_bp = []
+    self.s = 0.
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -103,21 +104,26 @@ class LongControl:
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
-      s = 0.16                                   
-      self.stopping_v_bp =  [ s-0.01, 0.16,    s+0.01,           0.5,               max(CS.vEgo, 0.7) ]
-      self.stopping_accel = [-0.10,  -0.15, max(CS.aEgo, -0.5), max(CS.aEgo, -0.5), min(CS.aEgo, -0.3) ] 
+
+      stopping_breakpoint_bp [ 0.2, 1.0 ]   
+      stopping_breakpoint_v  [ 0.15, 0.4 ]   
+                                  
+      self.stopping_breakpoint = interp(CS.aEgo, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
+      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,  0.5,                max(CS.vEgo, 0.7) ]
+      self.stopping_accel = [ -0.10,                         -0.15,                     max(CS.aEgo, -0.5),             max(CS.aEgo, -0.5), min(CS.aEgo, -0.3) ] 
+ 
 
       # stopping_a_bp = [ -1.0,    -0.4 ]
       # stoping_a_k =   [ 0.020,  0.012 ]
       # kpV = [ interp(CS.aEgo, stopping_a_bp, stoping_a_k), 0.012 ]
-      kpV = [ 0.02, 1.0, 0.01, 0.01, 0.015]
+      kpV = [ 0.02, 2.0, 0.010, 0.010, 0.015]
 
       kiBP = [ 0. ]
       kiV = [ 0.0004 ]
  
       self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
       self.stopping_pid._k_i = (kiBP, kiV)
-      output_accel -= 0.05
+      # output_accel -= 0.05
 
     
     self.long_control_state = new_control_state
@@ -139,7 +145,10 @@ class LongControl:
         output_accel -= 0.5 * DT_CTRL
         # self.stopping_pid.set_i(output_accel)
 
-      output_accel = clip(output_accel, self.CP.stopAccel, -0.1)
+      breaking_pause = 0.025
+      output_min_bp =  [ self.stopping_breakpoint - breaking_pause - 0.001, self.stopping_breakpoint - breaking_pause ]
+      output_min_v =   [ -0.2,                                              -0.1                                      ]
+      output_accel = clip(output_accel, self.CP.stopAccel, interp(CS.vEgo, output_min_bp, output_min_v))
         
       self.reset(CS.vEgo)
 
@@ -174,7 +183,7 @@ class LongControl:
           output_accel = self.last_output_accel + max_pos_step
 
         step_limit_v_bp = [0.,  7]
-        step_limit_v_k = [0.03, 0.005]
+        step_limit_v_k = [0.03, 0.004]
         max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
         if output_accel - self.last_output_accel > max_pos_step:
           output_accel = self.last_output_accel + max_pos_step
