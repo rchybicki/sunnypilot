@@ -62,14 +62,14 @@ def get_min_max_accel(v_ego, CP, carstate):
     a_cruise_max_bp = [0., 10., 25., 40.]
     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, a_cruise_max_bp, a_cruise_max_vals)]
   elif CP.carName == "hyundai":
-    if carstate.gapAdjustCruiseTr == 4:
-      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
-    elif carstate.gapAdjustCruiseTr == 3:
-      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    if carstate.gapAdjustCruiseTr == 1:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP1), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
     elif carstate.gapAdjustCruiseTr == 2:
       return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP2), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)]
-    elif carstate.gapAdjustCruiseTr == 1:
-      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP1), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
+    elif carstate.gapAdjustCruiseTr == 4:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
+    else:
+      return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
   else:
     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
 
