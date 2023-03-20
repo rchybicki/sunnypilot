@@ -15,7 +15,6 @@ from system.swaglog import cloudlog
 from system.version import is_release_branch, get_short_branch
 from selfdrive.boardd.boardd import can_list_to_can_capnp
 from selfdrive.car.car_helpers import get_car, get_startup_event, get_one_can
-from selfdrive.car.hyundai.values import CAR as HYUNDAI_CAR
 from selfdrive.controls.lib.lane_planner import CAMERA_OFFSET
 from selfdrive.controls.lib.drive_helpers import VCruiseHelper, get_lag_adjusted_curvature
 from selfdrive.controls.lib.latcontrol import LatControl, MIN_LATERAL_CONTROL_SPEED
@@ -30,7 +29,6 @@ from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from system.hardware import HARDWARE
 from selfdrive.manager.process_config import managed_processes
-from selfdrive.car.isotp_parallel_query import IsoTpParallelQuery
 
 SOFT_DISABLE_TIME = 3  # seconds
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
@@ -79,6 +77,7 @@ class Controls:
     if can_sock is None:
       can_timeout = None if os.environ.get('NO_CAN_TIMEOUT', False) else 20
       self.can_sock = messaging.sub_sock('can', timeout=can_timeout)
+
     self.log_sock = messaging.sub_sock('androidLog')
 
     self.params = Params()
@@ -145,12 +144,6 @@ class Controls:
       safety_config.safetyModel = car.CarParams.SafetyModel.noOutput
       self.CP.safetyConfigs = [safety_config]
 
-    # Write CarParams for radard
-    cp_bytes = self.CP.to_bytes()
-    self.params.put("CarParams", cp_bytes)
-    put_nonblocking("CarParamsCache", cp_bytes)
-    put_nonblocking("CarParamsPersistent", cp_bytes)
-
     # cleanup old params
     if not self.CP.experimentalLongitudinalAvailable or is_release_branch():
       self.params.remove("ExperimentalLongitudinalEnabled")
@@ -204,38 +197,6 @@ class Controls:
 
     self.live_torque = self.params.get_bool("LiveTorque")
     self.custom_torque = self.params.get_bool("CustomTorqueLateral")
-
-     # START: Try to enable radar tracks
-    print("Try to enable radar tracks")
-    if self.CP.carFingerprint in [HYUNDAI_CAR.SANTA_FE_HEV_2022]:
-      rdr_fw = None
-      for fw in self.CP.carFw:
-        if fw.ecu == "fwdRadar":
-          rdr_fw = fw
-          break
-      print(f"Found fwdRadar: {rdr_fw.fwVersion}")
-      try:
-        for i in range(40):
-          try:
-            query = IsoTpParallelQuery(self.pm.sock['sendcan'], self.can_sock, 0, [rdr_fw.address], [b'\x10\x07'], [b'\x50\x07'], debug=True)
-            for addr, dat in query.get_data(0.1).items(): # pylint: disable=unused-variable
-              print("ecu write data by id ...")
-              new_config = b"\x00\x00\x00\x01\x00\x01"
-              dataId = b'\x01\x42'
-              WRITE_DAT_REQUEST = b'\x2e'
-              WRITE_DAT_RESPONSE = b'\x68'
-              query = IsoTpParallelQuery(self.pm.sock['sendcan'], self.can_sock, 0, [rdr_fw.address], [WRITE_DAT_REQUEST+dataId+new_config], [WRITE_DAT_RESPONSE], debug=True)
-              query.get_data(0)
-              print(f"Try {i+1}")
-              break
-            break
-          except Exception as e:
-            print(f"Failed {i}: {e}") 
-      except Exception as e:
-        print("Failed to enable tracks" + str(e))
-    print("END Try to enable radar tracks")
-    # END try to enable radar tracks
-
 
     # TODO: no longer necessary, aside from process replay
     self.sm['liveParameters'].valid = True
@@ -500,6 +461,12 @@ class Controls:
       if all_valid or timed_out or SIMULATION:
         if not self.read_only:
           self.CI.init(self.CP, self.can_sock, self.pm.sock['sendcan'])
+          
+          # Write CarParams for radard
+          cp_bytes = self.CP.to_bytes()
+          self.params.put("CarParams", cp_bytes)
+          put_nonblocking("CarParamsCache", cp_bytes)
+          put_nonblocking("CarParamsPersistent", cp_bytes)
 
         self.initialized = True
         self.set_initial_state()
