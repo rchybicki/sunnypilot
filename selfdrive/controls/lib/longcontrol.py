@@ -107,13 +107,13 @@ class LongControl:
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
 
-      stopping_breakpoint_bp = [ 0.2, 1.0 ]   
+      stopping_breakpoint_bp = [ 0.3 , 1.0 ]   
       stopping_breakpoint_v  = [ 0.15, 0.4 ]   
 
-      initial_stopping_accel = random.random() * -1. - 0.2 #CS.aEgo
+      initial_stopping_accel = random.random() * -1.4 - 0.6 #CS.aEgo
                                   
       self.stopping_breakpoint = interp(CS.aEgo, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
-      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,     0.5,                               max(CS.vEgo, 0.7) ]
+      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,     0.5,                               1.2 ]  #max(CS.vEgo, 0.7) ]
       self.stopping_accel = [ -0.10,                         -0.15,                     max(initial_stopping_accel, -0.5), max(initial_stopping_accel, -0.5), min(initial_stopping_accel, -0.3) ] 
  
 
