@@ -2,12 +2,14 @@
 import os
 import numpy as np
 
+from cereal import car
 from common.realtime import sec_since_boot
 from common.numpy_fast import clip, interp
 from system.swaglog import cloudlog
 # WARNING: imports outside of constants will not trigger a rebuild
 from selfdrive.modeld.constants import index_function
 from selfdrive.controls.lib.radar_helpers import _LEAD_ACCEL_TAU
+from common.params import Params
 
 if __name__ == '__main__':  # generating code
   from third_party.acados.acados_template import AcadosModel, AcadosOcp, AcadosOcpSolver
@@ -43,6 +45,7 @@ LIMIT_COST = 1e6
 ACADOS_SOLVER_TYPE = 'SQP_RTI'
 
 
+
 # Fewer timestamps don't hurt performance and lead to
 # much better convergence of the MPC with low iterations
 N = 12
@@ -56,7 +59,7 @@ MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 T_FOLLOW = 1.45
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 6.0
+STOP_DISTANCE = 6.0 # was 5.5
 
 DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
 DIST_V_GAP4 = DIST_V_GAP3 # [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
@@ -65,14 +68,23 @@ DIST_V_GAP1 = DIST_V_GAP3 # [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.
    # in kph       0    16    32    48    64    80    96   112   128   144   160
 DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
 
-def get_stopped_equivalence_factor(v_lead):
+def get_stopped_equivalence_factor(v_lead, v_ego, t_follow=T_FOLLOW):
   return (v_lead**2) / (2 * COMFORT_BRAKE)
+  # # KRKeegan this offset rapidly decreases the following distance when the lead pulls
+  # # away, resulting in an early demand for acceleration.
+  # v_diff_offset = 0
+  # if np.all(v_lead - v_ego > 0):
+  #   v_diff_offset = ((v_lead - v_ego) * 1.)
+  #   v_diff_offset = np.clip(v_diff_offset, 0, STOP_DISTANCE / 2)
+  #   v_diff_offset = np.maximum(v_diff_offset * ((10 - v_ego)/10), 0)
+  # distance = (v_lead**2) / (2 * COMFORT_BRAKE) + v_diff_offset  
+  # return distance
 
 def get_safe_obstacle_distance(v_ego, t_follow=T_FOLLOW):
   return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + STOP_DISTANCE
 
 def desired_follow_distance(v_ego, v_lead, t_follow=T_FOLLOW):
-  return get_safe_obstacle_distance(v_ego, t_follow) - get_stopped_equivalence_factor(v_lead)
+  return get_safe_obstacle_distance(v_ego, t_follow) - get_stopped_equivalence_factor(v_lead, v_ego, t_follow)
 
 
 def gen_long_model():
@@ -212,6 +224,7 @@ class LongitudinalMpc:
     self.reset()
     self.source = SOURCES[2]
 
+    self.param_s = Params()
     self.e2e_x = np.zeros(13, dtype=np.float64)
 
   def reset(self):
@@ -243,11 +256,16 @@ class LongitudinalMpc:
     self.x0 = np.zeros(X_DIM)
     self.set_weights()
 
-  def set_cost_weights(self, cost_weights, constraint_cost_weights):
+  def set_cost_weights(self, cost_weights, constraint_cost_weights, cost_multipliers):
     W = np.asfortranarray(np.diag(cost_weights))
+    # if self.mode == 'acc':
+    #   a_change_tf = cost_weights[4] * cost_multipliers[0]
+    # else:
+    #   a_change_tf = cost_weights[4]
     for i in range(N):
       # TODO don't hardcode A_CHANGE_COST idx
       # reduce the cost on (a-a_prev) later in the horizon.
+      # W[4,4] = a_change_tf * np.interp(T_IDXS[i], [0.0, 1.0, 2.0], [1.0, 1.0, 0.0])
       W[4,4] = cost_weights[4] * np.interp(T_IDXS[i], [0.0, 1.0, 2.0], [1.0, 1.0, 0.0])
       self.solver.cost_set(i, 'W', W)
     # Setting the slice without the copy make the array not contiguous,
@@ -259,7 +277,9 @@ class LongitudinalMpc:
     for i in range(N):
       self.solver.cost_set(i, 'Zl', Zl)
 
-  def get_cost_multipliers(self):
+  def get_cost_multipliers(self, v_lead0, v_lead1):
+    v_ego = self.x0[1]
+    v_ego_bps = [0, 10]
     TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudinal.py deceleration tests
@@ -267,20 +287,31 @@ class LongitudinalMpc:
     j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
     d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
     return a_change_tf, j_ego_tf, d_zone_tf
+    # KRKeegan adjustments to improve sluggish acceleration
+    # do not apply to deceleration
+    # j_ego_v_ego = 1
+    # a_change_v_ego = 1
+    # if (v_lead0 - v_ego >= 0) and (v_lead1 - v_ego >= 0):
+    #   j_ego_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    #   a_change_v_ego = interp(v_ego, v_ego_bps, [.05, 1.])
+    # # Select the appropriate min/max of the options
+    # j_ego = min(j_ego_tf, j_ego_v_ego)
+    # a_change = min(a_change_tf, a_change_v_ego)
+    # return a_change, j_ego, d_zone_tf
 
-  def set_weights(self, prev_accel_constraint=True):
+  def set_weights(self, prev_accel_constraint=True, v_lead0=0, v_lead1=0):
+    cost_multipliers = self.get_cost_multipliers(v_lead0, v_lead1)
     if self.mode == 'acc':
-      cost_mulitpliers = self.get_cost_multipliers()
       a_change_cost = A_CHANGE_COST if prev_accel_constraint else 0
-      cost_weights = [X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST, A_EGO_COST, a_change_cost * cost_mulitpliers[0], J_EGO_COST * cost_mulitpliers[1]]
-      constraint_cost_weights = [LIMIT_COST, LIMIT_COST, LIMIT_COST, DANGER_ZONE_COST * cost_mulitpliers[2]]
+      cost_weights = [X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST, A_EGO_COST, a_change_cost * cost_multipliers[0], J_EGO_COST * cost_multipliers[1]]
+      constraint_cost_weights = [LIMIT_COST, LIMIT_COST, LIMIT_COST, DANGER_ZONE_COST * cost_multipliers[2]]
     elif self.mode == 'blended':
       a_change_cost = 40.0 if prev_accel_constraint else 0
       cost_weights = [0., 0.1, 0.2, 5.0, a_change_cost, 1.0]
       constraint_cost_weights = [LIMIT_COST, LIMIT_COST, LIMIT_COST, 50.0]
     else:
       raise NotImplementedError(f'Planner mode {self.mode} not recognized in planner cost set')
-    self.set_cost_weights(cost_weights, constraint_cost_weights)
+    self.set_cost_weights(cost_weights, constraint_cost_weights, cost_multipliers)
 
   def set_cur_state(self, v, a):
     v_prev = self.x0[1]
@@ -327,32 +358,61 @@ class LongitudinalMpc:
     self.cruise_min_a = min_a
     self.max_a = max_a
 
-  def update_TF(self, carstate):
-    gac_tr = carstate.gapAdjustCruiseTr
-    if gac_tr == 1:
-       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
-    elif gac_tr == 2:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
-    elif gac_tr == 4:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+  def update_TF(self, CP: car.CarParams, carstate):
+    gap_adjust_cruise = self.param_s.get_bool("GapAdjustCruise")
+    if gap_adjust_cruise and self.mode == 'acc':
+      if CP.carName == "hyundai":
+        if carstate.gapAdjustCruiseTr == 4:
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+        elif carstate.gapAdjustCruiseTr == 3:
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+        elif carstate.gapAdjustCruiseTr == 2:
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+        elif carstate.gapAdjustCruiseTr == 1:
+          self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
+      elif CP.carName == "toyota":
+        if carstate.gapAdjustCruiseTr == 1:
+          self.desired_TF = 1.8
+        elif carstate.gapAdjustCruiseTr == 2:
+          self.desired_TF = T_FOLLOW
+        elif carstate.gapAdjustCruiseTr == 3:
+          self.desired_TF = 1.2
+      elif CP.carName == "honda":
+        if carstate.gapAdjustCruiseTr == 0:
+          self.desired_TF = 1.8
+        elif carstate.gapAdjustCruiseTr == 3:
+          self.desired_TF = T_FOLLOW
+        elif carstate.gapAdjustCruiseTr == 2:
+          self.desired_TF = 1.2
+        elif carstate.gapAdjustCruiseTr == 1:
+          self.desired_TF = 1.0
+      elif CP.carName == "gm":
+        if carstate.gapAdjustCruiseTr == 3:
+          self.desired_TF = 1.8
+        elif carstate.gapAdjustCruiseTr == 2:
+          self.desired_TF = T_FOLLOW
+        elif carstate.gapAdjustCruiseTr == 1:
+          self.desired_TF = 1.2
+      else:
+        self.desired_TF = T_FOLLOW
     else:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+      self.desired_TF = T_FOLLOW
 
-  def update(self, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
+  def update(self, CP, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
     v_ego = self.x0[1]
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
     lead_xv_0 = self.process_lead(radarstate.leadOne)
     lead_xv_1 = self.process_lead(radarstate.leadTwo)
 
-    self.update_TF(carstate)
-    self.set_weights(prev_accel_constraint)
+    self.update_TF(CP, carstate)
+    self.set_weights(prev_accel_constraint=prev_accel_constraint, v_lead0=lead_xv_0[0,1], v_lead1=lead_xv_1[0,1])
 
     # To estimate a safe distance from a moving lead, we calculate how much stopping
     # distance that lead needs as a minimum. We can add that to the current distance
     # and then treat that as a stopped car/obstacle at this new distance.
-    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
-    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
+    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1], self.x_sol[:,1], self.desired_TF)
+    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1], self.x_sol[:,1], self.desired_TF)
 
     cruise_target = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
     e2e_xforward = ((v[1:] + v[:-1]) / 2) * (T_IDXS[1:] - T_IDXS[:-1])
@@ -411,9 +471,7 @@ class LongitudinalMpc:
 
     self.params[:,2] = np.min(x_obstacles, axis=1)
     self.params[:,3] = np.copy(self.prev_a)
-    self.params[:,4] = T_FOLLOW
-    if self.mode == 'acc':
-      self.params[:,4] = self.desired_TF
+    self.params[:,4] = self.desired_TF
 
     self.run()
     if (np.any(lead_xv_0[FCW_IDXS,0] - self.x_sol[FCW_IDXS,0] < CRASH_DISTANCE) and
@@ -425,9 +483,9 @@ class LongitudinalMpc:
     # Check if it got within lead comfort range
     # TODO This should be done cleaner
     if self.mode == 'blended':
-      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], T_FOLLOW))- self.x_sol[:,0] < 0.0):
+      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0):
         self.source = 'lead0'
-      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], T_FOLLOW))- self.x_sol[:,0] < 0.0) and \
+      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0) and \
          (lead_1_obstacle[0] - lead_0_obstacle[0]):
         self.source = 'lead1'
 
