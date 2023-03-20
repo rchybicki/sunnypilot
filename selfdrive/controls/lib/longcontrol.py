@@ -113,14 +113,14 @@ class LongControl:
       initial_stopping_accel = random.random() * -1. - 0.2 if force_stop else CS.aEgo
                                   
       self.stopping_breakpoint = interp(initial_stopping_accel, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
-      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,     0.5,                               5. ]  #max(CS.vEgo, 0.7) ]
-      self.stopping_accel = [ -0.10,                         -0.15,                     max(initial_stopping_accel, -0.5), max(initial_stopping_accel, -0.5), min(initial_stopping_accel, -0.3) ] 
+      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01     ]
+      self.stopping_accel = [ -0.10,                         -0.15,                     min(initial_stopping_accel, -0.3) ] 
  
 
       # stopping_a_bp = [ -1.0,    -0.4 ]
       # stoping_a_k =   [ 0.020,  0.012 ]
       # kpV = [ interp(CS.aEgo, stopping_a_bp, stoping_a_k), 0.012 ]
-      kpV = [ 0.02, 2.0, 0.010, 0.010, 0.015]
+      kpV = [ 0.02, 2.0, 0.008]
 
       kiBP = [ 0. ]
       kiV = [ 0.0004 ]
@@ -143,7 +143,8 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
-        output_accel += self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
+        update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
+        output_accel += update if CS.vEgo < self.stopping_breakpoint+0.01 or update < 0. else 0.
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.5 * DT_CTRL
