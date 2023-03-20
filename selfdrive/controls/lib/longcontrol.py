@@ -1,3 +1,4 @@
+import random
 from cereal import car
 from common.numpy_fast import clip, interp
 from common.realtime import DT_CTRL
@@ -9,11 +10,12 @@ LongCtrlState = car.CarControl.Actuators.LongControlState
 
 
 def long_control_state_trans(CP, active, long_control_state, v_ego, a_ego, v_target,
-                             v_target_1sec, brake_pressed, cruise_standstill):
+                             v_target_1sec, brake_pressed, cruise_standstill, CS):
+  force_stop = CP.carName == "hyundai" and CS.gapAdjustCruiseTr == 1
   # Ignore cruise standstill if car has a gas interceptor
   cruise_standstill = cruise_standstill and not CP.enableGasInterceptor
   accelerating = v_target_1sec > v_target
-  planned_stop = (v_target < CP.vEgoStopping and
+  planned_stop = force_stop or (v_target < CP.vEgoStopping and
                   v_target_1sec < CP.vEgoStopping and
                   not accelerating)
   stay_stopped = (v_ego < CP.vEgoStopping and
@@ -101,16 +103,18 @@ class LongControl:
 
     output_accel = self.last_output_accel
     new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo, CS.aEgo,
-                                                       v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
+                                                       v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill, CS)
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
 
-      stopping_breakpoint_bp [ 0.2, 1.0 ]   
-      stopping_breakpoint_v  [ 0.15, 0.4 ]   
+      stopping_breakpoint_bp = [ 0.2, 1.0 ]   
+      stopping_breakpoint_v  = [ 0.15, 0.4 ]   
+
+      initial_stopping_accel = random.random() * -1. - 0.2 #CS.aEgo
                                   
       self.stopping_breakpoint = interp(CS.aEgo, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
       self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,  0.5,                max(CS.vEgo, 0.7) ]
-      self.stopping_accel = [ -0.10,                         -0.15,                     max(CS.aEgo, -0.5),             max(CS.aEgo, -0.5), min(CS.aEgo, -0.3) ] 
+      self.stopping_accel = [ -0.10,                         -0.15,                     max(CS.aEgo, -0.5),             max(CS.aEgo, -0.5), min(initial_stopping_accel, -0.3) ] 
  
 
       # stopping_a_bp = [ -1.0,    -0.4 ]
