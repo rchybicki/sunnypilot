@@ -31,7 +31,8 @@ class CarState(CarStateBase):
       ret.brakePressed = cp_brakes.vl["Brake_Status"]["Brake"] == 1
 
     brake_msg = "ES_Brake" if self.car_fingerprint in PREGLOBAL_CARS else "ES_DashStatus"
-    ret.brakeLights = bool(cp_cam.vl[brake_msg]["Brake_Light"])
+    brake_sig = "Brake_Light" if self.car_fingerprint in PREGLOBAL_CARS else "Brake_Lights"
+    ret.brakeLights = bool(cp_cam.vl[brake_msg][brake_sig])
 
     cp_wheels = cp_body if self.car_fingerprint in GLOBAL_GEN2 else cp
     ret.wheelSpeeds = self.get_wheel_speeds(
@@ -75,11 +76,6 @@ class CarState(CarStateBase):
     if (self.car_fingerprint in PREGLOBAL_CARS and cp.vl["Dash_State2"]["UNITS"] == 1) or \
        (self.car_fingerprint not in PREGLOBAL_CARS and cp.vl["Dashlights"]["UNITS"] == 1):
       ret.cruiseState.speed *= CV.MPH_TO_KPH
-
-    self.madsEnabled, ret.cruiseState.enabled = self.update_sp_state(ret.cruiseState.enabled, self.enable_mads,
-                                                                     self.accEnabled, self.prev_cruiseState_enabled,
-                                                                     self.madsEnabled)
-    self.prev_brake_pressed = ret.brakePressed
 
     ret.seatbeltUnlatched = cp.vl["Dashlights"]["SEATBELT_FL"] == 1
     ret.doorOpen = any([cp.vl["BodyInfo"]["DOOR_OPEN_RR"],
