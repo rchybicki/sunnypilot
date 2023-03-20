@@ -37,7 +37,7 @@ def long_control_state_trans(CP, active, long_control_state, v_ego, a_ego, v_tar
       if stopping_condition:
         long_control_state = LongCtrlState.stopping
 
-    elif long_control_state == LongCtrlState.stopping:
+    elif long_control_state == LongCtrlState.stopping and not force_stop:
       if starting_condition and CP.startingState:
         long_control_state = LongCtrlState.starting
       elif starting_condition:
@@ -113,8 +113,8 @@ class LongControl:
       initial_stopping_accel = random.random() * -1. - 0.2 #CS.aEgo
                                   
       self.stopping_breakpoint = interp(CS.aEgo, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
-      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,  0.5,                max(CS.vEgo, 0.7) ]
-      self.stopping_accel = [ -0.10,                         -0.15,                     max(CS.aEgo, -0.5),             max(CS.aEgo, -0.5), min(initial_stopping_accel, -0.3) ] 
+      self.stopping_v_bp =  [ self.stopping_breakpoint-0.01, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,     0.5,                               max(CS.vEgo, 0.7) ]
+      self.stopping_accel = [ -0.10,                         -0.15,                     max(initial_stopping_accel, -0.5), max(initial_stopping_accel, -0.5), min(initial_stopping_accel, -0.3) ] 
  
 
       # stopping_a_bp = [ -1.0,    -0.4 ]
