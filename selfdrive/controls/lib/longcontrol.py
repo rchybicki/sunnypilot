@@ -121,10 +121,10 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:
       
       if CS.aEgo < 0.:
-        stopping_breakpoint_bp = [ -0.2,  -0.6, -1.0 ]   
-        stopping_breakpoint_v  = [  0.15,  0.18, 0.24 ]   
+        stopping_breakpoint_bp = [ -0.2,  -0.5, -1.0 ]   
+        stopping_breakpoint_v  = [  0.18,  0.20, 0.24 ]   
 
-        if CS.vEgo > 0.50 and CS.vEgo < 0.51:
+        if CS.vEgo > 0.25 and CS.vEgo < 0.26:
           self.initial_stopping_accel = CS.aEgo
                                     
         self.stopping_breakpoint = interp(self.initial_stopping_accel, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
