@@ -108,7 +108,8 @@ class LongControl:
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
 
-      self.initial_stopping_accel = random.random() * -1. - 0.2 if force_stop else CS.aEgo
+      # self.initial_stopping_accel = random.random() * -1. - 0.2 if force_stop else CS.aEgo
+      self.initial_stopping_accel = -0.5 if force_stop else CS.aEgo
                                   
 
     
@@ -121,8 +122,8 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:
       
       if CS.aEgo < 0.:
-        stopping_breakpoint_bp = [ -0.2,  -0.5, -1.0 ]   
-        stopping_breakpoint_v  = [  0.18,  0.20, 0.24 ]   
+        stopping_breakpoint_bp = [ -0.1,  -0.5, -1.0 ]   
+        stopping_breakpoint_v  = [  0.05,  0.25, 0.25 ]   
 
         if CS.vEgo > 0.25 and CS.vEgo < 0.26:
           self.initial_stopping_accel = CS.aEgo
@@ -154,9 +155,9 @@ class LongControl:
         output_accel -= 0.5 * DT_CTRL
         # self.stopping_pid.set_i(output_accel)
 
-      breaking_pause = 0.025
+      breaking_pause = 0.03
       output_min_bp =  [ self.stopping_breakpoint - breaking_pause - 0.001, self.stopping_breakpoint - breaking_pause ]
-      output_min_v =   [ -0.2,                                              -0.1                                      ]
+      output_min_v =   [ -0.1,                                              -0.05                                      ]
       output_accel = clip(output_accel, self.CP.stopAccel, interp(CS.vEgo, output_min_bp, output_min_v))
         
       self.reset(CS.vEgo)
