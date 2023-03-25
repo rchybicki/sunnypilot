@@ -8,6 +8,7 @@ from selfdrive.car.hyundai.radar_interface import RADAR_START_ADDR
 from selfdrive.car import STD_CARGO_KG, create_button_event, scale_tire_stiffness, get_safety_config, create_mads_event
 from selfdrive.car.interfaces import CarInterfaceBase
 from selfdrive.car.disable_ecu import disable_ecu
+from selfdrive.car.hyundai.enable_radar_tracks import enable_radar_tracks
 
 Ecu = car.CarParams.Ecu
 ButtonType = car.CarState.ButtonEvent.Type
@@ -237,16 +238,19 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kiV = [0.0]
       ret.experimentalLongitudinalAvailable = candidate in (HYBRID_CAR | EV_CAR) and candidate not in CANFD_RADAR_SCC_CAR
     else:
-      ret.longitudinalTuning.kpV = [0.5]
-      ret.longitudinalTuning.kiV = [0.0]
+      ret.longitudinalTuning.kpBP = [ 0.,    5.,     20.  ]
+      ret.longitudinalTuning.kiBP = [ 0.,    5.,     20.  ]
+      ret.longitudinalTuning.kpV =  [ 0.3,   0.15,   0.1   ]
+      ret.longitudinalTuning.kiV =  [ 0.02,  0.02,   0.015 ]
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
     ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
     ret.pcmCruise = not ret.openpilotLongitudinalControl
 
     ret.stoppingControl = True
     ret.startingState = True
-    ret.vEgoStarting = 0.1
-    ret.startAccel = 1.0
+    ret.vEgoStarting = 0.2       # was 0.1
+    ret.vEgoStopping = 0.75        # was 0.1
+    ret.startAccel = 0.4
     ret.longitudinalActuatorDelayLowerBound = 0.5
     ret.longitudinalActuatorDelayUpperBound = 0.5
 
@@ -324,6 +328,10 @@ class CarInterface(CarInterfaceBase):
     if CP.flags & HyundaiFlags.ENABLE_BLINKERS:
       disable_ecu(logcan, sendcan, bus=5, addr=0x7B1, com_cont_req=b'\x28\x83\x01')
 
+    # for cars that have a radar that turns off when the car is off
+    if CP.carFingerprint in [CAR.SANTA_FE_HEV_2022]:
+      enable_radar_tracks(CP, logcan, sendcan)
+
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
     self.sp_update_params(self.CS)
@@ -346,7 +354,7 @@ class CarInterface(CarInterfaceBase):
         if self.CS.prev_lfa_enabled != 1 and self.CS.lfa_enabled == 1:
           self.CS.madsEnabled = not self.CS.madsEnabled
         self.CS.madsEnabled = self.get_acc_mads(ret.cruiseState.enabled, self.CS.accEnabled, self.CS.madsEnabled)
-      self.toggle_gac(ret, self.CS, (self.CS.cruise_buttons[-1] == 3), 1, 3, 4, "-")
+      self.toggle_gac(ret, self.CS, (self.CS.cruise_buttons[-1] == 3), 1, 4, 3, "-")
     else:
       self.CS.madsEnabled = False
 

@@ -122,9 +122,9 @@ class TurnSpeedController():
 
     # Ensure current speed limit is considered only if we are inside the section.
     if map_data.turnSpeedLimitValid and self._v_ego > 0.:
-      speed_limit_end_time = (map_data.turnSpeedLimitEndDistance / self._v_ego) - gps_fix_age
+      speed_limit_end_time = (map_data.turnSpeedLimitEndDistance * 0.8 / self._v_ego) - gps_fix_age
       if speed_limit_end_time > 0.:
-        speed_limit = map_data.turnSpeedLimit
+        speed_limit = map_data.turnSpeedLimit * 1.1
 
     # When we have no ahead speed limit to consider or all are greater than current speed limit
     # or car has stopped, then provide current value and reset tracking.
@@ -225,7 +225,7 @@ class TurnSpeedController():
       # When active we are trying to keep the speed constant around the control time horizon.
       # but under constrained acceleration limits since we are in a turn.
       a_target = self._v_offset / T_IDXS[CONTROL_N]
-      a_target = np.clip(a_target, _ACTIVE_LIMIT_MIN_ACC, _ACTIVE_LIMIT_MAX_ACC)
+      a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
 
     # update solution values.
     self._a_target = a_target

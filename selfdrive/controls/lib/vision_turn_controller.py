@@ -6,7 +6,7 @@ from common.params import Params
 from common.realtime import sec_since_boot
 from common.conversions import Conversions as CV
 from selfdrive.controls.lib.lateral_planner import TRAJECTORY_SIZE
-from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX
+from selfdrive.controls.lib.drive_helpers import LIMIT_MIN_ACC, LIMIT_MAX_ACC, V_CRUISE_MAX
 
 
 _MIN_V = 5.6  # Do not operate under 20km/h
@@ -30,7 +30,7 @@ _NO_OVERSHOOT_TIME_HORIZON = 4.  # s. Time to use for velocity desired based on 
 
 # Lookup table for the minimum smooth deceleration during the ENTERING state
 # depending on the actual maximum absolute lateral acceleration predicted on the turn ahead.
-_ENTERING_SMOOTH_DECEL_V = [-0.2, -1.]  # min decel value allowed on ENTERING state
+_ENTERING_SMOOTH_DECEL_V = [-0.1, -0.5]  # min decel value allowed on ENTERING state
 _ENTERING_SMOOTH_DECEL_BP = [1.3, 3.]  # absolute value of lat acc ahead
 
 # Lookup table for the acceleration for the TURNING state
@@ -273,6 +273,7 @@ class VisionTurnController():
         # when overshooting, target the acceleration needed to achieve the overshoot speed at
         # the required distance
         a_target = min((self._v_overshoot**2 - self._v_ego**2) / (2 * self._v_overshoot_distance), a_target)
+        a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
       _debug(f'TVC Entering: Overshooting: {self._lat_acc_overshoot_ahead}')
       _debug(f'    Decel: {a_target:.2f}, target v: {self.v_turn * CV.MS_TO_KPH}')
     # TURNING
