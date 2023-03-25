@@ -108,8 +108,8 @@ class LongControl:
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
 
-      # self.initial_stopping_accel = random.random() * -1. - 0.2 if force_stop else CS.aEgo
-      self.initial_stopping_accel = -0.5 if force_stop else CS.aEgo
+      self.initial_stopping_accel = random.random() * -1.3 -0.2 if force_stop else CS.aEgo
+      # self.initial_stopping_accel = -0.75 if force_stop else CS.aEgo
       # print(f"Starting to stop, initial accel {self.initial_stopping_accel}")                            
 
     
