@@ -151,7 +151,7 @@ class LongControl:
         error = expected_accel - CS.aEgo
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
         update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-        output_accel += update if CS.vEgo < self.stopping_breakpoint+0.01 or update < 0. or (CS.vEgo > 0.5 and CS.aEgo < -0.5) else -0.0001 * DT 
+        output_accel += update if CS.vEgo < self.stopping_breakpoint+0.01 or update < 0. or (CS.vEgo > 0.5 and CS.aEgo < -0.5) else -0.0001 * DT_CTRL
         
         # print(f"in {self.initial_stopping_accel} bkpt {self.stopping_breakpoint} aEgo {CS.aEgo} vEgo {CS.vEgo} exp {expected_accel} error {error} update {update} output_accel {output_accel}")    
       else:
