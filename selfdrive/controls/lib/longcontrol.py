@@ -109,10 +109,10 @@ class LongControl:
       self.stopping_pid.reset()
       self.stopping_pause_cnt = 0
       initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
-      initial_stopping_speed = random.random() * 5. if force_stop else CS.vEgo
+      initial_stopping_speed = random.random() * 5. + 1 if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0,     0.2,   0.3, max(initial_stopping_speed, 0.4)  ]
-      self.stopping_accel = [-0.05, -0.15, -0.2, min(initial_stopping_accel, -0.3) ] 
+      self.stopping_v_bp =  [ 0.,    0.2,   0.5,  max(initial_stopping_speed, 0.6)  ]
+      self.stopping_accel = [-0.05, -0.10, -0.25, min(initial_stopping_accel, -0.3) ] 
       kpV =                 [ 0.012, 0.012, 0.012, 0.012 ]
 
       kiBP = [ 0. ]
@@ -136,16 +136,17 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
+        step = 15
         update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-        if CS.vEgo > 2. or update < 0.:
+        if CS.vEgo > 3. or update < 0.:
           self.stopping_pause_cnt = 0
           output_accel += update 
         elif self.stopping_pause_cnt == 0:
-          output_accel += update * 10.
+          output_accel += min(update * 5. * step, 0.15)
           self.stopping_pause_cnt += 1
         else:
-          self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 10 else 0
-          output_accel += -0.0001 * DT_CTRL
+          self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 2 * step else 0
+          output_accel += -0.3 * DT_CTRL
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.5 * DT_CTRL
