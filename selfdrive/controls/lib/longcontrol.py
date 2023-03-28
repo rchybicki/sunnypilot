@@ -66,10 +66,7 @@ class LongControl:
     self.last_output_accel = 0.0
     self.stopping_accel = []
     self.stopping_v_bp = []
-    self.stopping_breakpoint = 0.
-    self.initial_stopping_accel = 0.
-    self.stopping_breakpoint_accel = 0.
-    self.log_stopping = False
+    self.stopping_pause_cnt = 0
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -110,9 +107,19 @@ class LongControl:
 
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
       self.stopping_pid.reset()
-      self.initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
-      # self.initial_stopping_accel = -0.75 if force_stop else CS.aEgo
-      self.stopping_breakpoint_accel = self.initial_stopping_accel
+      self.stopping_pause_cnt = 0
+      initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
+      initial_stopping_speed = random.random() * 5. if force_stop else CS.vEgo
+
+      self.stopping_v_bp =  [ 0,     0.2,   0.3, max(initial_stopping_speed, 0.4)  ]
+      self.stopping_accel = [-0.05, -0.15, -0.2, min(initial_stopping_accel, -0.3) ] 
+      kpV =                 [ 0.012, 0.012, 0.012, 0.012 ]
+
+      kiBP = [ 0. ]
+      kiV = [ 0.0004 ]
+
+      self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+      self.stopping_pid._k_i = (kiBP, kiV)
       # print(f"Starting to stop, initial accel {self.initial_stopping_accel}")                            
       self.log_stopping = True
     
@@ -125,47 +132,27 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:
       
       if CS.aEgo < 0.:
-        stopping_breakpoint_bp = [ -1.3, -1., -0.75, -0.55, -0.45,  -0.3, -0.1]    
-        stopping_breakpoint_v  = [  0.5, 0.3, 0.26,  0.18,  0.165,  0.13, 0.11 ]   
-
-                                    
-        self.stopping_breakpoint = interp(self.stopping_breakpoint_accel, stopping_breakpoint_bp, stopping_breakpoint_v)                                 
-        if CS.vEgo > self.stopping_breakpoint:
-          self.stopping_breakpoint_accel = CS.aEgo
-        elif self.log_stopping:
-          self.log_stopping = False
-          print(f"stopping accel {self.stopping_breakpoint_accel} breakpoint {self.stopping_breakpoint}")                            
-
-        self.stopping_v_bp =  [ self.stopping_breakpoint-0.05, self.stopping_breakpoint,  self.stopping_breakpoint+0.01,          0.6,                                     5. ]  #max(CS.vEgo, 0.7) ]
-        self.stopping_accel = [ -0.10,                         -0.15,                     max(self.initial_stopping_accel, -0.4), max(self.initial_stopping_accel, -0.4),  min(self.initial_stopping_accel, -0.3) ] 
-        kpV =                 [ 0.02,                          0.4,                       0.001,                                  0.001,                                   0.003]
-
-        kiBP = [ 0. ]
-        kiV = [ 0.0004 ]
-  
-        self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
-        self.stopping_pid._k_i = (kiBP, kiV)
-
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
         update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-        output_accel += update if CS.vEgo < self.stopping_breakpoint+0.01 or update < 0. or (CS.vEgo > 0.5 and CS.aEgo < -0.5) else -0.0001 * DT_CTRL
-        
-        # print(f"in {self.initial_stopping_accel} bkpt {self.stopping_breakpoint} aEgo {CS.aEgo} vEgo {CS.vEgo} exp {expected_accel} error {error} update {update} output_accel {output_accel}")    
+        if CS.vEgo > 2. or update < 0.:
+          self.stopping_pause_cnt = 0
+          output_accel += update 
+        elif self.stopping_pause_cnt == 0:
+          output_accel += update * 10.
+          self.stopping_pause_cnt += 1
+        else:
+          self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 10 else 0
+          output_accel += -0.0001 * DT_CTRL
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.5 * DT_CTRL
-        # self.stopping_pid.set_i(output_accel)
 
-      breaking_pause = 0.01
-      output_min_bp =  [ self.stopping_breakpoint - breaking_pause - 0.001, self.stopping_breakpoint - breaking_pause ]
-      output_min_v =   [ -0.175,                                             -0.175                                  ]
-      output_accel = clip(output_accel, self.CP.stopAccel, interp(CS.vEgo, output_min_bp, output_min_v))
+      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
       # print(f"clipped output_accel {output_accel}")    
 
-        
       self.reset(CS.vEgo)
 
     elif self.long_control_state == LongCtrlState.starting:
