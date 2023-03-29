@@ -111,12 +111,12 @@ class LongControl:
       initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
       initial_stopping_speed = random.random() * 5. + 1 if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,    0.2,   0.5,  max(initial_stopping_speed, 0.6)  ]
-      self.stopping_accel = [-0.05, -0.10, -0.25, min(initial_stopping_accel, -0.3) ] 
-      kpV =                 [ 0.012, 0.012, 0.012, 0.012 ]
+      self.stopping_v_bp =  [ 0.,    0.25,   0.4,  max(initial_stopping_speed, 0.6)  ]
+      self.stopping_accel = [-0.05, -0.15,  -0.5, min(initial_stopping_accel, -0.5) ] 
+      kpV =                 [ 0.006, 0.019, 0.005, 0.005 ]
 
       kiBP = [ 0. ]
-      kiV = [ 0.0004 ]
+      kiV = [ 0. ]
 
       self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
       self.stopping_pid._k_i = (kiBP, kiV)
@@ -135,22 +135,24 @@ class LongControl:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
+        error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
         # step = 15
         update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-        if CS.vEgo > 3. or CS.aEgo < -0.5 or update < 0.:
-          # self.stopping_pause_cnt = 0
-          output_accel += update 
-        # elif self.stopping_pause_cnt == 0:
-        #   output_accel += min(update * 5. * step, 0.15)
-        #   self.stopping_pause_cnt += 1
-        else:
-          # if CS.vEgo < 0.6 and error > 0.25 and not self.let_go :
-          #   output_accel = output_accel / 2.
-          #   self.let_go = True
-          # self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 2 * step else 0
-          # output_accel += -0.3 * DT_CTRL
-          output_accel += min(update, 0.002)
+        output_accel += update
+        # if CS.vEgo > 3. or CS.aEgo < -0.5 or update < 0.:
+        #   # self.stopping_pause_cnt = 0
+        #   output_accel += update 
+        # # elif self.stopping_pause_cnt == 0:
+        # #   output_accel += min(update * 5. * step, 0.15)
+        # #   self.stopping_pause_cnt += 1
+        # else:
+        #   # if CS.vEgo < 0.6 and error > 0.25 and not self.let_go :
+        #   #   output_accel = output_accel / 2.
+        #   #   self.let_go = True
+        #   # self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 2 * step else 0
+        #   # output_accel += -0.3 * DT_CTRL
+        #   output_accel += min(update, max(abs(output_accel*0.01), 0.0005))
 
       else:
         #cancel out the car wanting to start when stopping
