@@ -136,17 +136,22 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
-        step = 15
+        # step = 15
         update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-        if CS.vEgo > 3. or update < 0.:
-          self.stopping_pause_cnt = 0
+        if CS.vEgo > 3. or CS.aEgo < -0.5 or update < 0.:
+          # self.stopping_pause_cnt = 0
           output_accel += update 
-        elif self.stopping_pause_cnt == 0:
-          output_accel += min(update * 5. * step, 0.15)
-          self.stopping_pause_cnt += 1
+        # elif self.stopping_pause_cnt == 0:
+        #   output_accel += min(update * 5. * step, 0.15)
+        #   self.stopping_pause_cnt += 1
         else:
-          self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 2 * step else 0
-          output_accel += -0.3 * DT_CTRL
+          # if CS.vEgo < 0.6 and error > 0.25 and not self.let_go :
+          #   output_accel = output_accel / 2.
+          #   self.let_go = True
+          # self.stopping_pause_cnt = self.stopping_pause_cnt + 1 if self.stopping_pause_cnt < 2 * step else 0
+          # output_accel += -0.3 * DT_CTRL
+          output_accel += min(update, 0.002)
+
       else:
         #cancel out the car wanting to start when stopping
         output_accel -= 0.5 * DT_CTRL
