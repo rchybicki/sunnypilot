@@ -113,12 +113,10 @@ class LongControl:
 
       self.stopping_v_bp =  [ 0.,    0.25,   0.4,  max(initial_stopping_speed, 0.6)  ]
       self.stopping_accel = [-0.05, -0.15,  -0.5, min(initial_stopping_accel, -0.5) ] 
-      kpV =                 [ 0.006, 0.019, 0.005, 0.006 ]
-
+      
       kiBP = [ 0. ]
       kiV = [ 0. ]
 
-      self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
       self.stopping_pid._k_i = (kiBP, kiV)
       # print(f"Starting to stop, initial accel {self.initial_stopping_accel}")                            
       self.log_stopping = True
@@ -135,6 +133,10 @@ class LongControl:
         # smooth expected stopping accel
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
+
+        kpV = [ 0.006, 0.019, 0.005, 0.04 if CS.aEgo < -0.6 and error > 0.0 and CS.vEgo > 0.6 else 0.05 ]
+        self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+
         error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
         next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
         # step = 15
