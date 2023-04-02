@@ -134,7 +134,7 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
 
-        kpV = [ 0.006, 0.019, 0.005, 0.04 if CS.aEgo < -0.6 and error > 0.0 and CS.vEgo > 0.6 else 0.05 ]
+        kpV = [ 0.006, 0.019, 0.005, 0.04 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
         self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
 
         error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
