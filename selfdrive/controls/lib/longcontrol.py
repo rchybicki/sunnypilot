@@ -101,7 +101,7 @@ class LongControl:
     self.pid.pos_limit = accel_limits[1]
 
     output_accel = self.last_output_accel
-    force_stop = self.CP.carName == "hyundai" and CS.gapAdjustCruiseTr == 1 and CS.vEgo < 15.
+    force_stop = False #self.CP.carName == "hyundai" and CS.gapAdjustCruiseTr == 1 and CS.vEgo < 15.
     new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo, CS.aEgo,
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill, force_stop)
 
@@ -111,8 +111,8 @@ class LongControl:
       initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
       initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,    0.25,   0.4,  max(initial_stopping_speed, 0.6)  ]
-      self.stopping_accel = [-0.05, -0.15,  -0.5, min(initial_stopping_accel, -0.5) ] 
+      self.stopping_v_bp =  [ 0.,     0.25,   0.4,  max(initial_stopping_speed, 0.6)  ]
+      self.stopping_accel = [-0.075, -0.15,  -0.5, min(initial_stopping_accel, -0.5) ] 
       
       kiBP = [ 0. ]
       kiV = [ 0. ]
@@ -134,7 +134,7 @@ class LongControl:
         expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
         error = expected_accel - CS.aEgo
 
-        kpV = [ 0.006, 0.019, 0.005, 0.04 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
+        kpV = [ 0.006, 0.019, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
         self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
 
         error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
