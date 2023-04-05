@@ -241,7 +241,7 @@ class CarInterface(CarInterfaceBase):
       ret.longitudinalTuning.kpBP = [ 0.,    5.,    20.    ]
       ret.longitudinalTuning.kiBP = [ 0.,    5.,    20.    ]
       ret.longitudinalTuning.kpV =  [ 0.1,   0.1,   0.05   ]
-      ret.longitudinalTuning.kiV =  [ 0.015, 0.01,  0.0025  ]
+      ret.longitudinalTuning.kiV =  [ 0.012, 0.009, 0.0025  ]
       ret.experimentalLongitudinalAvailable = candidate not in (LEGACY_SAFETY_MODE_CAR | CAMERA_SCC_CAR)
     ret.openpilotLongitudinalControl = experimental_long and ret.experimentalLongitudinalAvailable
     ret.pcmCruise = not ret.openpilotLongitudinalControl
