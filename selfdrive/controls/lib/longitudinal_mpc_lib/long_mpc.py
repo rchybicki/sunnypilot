@@ -55,64 +55,51 @@ T_DIFFS = np.diff(T_IDXS, prepend=[0.])
 MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 6.0
+STOP_DISTANCE = 5. # was 5.5
 
-def get_jerk_factor(personality=log.LongitudinalPersonality.standard, personality_mode="stock"):
-  if personality_mode == "stock":
-    if personality==log.LongitudinalPersonality.relaxed:
-      return 1.0
-    elif personality==log.LongitudinalPersonality.standard:
-      return 1.0
-    elif personality==log.LongitudinalPersonality.moderate:
-      return 0.5
-    elif personality==log.LongitudinalPersonality.aggressive:
-      return 0.222
-    else:
-      raise NotImplementedError("Longitudinal personality not supported")
-  elif personality_mode == "gac":
-    if personality == log.LongitudinalPersonality.standard:
-      return 1.0
-    elif personality == log.LongitudinalPersonality.moderate:
-      return 0.5
-    elif personality == log.LongitudinalPersonality.aggressive:
-      return 0.222
-    else:
-      raise NotImplementedError("Longitudinal personality not supported")
+# DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
+# DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
+# DIST_V_GAP2 = [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
+# DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
+
+DIST_V_GAP4 = [ 1.45, 1.45, 1.40, 1.40, 1.35, 1.3,  1.25, 1.25, 1.25, 1.25, 1.25 ]
+DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.05, 0.95, 0.9,  0.9, 0.85,  0.85,  0.75,  0.75 ]
+DIST_V_GAP2 = DIST_V_GAP3 # [ 1.1,  1.1,  1.05, 1.05, 1.00, 0.95, 0.90, 0.8,  0.8,  0.8,  0.8 ]
+DIST_V_GAP1 = DIST_V_GAP3 # [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 ]
+   # in kph       0    16    32    48    64    80    96   112   128   144   160
+DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
+
+def get_jerk_factor(desired_tf=1.25):
+  TFs = [0.8, 1.0, 1.25, 1.45]
+  return np.interp(desired_tf, TFs, [.1, .2, .5, 1. ])
+  
+def get_T_FOLLOW(carstate, exp_mode):
+  gac_tr = carstate.gapAdjustCruiseTr
+  if exp_mode:
+    1.0
+  if gac_tr == 4:
+    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+  elif gac_tr == 2:
+    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+  elif gac_tr == 1:
+    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
   else:
-    raise NotImplementedError("Longitudinal personality mode not supported")
-
-
-def get_T_FOLLOW(personality=log.LongitudinalPersonality.standard, personality_mode="stock"):
-  if personality_mode == "stock":
-    if personality==log.LongitudinalPersonality.relaxed:
-      return 1.75
-    elif personality==log.LongitudinalPersonality.standard:
-      return 1.45
-    elif personality==log.LongitudinalPersonality.moderate:
-      return 1.25
-    elif personality==log.LongitudinalPersonality.aggressive:
-      return 1.0
-    else:
-      raise NotImplementedError("Longitudinal personality not supported")
-  elif personality_mode == "gac":
-    if personality == log.LongitudinalPersonality.standard:
-      return 1.45
-    elif personality == log.LongitudinalPersonality.moderate:
-      return 1.25
-    elif personality == log.LongitudinalPersonality.aggressive:
-      return 1.0
-    else:
-      raise NotImplementedError("Longitudinal personality not supported")
-  else:
-    raise NotImplementedError("Longitudinal personality mode not supported")
-
-def get_stopped_equivalence_factor(v_lead):
-  return (v_lead**2) / (2 * COMFORT_BRAKE)
+    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+    
+def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
+  distance = (v_lead**2) / (2 * COMFORT_BRAKE)
+  # Offset to approach slower lead vehicles smoothly
+  distance_offset = 0
+  # If we're going 20%+ faster than the lead vehicle apply the offset
+  if np.all(v_ego - v_lead > v_ego * .20) and np.all(v_lead > 20) :
+    # Decrease following distance according to how far away the lead is
+    distance_offset = radarstate.leadOne.dRel * 2 / v_lead
+  return distance + distance_offset
 
 def get_safe_obstacle_distance(v_ego, t_follow):
   return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + STOP_DISTANCE
 
-def desired_follow_distance(v_ego, v_lead, t_follow=get_T_FOLLOW()):
+def desired_follow_distance(v_ego, v_lead, t_follow):
   return get_safe_obstacle_distance(v_ego, t_follow) - get_stopped_equivalence_factor(v_lead)
 
 
@@ -209,7 +196,7 @@ def gen_long_ocp():
 
   x0 = np.zeros(X_DIM)
   ocp.constraints.x0 = x0
-  ocp.parameter_values = np.array([-1.2, 1.2, 0.0, 0.0, get_T_FOLLOW(), LEAD_DANGER_FACTOR])
+  ocp.parameter_values = np.array([-1.2, 1.2, 0.0, 0.0, 1.45, LEAD_DANGER_FACTOR])
 
 
   # We put all constraint cost weights to 0 and only set them at runtime
@@ -250,7 +237,7 @@ class LongitudinalMpc:
   def __init__(self, mode='acc'):
     self.mode = mode
     self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
-    self.desired_TF = get_T_FOLLOW()
+    self.desired_TF = 1.25
     self.reset()
     self.source = SOURCES[2]
 
@@ -260,6 +247,7 @@ class LongitudinalMpc:
     # self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
     self.solver.reset()
     # self.solver.options_set('print_level', 2)
+    self.x_solution = np.zeros(N+1)
     self.v_solution = np.zeros(N+1)
     self.a_solution = np.zeros(N+1)
     self.prev_a = np.array(self.a_solution)
@@ -302,7 +290,7 @@ class LongitudinalMpc:
       self.solver.cost_set(i, 'Zl', Zl)
 
   def set_weights(self, prev_accel_constraint=True, personality=log.LongitudinalPersonality.standard, personality_mode="stock"):
-    jerk_factor = get_jerk_factor(personality, personality_mode=personality_mode)
+    jerk_factor = get_jerk_factor(self.desired_TF)
     if self.mode == 'acc':
       a_change_cost = A_CHANGE_COST if prev_accel_constraint else 0
       cost_weights = [X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST, A_EGO_COST, jerk_factor * a_change_cost, jerk_factor * J_EGO_COST]
@@ -331,11 +319,18 @@ class LongitudinalMpc:
     lead_xv = np.column_stack((x_lead_traj, v_lead_traj))
     return lead_xv
 
-  def process_lead(self, lead):
+  def process_lead(self, exp_mode, lead):
     v_ego = self.x0[1]
+    a_ego = self.x0[2]
     if lead is not None and lead.status:
-      x_lead = lead.dRel
-      v_lead = lead.vLead
+      additional_dist_rel_bp =  [ 5.,  15.]
+      exp_mode_dist_reduction = [ 4.5, 0.]
+      exp_modified_distance = interp(lead.dRel, additional_dist_rel_bp, exp_mode_dist_reduction)
+      a_adjusted_distance_mod_bp = [ -2.5, -1 ]
+      a_adjusted_distance_mod =    [  0.,   1.]
+      accel_adjusted_distance_modifier = interp(a_ego, a_adjusted_distance_mod_bp, a_adjusted_distance_mod)
+      x_lead = lead.dRel + ((exp_modified_distance * accel_adjusted_distance_modifier) if exp_mode else 0.)
+      v_lead = lead.vLead 
       a_lead = lead.aLeadK
       a_lead_tau = lead.aLeadTau
     else:
@@ -360,26 +355,29 @@ class LongitudinalMpc:
     self.cruise_min_a = min_a
     self.max_a = max_a
 
-  def update(self, radarstate, v_cruise, x, v, a, j, personality=log.LongitudinalPersonality.standard, personality_mode="stock"):
-    self.desired_TF = get_T_FOLLOW(personality, personality_mode)
+  def update(self, carState, radarstate, v_cruise, x, v, a, j, personality=log.LongitudinalPersonality.standard, personality_mode="stock"):
+    exp_mode = self.mode == 'blended'
+    
+    self.desired_TF = get_T_FOLLOW(carState, exp_mode)
     v_ego = self.x0[1]
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
-    lead_xv_0 = self.process_lead(radarstate.leadOne)
-    lead_xv_1 = self.process_lead(radarstate.leadTwo)
 
+    lead_xv_0 = self.process_lead(exp_mode, radarstate.leadOne)
+    lead_xv_1 = self.process_lead(exp_mode, radarstate.leadTwo)
+    
     # To estimate a safe distance from a moving lead, we calculate how much stopping
     # distance that lead needs as a minimum. We can add that to the current distance
     # and then treat that as a stopped car/obstacle at this new distance.
-    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
-    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
+    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(self.x_sol[:,1], lead_xv_0[:,1], radarstate)
+    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(self.x_sol[:,1], lead_xv_1[:,1], radarstate)
 
-    cruise_target_e2ex = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
+    cruise_target = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
     e2e_xforward = ((v[1:] + v[:-1]) / 2) * (T_IDXS[1:] - T_IDXS[:-1])
     e2e_x = np.cumsum(np.insert(e2e_xforward, 0, x[0]))
 
-    x_and_cruise_e2ex = np.column_stack([e2e_x, cruise_target_e2ex])
-    e2e_x = np.min(x_and_cruise_e2ex, axis=1)
+    x_and_cruise = np.column_stack([e2e_x, cruise_target])
+    e2e_x = np.min(x_and_cruise, axis=1)
 
     self.params[:,0] = MIN_ACCEL
     self.params[:,1] = self.max_a
@@ -474,6 +472,7 @@ class LongitudinalMpc:
     for i in range(N):
       self.u_sol[i] = self.solver.get(i, 'u')
 
+    self.x_solution = self.x_sol[:,0]
     self.v_solution = self.x_sol[:,1]
     self.a_solution = self.x_sol[:,2]
     self.j_solution = self.u_sol[:,0]

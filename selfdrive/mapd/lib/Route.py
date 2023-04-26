@@ -298,6 +298,10 @@ class Route():
     return limits_ahead[0].value
 
   @property
+  def force_experimental_mode(self):
+    return self.current_wr.force_exp_mode if self.located else None
+
+  @property
   def current_curvature_speed_limit_section(self):
     if not self.located:
       return None

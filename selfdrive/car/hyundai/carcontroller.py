@@ -1,7 +1,7 @@
 from cereal import car
 import cereal.messaging as messaging
 from common.conversions import Conversions as CV
-from common.numpy_fast import clip
+from common.numpy_fast import clip, interp
 from common.params import Params, put_bool_nonblocking
 from common.realtime import DT_CTRL
 from opendbc.can.packer import CANPacker
@@ -286,13 +286,32 @@ class CarController:
                 self.last_button_frame = self.frame
 
       if self.frame % 2 == 0 and self.CP.openpilotLongitudinalControl:
-        if self.hkg_can_smooth_stop:
-          stopping = stopping and CS.out.vEgoRaw < 0.05
-        # TODO: unclear if this is needed
-        jerk = 3.0 if actuators.longControlState == LongCtrlState.pid else 1.0
-        can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, jerk, int(self.frame / 2),
+        accelerating = accel > 0 and accel - self.accel_last >= 0
+        braking = accel < 0 and accel - self.accel_last <= 0
+        # long_plan.accels can be empty, use current accel as a fallback
+        req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) else accel
+        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (20 if braking else 10))
+        max_required_jerk = 3.0
+
+        if accelerating:
+          jerk_limit_v_bp = [ 0.,   1.,   7.    ]
+          jerk_limit_v_k =  [ 0.03, 0.15, 0.03 ]          
+          jerk_limit_a_bp = [ 0.,   0.5   ]
+          jerk_limit_a_k =  [ 0.02, 0.15  ]
+          max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
+          
+        lower_jerk = clip(abs(accel - self.accel_last) * 20, min_required_jerk, max_required_jerk)
+
+        #allow highest jerk instantly for emergency braking
+        if accel < -3.:
+          lower_jerk = 3.
+
+        upper_jerk = lower_jerk + 0.5
+        stopping = stopping and CS.out.vEgoRaw < 0.01
+        can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc, self.CP.carFingerprint))
+        self.accel_last = accel
 
       # 20 Hz LFA MFA message
       if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
