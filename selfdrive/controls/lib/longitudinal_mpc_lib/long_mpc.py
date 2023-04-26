@@ -56,7 +56,19 @@ MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 T_FOLLOW = 1.45
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 6.0
+STOP_DISTANCE = 5.5 # was 5.5
+
+# DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
+# DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
+# DIST_V_GAP2 = [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
+# DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
+
+DIST_V_GAP4 = [ 1.45, 1.45, 1.40, 1.40, 1.35, 1.3,  1.25, 1.25, 1.25, 1.25, 1.25 ]
+DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.20, 1.15, 1.1,  1.0,  0.9,  0.9,  0.9,  0.9 ]
+DIST_V_GAP2 = [ 1.1,  1.1,  1.05, 1.05, 1.00, 0.95, 0.90, 0.8,  0.8,  0.8,  0.8 ]
+DIST_V_GAP1 = [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 ]
+   # in kph       0    16    32    48    64    80    96   112   128   144   160
+DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
 
 def get_stopped_equivalence_factor(v_lead):
   return (v_lead**2) / (2 * COMFORT_BRAKE)
@@ -253,12 +265,12 @@ class LongitudinalMpc:
       self.solver.cost_set(i, 'Zl', Zl)
 
   def get_cost_multipliers(self):
-    TFs = [1.0, 1.25, T_FOLLOW]
+    TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudinal.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.1, .8, 1.])
-    j_ego_tf = interp(self.desired_TF, TFs, [.6, .8, 1.])
-    d_zone_tf = interp(self.desired_TF, TFs, [1.6, 1.3, 1.])
+    a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1., 1.1])
+    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
+    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
     return a_change_tf, j_ego_tf, d_zone_tf
 
   def set_weights(self, prev_accel_constraint=True):
@@ -293,9 +305,12 @@ class LongitudinalMpc:
 
   def process_lead(self, lead):
     v_ego = self.x0[1]
+    a_ego = self.x0[2]
+    additional_dist_a_bp = [ -2.5,  -0.5  ]
+    additional_dist_m_bp = [  2.,    0.5  ]
     if lead is not None and lead.status:
-      x_lead = lead.dRel
-      v_lead = lead.vLead
+      x_lead = lead.dRel - interp(a_ego, additional_dist_a_bp, additional_dist_m_bp) 
+      v_lead = lead.vLead 
       a_lead = lead.aLeadK
       a_lead_tau = lead.aLeadTau
     else:
@@ -322,14 +337,17 @@ class LongitudinalMpc:
 
   def update_TF(self, carstate):
     gac_tr = carstate.gapAdjustCruiseTr
-    if gac_tr == 1:
-      self.desired_TF = 1.0
+    if gac_tr == 4:
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
     elif gac_tr == 2:
-      self.desired_TF = 1.25
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+    elif gac_tr == 1:
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
     else:
-      self.desired_TF = T_FOLLOW
+      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+   
 
-  def update(self, carstate, radarstate, v_cruise, x, v, a, j):
+  def update(self, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
     v_ego = self.x0[1]
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
@@ -337,6 +355,7 @@ class LongitudinalMpc:
     lead_xv_1 = self.process_lead(radarstate.leadTwo)
 
     self.update_TF(carstate)
+    self.set_weights(prev_accel_constraint)
 
     # To estimate a safe distance from a moving lead, we calculate how much stopping
     # distance that lead needs as a minimum. We can add that to the current distance
@@ -344,12 +363,12 @@ class LongitudinalMpc:
     lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
     lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
 
-    cruise_target_e2ex = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
+    cruise_target = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
     e2e_xforward = ((v[1:] + v[:-1]) / 2) * (T_IDXS[1:] - T_IDXS[:-1])
     e2e_x = np.cumsum(np.insert(e2e_xforward, 0, x[0]))
 
-    x_and_cruise_e2ex = np.column_stack([e2e_x, cruise_target_e2ex])
-    e2e_x = np.min(x_and_cruise_e2ex, axis=1)
+    x_and_cruise = np.column_stack([e2e_x, cruise_target])
+    e2e_x = np.min(x_and_cruise, axis=1)
 
     self.params[:,0] = MIN_ACCEL
     self.params[:,1] = self.max_a
@@ -415,9 +434,9 @@ class LongitudinalMpc:
     # Check if it got within lead comfort range
     # TODO This should be done cleaner
     if self.mode == 'blended':
-      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], T_FOLLOW))- self.x_sol[:,0] < 0.0):
+      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0):
         self.source = 'lead0'
-      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], T_FOLLOW))- self.x_sol[:,0] < 0.0) and \
+      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0) and \
          (lead_1_obstacle[0] - lead_0_obstacle[0]):
         self.source = 'lead1'
 

@@ -122,7 +122,7 @@ class TurnSpeedController():
 
     # Ensure current speed limit is considered only if we are inside the section.
     if map_data.turnSpeedLimitValid and self._v_ego > 0.:
-      speed_limit_end_time = (map_data.turnSpeedLimitEndDistance / self._v_ego) - gps_fix_age
+      speed_limit_end_time = ((map_data.turnSpeedLimitEndDistance - 15.)/ self._v_ego) - gps_fix_age
       if speed_limit_end_time > 0.:
         speed_limit = map_data.turnSpeedLimit
 
@@ -136,7 +136,7 @@ class TurnSpeedController():
 
     # Calculated the time needed to adapt to the limits ahead and the corresponding distances.
     adapt_times = (np.maximum(speed_limit_in_sections_ahead, LIMIT_MIN_SPEED) - self._v_ego) / LIMIT_ADAPT_ACC
-    adapt_distances = self._v_ego * adapt_times + 0.5 * LIMIT_ADAPT_ACC * adapt_times**2
+    adapt_distances = self._v_ego * adapt_times + 0.25 * LIMIT_ADAPT_ACC * adapt_times**2
     distance_gaps = distances_to_sections_ahead - adapt_distances
 
     # We select as next speed limit, the one that have the lowest distance gap.
@@ -225,7 +225,7 @@ class TurnSpeedController():
       # When active we are trying to keep the speed constant around the control time horizon.
       # but under constrained acceleration limits since we are in a turn.
       a_target = self._v_offset / T_IDXS[CONTROL_N]
-      a_target = np.clip(a_target, _ACTIVE_LIMIT_MIN_ACC, _ACTIVE_LIMIT_MAX_ACC)
+      a_target = np.clip(a_target, LIMIT_MIN_ACC, LIMIT_MAX_ACC)
 
     # update solution values.
     self._a_target = a_target

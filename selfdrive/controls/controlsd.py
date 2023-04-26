@@ -137,12 +137,6 @@ class Controls:
       safety_config.safetyModel = car.CarParams.SafetyModel.noOutput
       self.CP.safetyConfigs = [safety_config]
 
-    # Write CarParams for radard
-    cp_bytes = self.CP.to_bytes()
-    self.params.put("CarParams", cp_bytes)
-    put_nonblocking("CarParamsCache", cp_bytes)
-    put_nonblocking("CarParamsPersistent", cp_bytes)
-
     # cleanup old params
     if not self.CP.experimentalLongitudinalAvailable or is_release_branch():
       self.params.remove("ExperimentalLongitudinalEnabled")
@@ -466,6 +460,12 @@ class Controls:
       if all_valid or timed_out or SIMULATION:
         if not self.read_only:
           self.CI.init(self.CP, self.can_sock, self.pm.sock['sendcan'])
+          
+          # Write CarParams for radard
+          cp_bytes = self.CP.to_bytes()
+          self.params.put("CarParams", cp_bytes)
+          put_nonblocking("CarParamsCache", cp_bytes)
+          put_nonblocking("CarParamsPersistent", cp_bytes)
 
         self.initialized = True
         self.set_initial_state()

@@ -45,6 +45,260 @@ _HIGHWAY_RANK = {
   'service': 62
 }
 
+speed_overrides_id = {
+
+  27037906: 25, #Peronowa
+  186301632: 25, #Peronowa
+  15118987: 35,
+  1153652257: 35,
+  186153784: 35,
+  443761216: 35,
+  1154182994: 35,
+  443761965: 35,
+  1154182995: 35,
+  437164390: 35,
+  437164391: 35,
+  423682103: 35,
+  401158323: 35,
+  185991363: 35,
+  32798101: 35,
+  443826986: 35,
+  443826987: 35,
+  1167942324: 40,
+
+  223324842: 45,
+  1171679035: 45,
+  25118902: 45,
+  
+  1169294668: 45,
+  
+  618352949: 50,
+  204008101: 50, #Parkowa
+  309925360: 50, #Parkowa
+  309925359: 50, #Parkowa
+  223324841: 50, #Parkowa
+  114136566: 50, #Parkowa
+  800318777: 50,
+  272688751: 50,
+  272688747: 50,
+  249134773: 50,
+
+  448924250: 59, #Parkowa
+
+  111814380: 59, #Zjazd z obwodnicy od strony Tyńca na Mokronos 
+  15800485: 59, 
+  322214383: 59, 
+  330027681: 59, 
+  15221185: 59,
+
+  111977997: 60,
+  111977827: 60,
+  248064919: 60,
+
+  316438185: 65,
+
+  316438184: 70,
+  1167942327: 120,
+  111853026: 120,
+
+  #Tyniec Domasławska
+  1169316187: 10, #przed domem
+  35551085: 50,
+  1169316186: 50,
+  1167942316: 50,
+  193054194: 50,
+  1167942318: 50,
+  1167942322: 50,
+  1174857599: 50,
+  1169295507: 60,
+
+  #Tyniec Szczęśliwa
+  1171211140: 5, #wjazd
+  1171211141: 5, #wjazd
+  133979428: 7,
+
+  #Tyniec Świdnicka
+  1167942312: 50,
+  193054196: 50,
+  43115448: 50,
+  22926964: 50,
+  193054197: 50,
+  1169807993: 45,
+  1169807992: 50,
+  185542419: 55,
+
+  #Wjazd na obwodnice z ronda tyniec w strone miasta
+  134429085: 65,
+  360842016: 50, 
+
+  #Wjazd na obwodnice z Mokronosu w strone Tyńca
+  223324845: 55,
+  1169806867: 65, 
+  807593955: 70,
+  111853026: 120,
+
+  #Mokronos Stawowa
+  1172221204: 65, 
+  25118903: 65, 
+  174140507: 65, 
+  448924251: 65,
+  
+  #Mokronos Wrocławska
+  1167946125: 50,
+  1153652251: 50,
+  1172221202: 50,
+  782197059: 65, 
+  1172221203: 65, 
+  1153652252: 65, 
+
+  #Wrocław Wyścigowa,
+  847529541: 55,
+  164756672: 55,
+  546364343: 55,
+  307506268: 55,
+  492667764: 55,
+  513617269: 55,
+  492667768: 55,
+  492667772: 55,
+  492667794: 55,
+  546362994: 55,
+
+  #Wrocław Aleja Karkonoska
+  354270946: 60,
+  28458096: 60,
+  15779094: 55,
+  19046874: 55,
+  19046871: 60,
+  481290473: 60,
+
+  #Wrocław Grabiszyńska
+  322072125: 40,
+  1056683531: 59,
+  322072115: 59,
+  1056664607: 59,
+  235394664: 59,
+
+  #Wrocław Wisniowa 
+  28458756:  59, 
+  28458757:  59,
+  304347103: 59,
+  371452465: 59,
+  33782145: 59,
+  22673803: 59,
+  355999428: 59,
+  189500455: 59,
+  365799818: 59,
+  304356445: 59,
+  22673800: 59,
+  830093165: 59,
+  304356131: 59,
+  321659947: 59,
+  134516705: 59,
+  32679156: 59,
+  15804616: 59,
+
+  #Wrocław Hallera
+  22673799: 59, 
+  321659949: 59,
+  321659948: 59,
+  28458758: 59,
+  371236607: 59,
+  304185996: 59,
+  353537455: 59,
+  28458759: 59,
+  366609234: 59,
+  366609235: 59,
+  367371132: 59,
+  304186366: 59,
+  304186368: 59,
+  353537456: 59,
+  353537454: 59,
+  353537452: 59,
+  353537453: 59,
+  361862364: 59,
+  28460407: 59,
+  28460404: 59,
+  361862361: 59,
+  304186826: 59,
+  28460406: 59,
+  353537457: 59,
+  1159841445: 59,
+  812988823: 59,
+  1159841446: 59,
+  32798115: 59,
+  1046584787: 59,
+  32798113: 59,
+  15270680: 59,
+  185948378: 59,
+  
+  #Wrocław Armii Krajowej
+  355999427: 59, 
+  16228087: 59,
+  353537451: 59,
+  186505212: 59,
+  304348168: 59,
+  28458082: 59,
+  298102294: 59,
+  186505208: 59,
+  298102297: 59,
+  298102300: 59,
+  298102299: 59,
+
+  #Wrocław Mokronoska 
+  1154182997: 60, 
+  18795673: 60,
+  1154182996: 60,
+  309925361: 60,
+  1017147198: 60,
+  695817935: 60,
+
+  #Wrocław Slezna
+  1171175010: 25, #Hopka
+  22673801: 59, 
+  308361432: 59,
+  800318778: 59,
+  304182782: 59,
+  304182783: 59,
+  322266056: 59,
+  304182929: 59,
+  190721429: 59,
+  546375967: 59,
+  546375965: 59,
+  546375966: 59,
+  546375964: 59,
+  190721424: 59,
+
+  #Wrocław Kwiatkowsiego
+  15921137: 59,
+  15921138: 59,
+  189327293: 59,
+  695817934: 59,
+
+  #Wrocław Tyniecka
+  24983229: 59,
+
+  #Wrocław Jeziorańskiego
+  231316713: 65,
+  307080161: 65,
+  83410375: 65,
+  370404883: 65,
+  307080157: 60
+}
+
+speed_overrides_id_forward = {
+  1171143758: 45,
+  204008100: 50, #Parkowa
+  977768092: 50,  #Parkowa
+  
+  #Tyniec Domasławska
+  1167942314: 50
+}
+
+speed_overrides_id_backward = {
+  #Tyniec Domasławska
+  1167942314: 45
+}
+
 
 def is_osm_time_condition_active(condition_string):
   """
@@ -200,6 +454,7 @@ class WayRelation():
     self.reset_location_variables()
     self.direction = DIRECTION.NONE
     self._speed_limit = None
+    self._advisory_speed_limit = None
     self._one_way = way.tags.get("oneway")
     self.name = way.tags.get('name')
     self.ref = way.tags.get('ref')
@@ -342,9 +597,11 @@ class WayRelation():
     self.location_rad = location_rad
     self.bearing_rad = bearing_rad
     self._speed_limit = None
+    self._advisory_speed_limit = None
 
   def update_direction_from_starting_node(self, start_node_id):
     self._speed_limit = None
+    self._advisory_speed_limit = None
     if self.edge_nodes_ids[0] == start_node_id:
       self.direction = DIRECTION.FORWARD
     elif self.edge_nodes_ids[-1] == start_node_id:
@@ -392,6 +649,39 @@ class WayRelation():
 
     self._speed_limit = limit
     return self._speed_limit
+  
+  
+  @property
+  def advisory_speed_limit(self):
+    if self._advisory_speed_limit is not None:
+      return self._advisory_speed_limit
+    
+    limit_string = None
+    override = speed_overrides_id.get(self.way.id)
+    if override is not None:
+      limit_string = str(override)
+    if limit_string is None:
+      limit_string = self.way.tags.get("maxspeed:practical")
+    if limit_string is None:
+      if self.direction == DIRECTION.FORWARD:
+        override = speed_overrides_id_forward.get(self.way.id)
+        if override is not None:
+          limit_string = str(override)
+        if limit_string is None:
+          limit_string = self.way.tags.get("maxspeed:practical:forward")
+      elif self.direction == DIRECTION.BACKWARD:
+        override = speed_overrides_id_backward.get(self.way.id)
+        if override is not None:
+          limit_string = str(override)
+        if limit_string is None:
+          limit_string = self.way.tags.get("maxspeed:practical:backward")
+    if limit_string is None:
+      limit_string = self.way.tags.get("maxspeed:advisory")
+    limit = speed_limit_for_osm_tag_limit_string(limit_string)
+
+    self._advisory_speed_limit = limit
+    return self._advisory_speed_limit
+  
 
   @property
   def active_bearing_delta(self):
