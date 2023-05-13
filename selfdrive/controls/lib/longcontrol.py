@@ -57,8 +57,14 @@ class LongControl:
     self.pid = PIDController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
+
+    self.stopping_pid = PIDController(([0.], [0.]),
+                                      ([0.], [0.]),
+                             k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
+    self.stopping_accel = []
+    self.stopping_v_bp = []
 
   def reset(self, v_pid):
     """Reset PID controller and change setpoint"""
@@ -93,18 +99,47 @@ class LongControl:
     self.pid.pos_limit = accel_limits[1]
 
     output_accel = self.last_output_accel
-    self.long_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
-                                                       v_target, v_target_1sec, CS.brakePressed,
-                                                       CS.cruiseState.standstill)
+    new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,
+                                                       v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill)
+
+    if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
+      self.stopping_pid.reset()
+
+      self.stopping_v_bp =  [ 0.,     0.25, 0.39,  0.4,  max(CS.vEgo, 0.6)  ]
+      self.stopping_accel = [-0.075, -0.15, -0.5, -0.5, min(CS.aEgo, -0.5) ] 
+      
+      kiBP = [ 0. ]
+      kiV = [ 0. ]
+
+      self.stopping_pid._k_i = (kiBP, kiV)
+      self.log_stopping = True
+    
+    self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
       output_accel = 0.
 
     elif self.long_control_state == LongCtrlState.stopping:
-      if output_accel > self.CP.stopAccel:
-        output_accel = min(output_accel, 0.0)
-        output_accel -= self.CP.stoppingDecelRate * DT_CTRL
+      
+      if CS.aEgo < 0.:
+        # smooth expected stopping accel
+        expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
+        error = expected_accel - CS.aEgo
+
+        kpV = [ 0.006, 0.015, 0.019, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
+        self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+
+        error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
+        update = self.stopping_pid.update(error, speed=CS.vEgo)
+        output_accel += update
+
+      else:
+        #cancel out the car wanting to accelerate when stopping
+        output_accel -= 0.5 * DT_CTRL
+
+      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+
       self.reset(CS.vEgo)
 
     elif self.long_control_state == LongCtrlState.starting:
