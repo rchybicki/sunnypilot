@@ -9,7 +9,7 @@
         "language": "c++",
         "name": "common.params_pyx",
         "sources": [
-            "/data/openpilot/common/params_pyx.pyx"
+            "/data/openpilot-special/common/params_pyx.pyx"
         ]
     },
     "module_name": "common.params_pyx"
@@ -1711,12 +1711,12 @@ static const char __pyx_k_Pyx_EnumBase___new[] = "__Pyx_EnumBase.__new__";
 static const char __pyx_k_Pyx_EnumBase___str[] = "__Pyx_EnumBase.__str__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_Pyx_EnumBase___repr[] = "__Pyx_EnumBase.__repr__";
-static const char __pyx_k_CLEAR_ON_IGNITION_ON[] = "CLEAR_ON_IGNITION_ON";
 static const char __pyx_k_Unknown_enum_value_s[] = "Unknown enum value: '%s'";
 static const char __pyx_k_put_bool_nonblocking[] = "put_bool_nonblocking";
-static const char __pyx_k_CLEAR_ON_IGNITION_OFF[] = "CLEAR_ON_IGNITION_OFF";
 static const char __pyx_k_common_params_pyx_pyx[] = "common/params_pyx.pyx";
 static const char __pyx_k_CLEAR_ON_MANAGER_START[] = "CLEAR_ON_MANAGER_START";
+static const char __pyx_k_CLEAR_ON_ONROAD_TRANSITION[] = "CLEAR_ON_ONROAD_TRANSITION";
+static const char __pyx_k_CLEAR_ON_OFFROAD_TRANSITION[] = "CLEAR_ON_OFFROAD_TRANSITION";
 static const char __pyx_k_pyx_unpickle___Pyx_EnumMeta[] = "__pyx_unpickle___Pyx_EnumMeta";
 static const char __pyx_k_put_nonblocking_locals_lambda[] = "put_nonblocking.<locals>.<lambda>";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0xd41d8cd, 0xe3b0c44, 0xda39a3e) = ())";
@@ -1724,9 +1724,9 @@ static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __red
 static const char __pyx_k_put_bool_nonblocking_locals_lamb[] = "put_bool_nonblocking.<locals>.<lambda>";
 static PyObject *__pyx_kp_u_;
 static PyObject *__pyx_n_s_ALL;
-static PyObject *__pyx_n_s_CLEAR_ON_IGNITION_OFF;
-static PyObject *__pyx_n_s_CLEAR_ON_IGNITION_ON;
 static PyObject *__pyx_n_s_CLEAR_ON_MANAGER_START;
+static PyObject *__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION;
+static PyObject *__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION;
 static PyObject *__pyx_n_s_EnumBase;
 static PyObject *__pyx_n_s_EnumType;
 static PyObject *__pyx_kp_s_Incompatible_checksums_0x_x_vs_0;
@@ -6875,9 +6875,9 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_, __pyx_k_, sizeof(__pyx_k_), 0, 1, 0, 0},
   {&__pyx_n_s_ALL, __pyx_k_ALL, sizeof(__pyx_k_ALL), 0, 0, 1, 1},
-  {&__pyx_n_s_CLEAR_ON_IGNITION_OFF, __pyx_k_CLEAR_ON_IGNITION_OFF, sizeof(__pyx_k_CLEAR_ON_IGNITION_OFF), 0, 0, 1, 1},
-  {&__pyx_n_s_CLEAR_ON_IGNITION_ON, __pyx_k_CLEAR_ON_IGNITION_ON, sizeof(__pyx_k_CLEAR_ON_IGNITION_ON), 0, 0, 1, 1},
   {&__pyx_n_s_CLEAR_ON_MANAGER_START, __pyx_k_CLEAR_ON_MANAGER_START, sizeof(__pyx_k_CLEAR_ON_MANAGER_START), 0, 0, 1, 1},
+  {&__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION, __pyx_k_CLEAR_ON_OFFROAD_TRANSITION, sizeof(__pyx_k_CLEAR_ON_OFFROAD_TRANSITION), 0, 0, 1, 1},
+  {&__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION, __pyx_k_CLEAR_ON_ONROAD_TRANSITION, sizeof(__pyx_k_CLEAR_ON_ONROAD_TRANSITION), 0, 0, 1, 1},
   {&__pyx_n_s_EnumBase, __pyx_k_EnumBase, sizeof(__pyx_k_EnumBase), 0, 0, 1, 1},
   {&__pyx_n_s_EnumType, __pyx_k_EnumType, sizeof(__pyx_k_EnumType), 0, 0, 1, 1},
   {&__pyx_kp_s_Incompatible_checksums_0x_x_vs_0, __pyx_k_Incompatible_checksums_0x_x_vs_0, sizeof(__pyx_k_Incompatible_checksums_0x_x_vs_0), 0, 0, 1, 0},
@@ -7734,7 +7734,7 @@ if (!__Pyx_RefNanny) {
  *     ParamKeyType = __Pyx_EnumBase('ParamKeyType', __Pyx_OrderedDict([
  *         ('PERSISTENT', PERSISTENT),             # <<<<<<<<<<<<<<
  *         ('CLEAR_ON_MANAGER_START', CLEAR_ON_MANAGER_START),
- *         ('CLEAR_ON_IGNITION_ON', CLEAR_ON_IGNITION_ON),
+ *         ('CLEAR_ON_ONROAD_TRANSITION', CLEAR_ON_ONROAD_TRANSITION),
  */
     __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(PERSISTENT); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 54, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -7751,8 +7751,8 @@ if (!__Pyx_RefNanny) {
  *     ParamKeyType = __Pyx_EnumBase('ParamKeyType', __Pyx_OrderedDict([
  *         ('PERSISTENT', PERSISTENT),
  *         ('CLEAR_ON_MANAGER_START', CLEAR_ON_MANAGER_START),             # <<<<<<<<<<<<<<
- *         ('CLEAR_ON_IGNITION_ON', CLEAR_ON_IGNITION_ON),
- *         ('CLEAR_ON_IGNITION_OFF', CLEAR_ON_IGNITION_OFF),
+ *         ('CLEAR_ON_ONROAD_TRANSITION', CLEAR_ON_ONROAD_TRANSITION),
+ *         ('CLEAR_ON_OFFROAD_TRANSITION', CLEAR_ON_OFFROAD_TRANSITION),
  */
     __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_MANAGER_START); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -7768,42 +7768,42 @@ if (!__Pyx_RefNanny) {
     /* "EnumType":56
  *         ('PERSISTENT', PERSISTENT),
  *         ('CLEAR_ON_MANAGER_START', CLEAR_ON_MANAGER_START),
- *         ('CLEAR_ON_IGNITION_ON', CLEAR_ON_IGNITION_ON),             # <<<<<<<<<<<<<<
- *         ('CLEAR_ON_IGNITION_OFF', CLEAR_ON_IGNITION_OFF),
+ *         ('CLEAR_ON_ONROAD_TRANSITION', CLEAR_ON_ONROAD_TRANSITION),             # <<<<<<<<<<<<<<
+ *         ('CLEAR_ON_OFFROAD_TRANSITION', CLEAR_ON_OFFROAD_TRANSITION),
  *         ('ALL', ALL),
  */
-    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_IGNITION_ON); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_ONROAD_TRANSITION); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_IGNITION_ON);
-    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_IGNITION_ON);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_CLEAR_ON_IGNITION_ON);
+    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
+    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_1);
     __pyx_t_1 = 0;
 
     /* "EnumType":57
  *         ('CLEAR_ON_MANAGER_START', CLEAR_ON_MANAGER_START),
- *         ('CLEAR_ON_IGNITION_ON', CLEAR_ON_IGNITION_ON),
- *         ('CLEAR_ON_IGNITION_OFF', CLEAR_ON_IGNITION_OFF),             # <<<<<<<<<<<<<<
+ *         ('CLEAR_ON_ONROAD_TRANSITION', CLEAR_ON_ONROAD_TRANSITION),
+ *         ('CLEAR_ON_OFFROAD_TRANSITION', CLEAR_ON_OFFROAD_TRANSITION),             # <<<<<<<<<<<<<<
  *         ('ALL', ALL),
  *     ]))
  */
-    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_IGNITION_OFF); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 57, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_IGNITION_OFF);
-    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_IGNITION_OFF);
-    PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_n_s_CLEAR_ON_IGNITION_OFF);
+    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
+    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
+    PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
     __pyx_t_1 = 0;
 
     /* "EnumType":58
- *         ('CLEAR_ON_IGNITION_ON', CLEAR_ON_IGNITION_ON),
- *         ('CLEAR_ON_IGNITION_OFF', CLEAR_ON_IGNITION_OFF),
+ *         ('CLEAR_ON_ONROAD_TRANSITION', CLEAR_ON_ONROAD_TRANSITION),
+ *         ('CLEAR_ON_OFFROAD_TRANSITION', CLEAR_ON_OFFROAD_TRANSITION),
  *         ('ALL', ALL),             # <<<<<<<<<<<<<<
  *     ]))
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType.PERSISTENT
@@ -7865,7 +7865,7 @@ if (!__Pyx_RefNanny) {
  *     ]))
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType.PERSISTENT             # <<<<<<<<<<<<<<
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType.CLEAR_ON_MANAGER_START
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType.CLEAR_ON_IGNITION_ON
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_ONROAD_TRANSITION
  */
     __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -7883,8 +7883,8 @@ if (!__Pyx_RefNanny) {
  *     ]))
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType.PERSISTENT
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType.CLEAR_ON_MANAGER_START             # <<<<<<<<<<<<<<
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType.CLEAR_ON_IGNITION_ON
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType.CLEAR_ON_IGNITION_OFF
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_ONROAD_TRANSITION
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -7901,44 +7901,44 @@ if (!__Pyx_RefNanny) {
     /* "EnumType":62
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType.PERSISTENT
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType.CLEAR_ON_MANAGER_START
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType.CLEAR_ON_IGNITION_ON             # <<<<<<<<<<<<<<
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType.CLEAR_ON_IGNITION_OFF
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_ONROAD_TRANSITION             # <<<<<<<<<<<<<<
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION
  *     __Pyx_globals['ALL'] = ParamKeyType.ALL
  */
     __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 62, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_CLEAR_ON_IGNITION_ON); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 62, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_CLEAR_ON_ONROAD_TRANSITION); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 62, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (unlikely(__Pyx_globals == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 62, __pyx_L1_error)
     }
-    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_IGNITION_ON, __pyx_t_1) < 0)) __PYX_ERR(1, 62, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_ONROAD_TRANSITION, __pyx_t_1) < 0)) __PYX_ERR(1, 62, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "EnumType":63
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType.CLEAR_ON_MANAGER_START
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType.CLEAR_ON_IGNITION_ON
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType.CLEAR_ON_IGNITION_OFF             # <<<<<<<<<<<<<<
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_ONROAD_TRANSITION
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION             # <<<<<<<<<<<<<<
  *     __Pyx_globals['ALL'] = ParamKeyType.ALL
  * else:
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_CLEAR_ON_IGNITION_OFF); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 63, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__Pyx_globals == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 63, __pyx_L1_error)
     }
-    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_IGNITION_OFF, __pyx_t_7) < 0)) __PYX_ERR(1, 63, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION, __pyx_t_7) < 0)) __PYX_ERR(1, 63, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
     /* "EnumType":64
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType.CLEAR_ON_IGNITION_ON
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType.CLEAR_ON_IGNITION_OFF
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_ONROAD_TRANSITION
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION
  *     __Pyx_globals['ALL'] = ParamKeyType.ALL             # <<<<<<<<<<<<<<
  * else:
  *     class ParamKeyType(__Pyx_EnumBase):
@@ -7995,7 +7995,7 @@ if (!__Pyx_RefNanny) {
  *         pass
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType(PERSISTENT, 'PERSISTENT')             # <<<<<<<<<<<<<<
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType(CLEAR_ON_MANAGER_START, 'CLEAR_ON_MANAGER_START')
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType(CLEAR_ON_IGNITION_ON, 'CLEAR_ON_IGNITION_ON')
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_ONROAD_TRANSITION, 'CLEAR_ON_ONROAD_TRANSITION')
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -8024,8 +8024,8 @@ if (!__Pyx_RefNanny) {
  *         pass
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType(PERSISTENT, 'PERSISTENT')
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType(CLEAR_ON_MANAGER_START, 'CLEAR_ON_MANAGER_START')             # <<<<<<<<<<<<<<
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType(CLEAR_ON_IGNITION_ON, 'CLEAR_ON_IGNITION_ON')
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType(CLEAR_ON_IGNITION_OFF, 'CLEAR_ON_IGNITION_OFF')
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_ONROAD_TRANSITION, 'CLEAR_ON_ONROAD_TRANSITION')
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION, 'CLEAR_ON_OFFROAD_TRANSITION')
  */
     __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -8053,21 +8053,21 @@ if (!__Pyx_RefNanny) {
     /* "EnumType":70
  *     __Pyx_globals['PERSISTENT'] = ParamKeyType(PERSISTENT, 'PERSISTENT')
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType(CLEAR_ON_MANAGER_START, 'CLEAR_ON_MANAGER_START')
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType(CLEAR_ON_IGNITION_ON, 'CLEAR_ON_IGNITION_ON')             # <<<<<<<<<<<<<<
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType(CLEAR_ON_IGNITION_OFF, 'CLEAR_ON_IGNITION_OFF')
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_ONROAD_TRANSITION, 'CLEAR_ON_ONROAD_TRANSITION')             # <<<<<<<<<<<<<<
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION, 'CLEAR_ON_OFFROAD_TRANSITION')
  *     __Pyx_globals['ALL'] = ParamKeyType(ALL, 'ALL')
  */
     __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_IGNITION_ON); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_ONROAD_TRANSITION); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_1);
-    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_IGNITION_ON);
-    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_IGNITION_ON);
-    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_n_s_CLEAR_ON_IGNITION_ON);
+    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
+    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
+    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_n_s_CLEAR_ON_ONROAD_TRANSITION);
     __pyx_t_1 = 0;
     __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -8077,27 +8077,27 @@ if (!__Pyx_RefNanny) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 70, __pyx_L1_error)
     }
-    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_IGNITION_ON, __pyx_t_1) < 0)) __PYX_ERR(1, 70, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_ONROAD_TRANSITION, __pyx_t_1) < 0)) __PYX_ERR(1, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "EnumType":71
  *     __Pyx_globals['CLEAR_ON_MANAGER_START'] = ParamKeyType(CLEAR_ON_MANAGER_START, 'CLEAR_ON_MANAGER_START')
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType(CLEAR_ON_IGNITION_ON, 'CLEAR_ON_IGNITION_ON')
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType(CLEAR_ON_IGNITION_OFF, 'CLEAR_ON_IGNITION_OFF')             # <<<<<<<<<<<<<<
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_ONROAD_TRANSITION, 'CLEAR_ON_ONROAD_TRANSITION')
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION, 'CLEAR_ON_OFFROAD_TRANSITION')             # <<<<<<<<<<<<<<
  *     __Pyx_globals['ALL'] = ParamKeyType(ALL, 'ALL')
  * 
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ParamKeyType); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_IGNITION_OFF); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 71, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_From_enum__ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7);
-    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_IGNITION_OFF);
-    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_IGNITION_OFF);
-    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_n_s_CLEAR_ON_IGNITION_OFF);
+    __Pyx_INCREF(__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
+    __Pyx_GIVEREF(__pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
+    PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION);
     __pyx_t_7 = 0;
     __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
@@ -8107,12 +8107,12 @@ if (!__Pyx_RefNanny) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 71, __pyx_L1_error)
     }
-    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_IGNITION_OFF, __pyx_t_7) < 0)) __PYX_ERR(1, 71, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__Pyx_globals, __pyx_n_s_CLEAR_ON_OFFROAD_TRANSITION, __pyx_t_7) < 0)) __PYX_ERR(1, 71, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
     /* "EnumType":72
- *     __Pyx_globals['CLEAR_ON_IGNITION_ON'] = ParamKeyType(CLEAR_ON_IGNITION_ON, 'CLEAR_ON_IGNITION_ON')
- *     __Pyx_globals['CLEAR_ON_IGNITION_OFF'] = ParamKeyType(CLEAR_ON_IGNITION_OFF, 'CLEAR_ON_IGNITION_OFF')
+ *     __Pyx_globals['CLEAR_ON_ONROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_ONROAD_TRANSITION, 'CLEAR_ON_ONROAD_TRANSITION')
+ *     __Pyx_globals['CLEAR_ON_OFFROAD_TRANSITION'] = ParamKeyType(CLEAR_ON_OFFROAD_TRANSITION, 'CLEAR_ON_OFFROAD_TRANSITION')
  *     __Pyx_globals['ALL'] = ParamKeyType(ALL, 'ALL')             # <<<<<<<<<<<<<<
  * 
  */

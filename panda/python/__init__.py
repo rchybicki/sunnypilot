@@ -152,7 +152,7 @@ class Panda:
   SAFETY_NOOUTPUT = 19
   SAFETY_HONDA_BOSCH = 20
   SAFETY_VOLKSWAGEN_PQ = 21
-  SAFETY_SUBARU_LEGACY = 22
+  SAFETY_SUBARU_PREGLOBAL = 22
   SAFETY_HYUNDAI_LEGACY = 23
   SAFETY_HYUNDAI_COMMUNITY = 24
   SAFETY_STELLANTIS = 25
@@ -184,9 +184,9 @@ class Panda:
   HW_TYPE_TRES = b'\x09'
 
   CAN_PACKET_VERSION = 4
-  HEALTH_PACKET_VERSION = 13
+  HEALTH_PACKET_VERSION = 14
   CAN_HEALTH_PACKET_VERSION = 4
-  HEALTH_STRUCT = struct.Struct("<IIIIIIIIIBBBBBBHBBBHfBBHBB")
+  HEALTH_STRUCT = struct.Struct("<IIIIIIIIIBBBBBBHBBBHfBBHBHHB")
   CAN_HEALTH_STRUCT = struct.Struct("<BIBBBBBBBBIIIIIIIHHBBB")
 
   F2_DEVICES = (HW_TYPE_PEDAL, )
@@ -201,6 +201,10 @@ class Panda:
     HW_TYPE_DOS: 6500,
     HW_TYPE_TRES: 6600,
   }
+
+  HARNESS_STATUS_NC = 0
+  HARNESS_STATUS_NORMAL = 1
+  HARNESS_STATUS_FLIPPED = 2
 
   # first byte is for EPS scaling factor
   FLAG_TOYOTA_ALT_BRAKE = (1 << 8)
@@ -235,6 +239,8 @@ class Panda:
 
   FLAG_GM_HW_CAM = 1
   FLAG_GM_HW_CAM_LONG = 2
+
+  FLAG_FORD_LONG_CONTROL = 1
 
   FLAG_TOYOTA_MADS_LTA_MSG = 1
 
@@ -505,7 +511,7 @@ class Panda:
     if reconnect:
       self.reconnect()
 
-  def recover(self, timeout: Optional[int] = None, reset: bool = True) -> bool:
+  def recover(self, timeout: Optional[int] = 60, reset: bool = True) -> bool:
     dfu_serial = self.get_dfu_serial()
 
     if reset:
@@ -573,7 +579,9 @@ class Panda:
       "safety_rx_checks_invalid": a[22],
       "spi_checksum_error_count": a[23],
       "fan_stall_count": a[24],
-      "controls_allowed_long": a[25],
+      "sbu1_voltage_mV": a[25],
+      "sbu2_voltage_mV": a[26],
+      "controls_allowed_long": a[27],
     }
 
   @ensure_can_health_packet_version

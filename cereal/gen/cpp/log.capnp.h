@@ -28,6 +28,7 @@ enum class DeviceType_9d5d7238eba86608: uint16_t {
   CHFFR_IOS,
   TICI,
   PC,
+  TIZI,
 };
 CAPNP_DECLARE_ENUM(DeviceType, 9d5d7238eba86608);
 CAPNP_DECLARE_SCHEMA(e673e8725cdff0ad);
@@ -204,6 +205,14 @@ CAPNP_DECLARE_ENUM(UsbPowerModeDEPRECATED, a8883583b32c9877);
 CAPNP_DECLARE_SCHEMA(9a185389d6fdd05f);
 CAPNP_DECLARE_SCHEMA(b96f3ad9170cf085);
 CAPNP_DECLARE_SCHEMA(96df70754d8390bc);
+CAPNP_DECLARE_SCHEMA(caaa029466ad394d);
+enum class Status_caaa029466ad394d: uint16_t {
+  UNCALIBRATED,
+  CALIBRATED,
+  INVALID,
+  RECALIBRATING,
+};
+CAPNP_DECLARE_ENUM(Status, caaa029466ad394d);
 CAPNP_DECLARE_SCHEMA(8faa644732dec251);
 CAPNP_DECLARE_SCHEMA(97ff69c53601abf1);
 CAPNP_DECLARE_SCHEMA(dbe58b96d2d1ac61);
@@ -873,7 +882,7 @@ struct PandaState {
   struct PandaCanState;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(a7649e2575e4591e, 8, 4)
+    CAPNP_DECLARE_STRUCT_HEADER(a7649e2575e4591e, 9, 4)
     #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
     #endif  // !CAPNP_LITE
@@ -951,6 +960,8 @@ struct LiveCalibrationData {
   class Reader;
   class Builder;
   class Pipeline;
+  typedef ::capnp::schemas::Status_caaa029466ad394d Status;
+
 
   struct _capnpPrivate {
     CAPNP_DECLARE_STRUCT_HEADER(96df70754d8390bc, 2, 7)
@@ -5474,6 +5485,10 @@ public:
 
   inline  ::uint8_t getFanStallCount() const;
 
+  inline float getSbu1Voltage() const;
+
+  inline float getSbu2Voltage() const;
+
   inline bool getControlsAllowedLong() const;
 
 private:
@@ -5625,6 +5640,12 @@ public:
 
   inline  ::uint8_t getFanStallCount();
   inline void setFanStallCount( ::uint8_t value);
+
+  inline float getSbu1Voltage();
+  inline void setSbu1Voltage(float value);
+
+  inline float getSbu2Voltage();
+  inline void setSbu2Voltage(float value);
 
   inline bool getControlsAllowedLong();
   inline void setControlsAllowedLong(bool value);
@@ -6262,7 +6283,7 @@ public:
   inline bool hasWarpMatrixDEPRECATED() const;
   inline  ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Reader getWarpMatrixDEPRECATED() const;
 
-  inline  ::int8_t getCalStatus() const;
+  inline  ::int8_t getCalStatusDEPRECATED() const;
 
   inline  ::int32_t getCalCycle() const;
 
@@ -6287,6 +6308,8 @@ public:
 
   inline bool hasWideFromDeviceEuler() const;
   inline  ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Reader getWideFromDeviceEuler() const;
+
+  inline  ::cereal::LiveCalibrationData::Status getCalStatus() const;
 
 private:
   ::capnp::_::StructReader _reader;
@@ -6324,8 +6347,8 @@ public:
   inline void adoptWarpMatrixDEPRECATED(::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>&& value);
   inline ::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>> disownWarpMatrixDEPRECATED();
 
-  inline  ::int8_t getCalStatus();
-  inline void setCalStatus( ::int8_t value);
+  inline  ::int8_t getCalStatusDEPRECATED();
+  inline void setCalStatusDEPRECATED( ::int8_t value);
 
   inline  ::int32_t getCalCycle();
   inline void setCalCycle( ::int32_t value);
@@ -6383,6 +6406,9 @@ public:
   inline  ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Builder initWideFromDeviceEuler(unsigned int size);
   inline void adoptWideFromDeviceEuler(::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>&& value);
   inline ::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>> disownWideFromDeviceEuler();
+
+  inline  ::cereal::LiveCalibrationData::Status getCalStatus();
+  inline void setCalStatus( ::cereal::LiveCalibrationData::Status value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -16122,7 +16148,7 @@ public:
 
   inline bool getSensorValid() const;
 
-  inline float getYawRate() const;
+  inline float getYawRateDEPRECATED() const;
 
   inline float getPosenetSpeed() const;
 
@@ -16187,8 +16213,8 @@ public:
   inline bool getSensorValid();
   inline void setSensorValid(bool value);
 
-  inline float getYawRate();
-  inline void setYawRate(float value);
+  inline float getYawRateDEPRECATED();
+  inline void setYawRateDEPRECATED(float value);
 
   inline float getPosenetSpeed();
   inline void setPosenetSpeed(float value);
@@ -25350,6 +25376,34 @@ inline void PandaState::Builder::setFanStallCount( ::uint8_t value) {
       ::capnp::bounded<61>() * ::capnp::ELEMENTS, value);
 }
 
+inline float PandaState::Reader::getSbu1Voltage() const {
+  return _reader.getDataField<float>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS);
+}
+
+inline float PandaState::Builder::getSbu1Voltage() {
+  return _builder.getDataField<float>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS);
+}
+inline void PandaState::Builder::setSbu1Voltage(float value) {
+  _builder.setDataField<float>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS, value);
+}
+
+inline float PandaState::Reader::getSbu2Voltage() const {
+  return _reader.getDataField<float>(
+      ::capnp::bounded<17>() * ::capnp::ELEMENTS);
+}
+
+inline float PandaState::Builder::getSbu2Voltage() {
+  return _builder.getDataField<float>(
+      ::capnp::bounded<17>() * ::capnp::ELEMENTS);
+}
+inline void PandaState::Builder::setSbu2Voltage(float value) {
+  _builder.setDataField<float>(
+      ::capnp::bounded<17>() * ::capnp::ELEMENTS, value);
+}
+
 inline bool PandaState::Reader::getControlsAllowedLong() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<481>() * ::capnp::ELEMENTS);
@@ -26280,16 +26334,16 @@ inline ::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>> LiveCal
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline  ::int8_t LiveCalibrationData::Reader::getCalStatus() const {
+inline  ::int8_t LiveCalibrationData::Reader::getCalStatusDEPRECATED() const {
   return _reader.getDataField< ::int8_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
 
-inline  ::int8_t LiveCalibrationData::Builder::getCalStatus() {
+inline  ::int8_t LiveCalibrationData::Builder::getCalStatusDEPRECATED() {
   return _builder.getDataField< ::int8_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS);
 }
-inline void LiveCalibrationData::Builder::setCalStatus( ::int8_t value) {
+inline void LiveCalibrationData::Builder::setCalStatusDEPRECATED( ::int8_t value) {
   _builder.setDataField< ::int8_t>(
       ::capnp::bounded<0>() * ::capnp::ELEMENTS, value);
 }
@@ -26562,6 +26616,20 @@ inline void LiveCalibrationData::Builder::adoptWideFromDeviceEuler(
 inline ::capnp::Orphan< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>> LiveCalibrationData::Builder::disownWideFromDeviceEuler() {
   return ::capnp::_::PointerHelpers< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>::disown(_builder.getPointerField(
       ::capnp::bounded<6>() * ::capnp::POINTERS));
+}
+
+inline  ::cereal::LiveCalibrationData::Status LiveCalibrationData::Reader::getCalStatus() const {
+  return _reader.getDataField< ::cereal::LiveCalibrationData::Status>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+
+inline  ::cereal::LiveCalibrationData::Status LiveCalibrationData::Builder::getCalStatus() {
+  return _builder.getDataField< ::cereal::LiveCalibrationData::Status>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS);
+}
+inline void LiveCalibrationData::Builder::setCalStatus( ::cereal::LiveCalibrationData::Status value) {
+  _builder.setDataField< ::cereal::LiveCalibrationData::Status>(
+      ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
 inline  ::int32_t LiveTracks::Reader::getTrackId() const {
@@ -42981,16 +43049,16 @@ inline void LiveParametersData::Builder::setSensorValid(bool value) {
       ::capnp::bounded<1>() * ::capnp::ELEMENTS, value);
 }
 
-inline float LiveParametersData::Reader::getYawRate() const {
+inline float LiveParametersData::Reader::getYawRateDEPRECATED() const {
   return _reader.getDataField<float>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS);
 }
 
-inline float LiveParametersData::Builder::getYawRate() {
+inline float LiveParametersData::Builder::getYawRateDEPRECATED() {
   return _builder.getDataField<float>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS);
 }
-inline void LiveParametersData::Builder::setYawRate(float value) {
+inline void LiveParametersData::Builder::setYawRateDEPRECATED(float value) {
   _builder.setDataField<float>(
       ::capnp::bounded<6>() * ::capnp::ELEMENTS, value);
 }
