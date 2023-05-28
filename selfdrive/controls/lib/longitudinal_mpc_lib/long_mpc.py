@@ -56,7 +56,7 @@ MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 T_FOLLOW = 1.45
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 5.5 # was 5.5
+STOP_DISTANCE = 5. # was 5.5
 
 # DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
 # DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
@@ -306,8 +306,8 @@ class LongitudinalMpc:
   def process_lead(self, lead):
     v_ego = self.x0[1]
     a_ego = self.x0[2]
-    additional_dist_a_bp = [ -2.5,  -0.5  ]
-    additional_dist_m_bp = [  2.,    0.5  ]
+    additional_dist_a_bp = [ -2.5,  -0.75  ]
+    additional_dist_m_bp = [  2.,    0.5   ]
     if lead is not None and lead.status:
       x_lead = lead.dRel - interp(a_ego, additional_dist_a_bp, additional_dist_m_bp) 
       v_lead = lead.vLead 

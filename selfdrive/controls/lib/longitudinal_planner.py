@@ -259,17 +259,17 @@ class LongitudinalPlanner:
     a_solutions = {'cruise': float("inf")}
     v_solutions = {'cruise': v_cruise}
 
-    if self.vision_turn_controller.is_active:
-      a_solutions['turn'] = self.vision_turn_controller.a_target
-      v_solutions['turn'] = self.vision_turn_controller.v_turn
-
     if self.speed_limit_controller.is_active:
       a_solutions['limit'] = self.speed_limit_controller.a_target
       v_solutions['limit'] = self.speed_limit_controller.speed_limit_offseted
 
-    if self.turn_speed_controller.is_active:
-      a_solutions['turnlimit'] = self.turn_speed_controller.a_target
-      v_solutions['turnlimit'] = self.turn_speed_controller.speed_limit
+    if not sm['controlsState'].experimentalMode:
+      if self.turn_speed_controller.is_active:
+        a_solutions['turnlimit'] = self.turn_speed_controller.a_target
+        v_solutions['turnlimit'] = self.turn_speed_controller.speed_limit
+      elif self.vision_turn_controller.is_active:
+        a_solutions['turn'] = self.vision_turn_controller.a_target
+        v_solutions['turn'] = self.vision_turn_controller.v_turn
 
     source = min(v_solutions, key=v_solutions.get)
 
