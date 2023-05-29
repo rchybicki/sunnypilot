@@ -3,7 +3,7 @@ from common.conversions import Conversions as CV
 from selfdrive.controls.lib.lateral_planner import TRAJECTORY_SIZE
 from common.numpy_fast import clip, interp
 from common.realtime import sec_since_boot
-from common.params import Params
+from common.params import Params, put_bool_nonblocking
 
 # Time threshold for Conditional Experimental Mode (Code runs at 20hz, so: THRESHOLD / 20 = seconds)
 THRESHOLD = 5 # 0.25s
@@ -44,7 +44,7 @@ class ExperimentalController():
         curvature_ratios = predicted_lateral_accelerations / (predicted_velocities ** 2)
         predicted_lateral_accelerations = curvature_ratios * (self.v_ego ** 2)
         curvature = np.amax(predicted_lateral_accelerations)
-        if curvature >= 1.6 or (self.curve and curvature > 1.1):
+        if curvature >= 1.3 or (self.curve and curvature > 1.1):
           # Setting the maximum to 10 lets it hold the status for 0.25s after it goes "false" to help prevent false negatives
           self.curvature_count = min(10, self.curvature_count + 1)
         else:
@@ -80,7 +80,7 @@ class ExperimentalController():
     standstill = self.carState.standstill
     self.curve = self.road_curvature(lead, standstill)
     stop_light_detected = self.stop_sign_and_light(standstill)
-    self.active = (self.curve or stop_light_detected) and not self.gas_pressed and self.op_enabled
+    self.active = (self.curve or stop_light_detected or standstill) and not self.gas_pressed and self.op_enabled
 
 
   def update_experimental_mode(self):
@@ -89,10 +89,11 @@ class ExperimentalController():
     experimental_mode = self.params.get_bool("ExperimentalMode")
     if self.active and not experimental_mode and not self.enabled_experimental:
       self.enabled_experimental = True
-      self.params.put_bool("ExperimentalMode", True)
-    elif not self.active and experimental_mode and self.enabled_experimental:
+      put_bool_nonblocking("ExperimentalMode", True)
+    elif not self.active:
+      if experimental_mode and self.enabled_experimental:
+        put_bool_nonblocking("ExperimentalMode", False)
       self.enabled_experimental = False
-      self.params.put_bool("ExperimentalMode", False)
 
 
   def update(self, op_enabled, v_ego, sm):
