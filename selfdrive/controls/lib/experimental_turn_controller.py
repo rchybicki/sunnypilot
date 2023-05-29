@@ -73,7 +73,7 @@ class ExperimentalTurnController():
     if not self.enabled:
       return
     experimental_mode = self.params.get_bool("ExperimentalMode")
-    if self.active and not experimental_mode:
+    if self.active and not experimental_mode and not self.enabled_experimental:
       self.enabled_experimental = True
       self.params.put_bool("ExperimentalMode", True)
     elif not self.active and experimental_mode and self.enabled_experimental:
