@@ -75,10 +75,10 @@ class ExperimentalTurnController():
     experimental_mode = self.params.get_bool("ExperimentalMode")
     if self.active and not experimental_mode:
       self.enabled_experimental = True
-      self.params.put_bool_nonblocking("ExperimentalMode", True)
+      self.params.put_bool("ExperimentalMode", True)
     elif not self.active and experimental_mode and self.enabled_experimental:
       self.enabled_experimental = False
-      self.params.put_bool_nonblocking("ExperimentalMode", False)
+      self.params.put_bool("ExperimentalMode", False)
 
 
   def update(self, op_enabled, v_ego, sm):
