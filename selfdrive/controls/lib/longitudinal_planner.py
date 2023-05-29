@@ -17,7 +17,7 @@ from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.controls.lib.vision_turn_controller import VisionTurnController
 from selfdrive.controls.lib.speed_limit_controller import SpeedLimitController, SpeedLimitResolver
 from selfdrive.controls.lib.turn_speed_controller import TurnSpeedController
-from selfdrive.controls.lib.experimental_turn_controller import ExperimentalTurnController
+from selfdrive.controls.lib.experimental_controller import ExperimentalController
 from selfdrive.controls.lib.events import Events
 from system.swaglog import cloudlog
 
@@ -105,7 +105,7 @@ class LongitudinalPlanner:
     self.speed_limit_controller = SpeedLimitController()
     self.events = Events()
     self.turn_speed_controller = TurnSpeedController()
-    self.experimental_turn_controller = ExperimentalTurnController(self.VM)
+    self.experimental_controller = ExperimentalController(self.VM)
 
   @staticmethod
   def parse_model(model_msg, model_error):
@@ -256,7 +256,7 @@ class LongitudinalPlanner:
     self.events = Events()
     self.speed_limit_controller.update(enabled, v_ego, a_ego, sm, v_cruise, self.events)
     self.turn_speed_controller.update(enabled, v_ego, a_ego, sm)
-    self.experimental_turn_controller.update(enabled, v_ego, sm)
+    self.experimental_controller.update(enabled, v_ego, sm)
 
     # Pick solution with the lowest velocity target.
     a_solutions = {'cruise': float("inf")}
