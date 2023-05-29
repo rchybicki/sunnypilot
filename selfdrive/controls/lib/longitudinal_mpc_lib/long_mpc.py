@@ -70,15 +70,17 @@ DIST_V_GAP1 = [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 
    # in kph       0    16    32    48    64    80    96   112   128   144   160
 DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
 
-def get_stopped_equivalence_factor(v_lead):
-  return (v_lead**2) / (2 * COMFORT_BRAKE)
+def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
+  distance = (v_lead**2) / (2 * COMFORT_BRAKE)
+  distance_offset = 0
+  # If we're going 20%+ faster than the lead vehicle and driving over 45 mph, apply the offset
+  if np.all(v_ego - v_lead > v_ego * .20) and np.all(v_ego > 20):
+    # Decrease following distance according to how far away the lead is
+    distance_offset = radarstate.leadOne.dRel / v_lead
+  return distance + distance_offset
 
 def get_safe_obstacle_distance(v_ego, t_follow=T_FOLLOW):
   return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + STOP_DISTANCE
-
-def desired_follow_distance(v_ego, v_lead, t_follow=T_FOLLOW):
-  return get_safe_obstacle_distance(v_ego, t_follow) - get_stopped_equivalence_factor(v_lead)
-
 
 def gen_long_model():
   model = AcadosModel()
@@ -360,8 +362,8 @@ class LongitudinalMpc:
     # To estimate a safe distance from a moving lead, we calculate how much stopping
     # distance that lead needs as a minimum. We can add that to the current distance
     # and then treat that as a stopped car/obstacle at this new distance.
-    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
-    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
+    lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(self.x_sol[:,1], lead_xv_0[:,1], radarstate)
+    lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(self.x_sol[:,1], lead_xv_1[:,1], radarstate)
 
     cruise_target = T_IDXS * np.clip(v_cruise, v_ego - 2.0, 1e3) + x[0]
     e2e_xforward = ((v[1:] + v[:-1]) / 2) * (T_IDXS[1:] - T_IDXS[:-1])
