@@ -111,8 +111,8 @@ class LongControl:
       initial_stopping_accel = random.random() * -1.8 -0.1 if force_stop else CS.aEgo
       initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,     0.25, 0.39,  0.4,  max(initial_stopping_speed, 0.6)  ]
-      self.stopping_accel = [-0.075, -0.16, -0.4, -0.4, min(initial_stopping_accel, -0.4) ] 
+      self.stopping_v_bp =  [ 0.,   0.25, 0.39,  0.4,  max(initial_stopping_speed, 0.6)  ]
+      self.stopping_accel = [-0.1, -0.16, -0.4, -0.4, min(initial_stopping_accel, -0.4) ] 
       
       kiBP = [ 0. ]
       kiV = [ 0. ]
