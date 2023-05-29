@@ -19,10 +19,10 @@ class ExperimentalTurnController():
     self.v_ego = 0
     self.max_pred_lat_acc = 0
     self.current_lat_accel = 0
-    self.enabled = not self._params.get_bool("TurnSpeedControl")
     self.enabled_experimental = False
     self._active = False
     self.params = Params()
+    self.enabled = not self.params.get_bool("TurnSpeedControl")
 
     self.reset()
 
@@ -40,7 +40,7 @@ class ExperimentalTurnController():
   def update_params(self):
     time = sec_since_boot()
     if time > self.last_params_update + 5.0:
-      self.enabled = not self._params.get_bool("TurnSpeedControl")
+      self.enabled = not self.params.get_bool("TurnSpeedControl")
       self.last_params_update = time
 
   def update_current_state(self, sm):
