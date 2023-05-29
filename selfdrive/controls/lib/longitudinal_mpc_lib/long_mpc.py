@@ -309,7 +309,7 @@ class LongitudinalMpc:
     additional_dist_a_bp = [ -2.5,  -0.75  ]
     additional_dist_m_bp = [  2.,    0.5   ]
     if lead is not None and lead.status:
-      x_lead = lead.dRel - interp(a_ego, additional_dist_a_bp, additional_dist_m_bp) 
+      x_lead = lead.dRel #- interp(a_ego, additional_dist_a_bp, additional_dist_m_bp) 
       v_lead = lead.vLead 
       a_lead = lead.aLeadK
       a_lead_tau = lead.aLeadTau

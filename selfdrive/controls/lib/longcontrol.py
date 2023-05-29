@@ -167,12 +167,12 @@ class LongControl:
       
       # might not be the best way to do this, but it limits acceleration jerk 
       # while not limiting braking, smooth as butter!
-      if output_accel > 0. and output_accel > self.last_output_accel:
-        step_limit_v_bp = [0.,  7]
-        step_limit_v_k = [0.035, 0.005]
-        max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
-        if output_accel - self.last_output_accel > max_pos_step:
-          output_accel = self.last_output_accel + max_pos_step
+      # if output_accel > 0. and output_accel > self.last_output_accel:
+      #   step_limit_v_bp = [0.,  7]
+      #   step_limit_v_k = [0.035, 0.005]
+      #   max_pos_step = interp(CS.vEgo, step_limit_v_bp, step_limit_v_k)
+      #   if output_accel - self.last_output_accel > max_pos_step:
+      #     output_accel = self.last_output_accel + max_pos_step
 
     self.last_output_accel = clip(output_accel, accel_limits[0], accel_limits[1])
 

@@ -17,6 +17,7 @@ from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.controls.lib.vision_turn_controller import VisionTurnController
 from selfdrive.controls.lib.speed_limit_controller import SpeedLimitController, SpeedLimitResolver
 from selfdrive.controls.lib.turn_speed_controller import TurnSpeedController
+from selfdrive.controls.lib.experimental_turn_controller import ExperimentalTurnController
 from selfdrive.controls.lib.events import Events
 from system.swaglog import cloudlog
 
@@ -104,6 +105,7 @@ class LongitudinalPlanner:
     self.speed_limit_controller = SpeedLimitController()
     self.events = Events()
     self.turn_speed_controller = TurnSpeedController()
+    self.experimental_turn_controller = ExperimentalTurnController(self.VM)
 
   @staticmethod
   def parse_model(model_msg, model_error):
@@ -154,9 +156,9 @@ class LongitudinalPlanner:
 
     leadOne = sm['radarState'].leadOne
     if leadOne.status and leadOne.dRel != 0. and leadOne.dRel < 50.: 
-      dRel_bp =    [  6.,  20.,  30. ]
+      dRel_bp =    [  6.,  15.,  20. ]
       accel_diff = [ -0.2, 0.5,  2   ]
-      max_accel_limited = max(0.6, leadOne.aLeadK + interp(leadOne.dRel, dRel_bp, accel_diff))
+      max_accel_limited = max(0.6, leadOne.aLeadK + interp(leadOne.dRel, dRel_bp, accel_diff)) if self.mpc.mode == 'acc' else  accel_limits[1]
       accel_limits = [accel_limits[0], min(max_accel_limited, accel_limits[1])]
       accel_limits_turns = [accel_limits_turns[0], min(max_accel_limited, accel_limits_turns[1])]
 
@@ -254,6 +256,7 @@ class LongitudinalPlanner:
     self.events = Events()
     self.speed_limit_controller.update(enabled, v_ego, a_ego, sm, v_cruise, self.events)
     self.turn_speed_controller.update(enabled, v_ego, a_ego, sm)
+    self.experimental_turn_controller.update(enabled, v_ego, sm)
 
     # Pick solution with the lowest velocity target.
     a_solutions = {'cruise': float("inf")}
