@@ -79,7 +79,7 @@ class ExperimentalController():
     lead = self.detect_lead()
     standstill = self.carState.standstill
     self.curve = self.road_curvature(lead, standstill)
-    stop_light_detected = self.stop_sign_and_light(lead, standstill)
+    stop_light_detected = self.stop_sign_and_light(standstill)
     self.active = (self.curve or stop_light_detected) and not self.gas_pressed and self.op_enabled
 
 
