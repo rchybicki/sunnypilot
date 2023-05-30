@@ -372,7 +372,11 @@ force_exp_mode_id = [
   #Zabrodzie głowna
   25121881,
   189327315,
-  189327400
+  189327400,
+  #Wrocław Odkrywców
+  362486306,
+  #Wrocław Podróżnicza
+  20308568
 ]
 
 def is_osm_time_condition_active(condition_string):
