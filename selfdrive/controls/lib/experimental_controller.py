@@ -26,6 +26,7 @@ class ExperimentalController():
     self.lead_status_count = 0
     self.stop_light_count = 0
     self.previous_lead_status = False
+    self.previous_lead_speed = 0
     self.params = Params()
     self.enabled = not self.params.get_bool("TurnSpeedControl")
 
@@ -54,17 +55,23 @@ class ExperimentalController():
     return False
 
   # Stop sign and stop light detection - Credit goes to the DragonPilot team!
-  def stop_sign_and_light(self, standstill):
+  def stop_sign_and_light(self, lead, standstill):
+    lead_speed = self.radarState.leadOne.vLead
     if abs(self.carState.steeringAngleDeg) <= 60 and not standstill:
-      if len(self.modelData.orientation.x) == len(self.modelData.position.x) == TRAJECTORY_SIZE:
-        if self.modelData.position.x[TRAJECTORY_SIZE - 1] < interp(self.v_ego_kph, STOP_SIGN_BREAKING_POINT, STOP_SIGN_DISTANCE):
-          self.stop_light_count = min(10, self.stop_light_count + 1)
+      # Check to make sure we don't have a lead that's stopping for the red light / stop sign
+      if not (lead and self.previous_lead_speed > lead_speed) or self.radarState.leadOne.dRel >= 10:
+        if len(self.modelData.orientation.x) == len(self.modelData.position.x) == TRAJECTORY_SIZE:
+          if self.modelData.position.x[TRAJECTORY_SIZE - 1] < interp(self.v_ego_kph, STOP_SIGN_BREAKING_POINT, STOP_SIGN_DISTANCE):
+            self.stop_light_count = min(10, self.stop_light_count + 1)
+          else:
+            self.stop_light_count = max(0, self.stop_light_count - 1)
         else:
           self.stop_light_count = max(0, self.stop_light_count - 1)
       else:
         self.stop_light_count = max(0, self.stop_light_count - 1)
     else:
       self.stop_light_count = max(0, self.stop_light_count - 1)
+    self.previous_lead_speed = lead_speed
     # Check if stop sign / stop light is detected for > 0.25s
     return self.stop_light_count >= THRESHOLD
   
@@ -80,7 +87,7 @@ class ExperimentalController():
     standstill = self.carState.standstill
     signal = self.v_ego < 25 and (self.carState.leftBlinker or self.carState.rightBlinker)
     self.curve = self.road_curvature(lead, standstill)
-    stop_light_detected = self.stop_sign_and_light(standstill)
+    stop_light_detected = self.stop_sign_and_light(lead, standstill)
     self.active = (self.curve or stop_light_detected or standstill or signal) and not self.gas_pressed and self.op_enabled
 
 
