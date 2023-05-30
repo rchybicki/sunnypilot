@@ -315,7 +315,9 @@ class Controls:
 
     # Handle lane change
     lane_change_set_timer = int(self.params.get("AutoLaneChangeTimer", encoding="utf8"))
-    if self.sm['lateralPlan'].laneChangeState == LaneChangeState.preLaneChange:
+    if self.sm['lateralPlan'].laneChangeEdgeBlock:
+      self.events.add(EventName.laneChangeRoadEdge)
+    elif self.sm['lateralPlan'].laneChangeState == LaneChangeState.preLaneChange:
       direction = self.sm['lateralPlan'].laneChangeDirection
       lc_prev = self.sm['lateralPlan'].laneChangePrev
       if (CS.leftBlindspot and direction == LaneChangeDirection.left) or \
@@ -369,7 +371,7 @@ class Controls:
       self.events.add(EventName.radarFault)
     if not self.sm.valid['pandaStates']:
       self.events.add(EventName.usbError)
-    if CS.canTimeout:
+    if CS.canTimeout and CS.gearShifter != 1:  # CS.gearShifter == 1 park gear
       self.events.add(EventName.canBusMissing)
     elif not CS.canValid:
       self.events.add(EventName.canError)

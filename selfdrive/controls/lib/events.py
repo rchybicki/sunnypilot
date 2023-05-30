@@ -566,6 +566,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       Priority.LOW, VisualAlert.none, AudibleAlert.prompt, .1),
   },
 
+  EventName.laneChangeRoadEdge: {
+    ET.WARNING: Alert(
+      "Lane Change Unavailable: Road Edge",
+      "",
+      AlertStatus.userPrompt, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.prompt, .1),
+  },
+
   EventName.laneChange: {
     ET.WARNING: Alert(
       "Changing Lanes",
@@ -646,6 +654,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
 
   EventName.speedLimitValueChange: {
     ET.WARNING: speed_limit_adjust_alert,
+  },
+
+  EventName.e2eLongStart: {
+    ET.PERMANENT: Alert(
+      "",
+      "",
+      AlertStatus.userPrompt, AlertSize.none,
+      Priority.MID, VisualAlert.none, AudibleAlert.promptStarting, 1.5),
   },
 
   # ********** events that affect controls state transitions **********
@@ -830,7 +846,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
     ET.SOFT_DISABLE: soft_disable_alert("Calibration Incomplete"),
     ET.NO_ENTRY: NoEntryAlert("Calibration in Progress"),
   },
-  
+
   EventName.calibrationRecalibrating: {
     ET.PERMANENT: calibration_incomplete_alert,
     ET.SOFT_DISABLE: soft_disable_alert("Device Remount Detected: Recalibrating"),

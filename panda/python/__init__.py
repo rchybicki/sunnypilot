@@ -215,6 +215,7 @@ class Panda:
   FLAG_HONDA_BOSCH_LONG = 2
   FLAG_HONDA_NIDEC_ALT = 4
   FLAG_HONDA_RADARLESS = 8
+  FLAG_HONDA_CLARITY = 16
 
   FLAG_HYUNDAI_EV_GAS = 1
   FLAG_HYUNDAI_HYBRID_GAS = 2
@@ -236,6 +237,9 @@ class Panda:
   FLAG_CHRYSLER_RAM_HD = 2
 
   FLAG_SUBARU_GEN2 = 1
+  FLAG_SUBARU_MAX_STEER_IMPREZA_2018 = 2
+
+  FLAG_SUBARU_LEGACY_FLIP_DRIVER_TORQUE = 1
 
   FLAG_GM_HW_CAM = 1
   FLAG_GM_HW_CAM_LONG = 2
@@ -918,6 +922,9 @@ class Panda:
 
   def send_heartbeat(self, engaged=True):
     self._handle.controlWrite(Panda.REQUEST_OUT, 0xf3, engaged, 0, b'')
+
+  def parked_heartbeat(self, parked=False):
+    self._handle.controlWrite(Panda.REQUEST_OUT, 0xff, parked, 0, b'')
 
   # disable heartbeat checks for use outside of openpilot
   # sending a heartbeat will reenable the checks

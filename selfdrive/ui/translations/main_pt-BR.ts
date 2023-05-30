@@ -1009,6 +1009,10 @@ Isso pode levar até um minuto.</translation>
 <context>
     <name>SPGeneralPanel</name>
     <message>
+        <source>VIEW</source>
+        <translation type="unfinished">VER</translation>
+    </message>
+    <message>
         <source>Quiet Drive 🤫</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1026,6 +1030,14 @@ Isso pode levar até um minuto.</translation>
     </message>
     <message>
         <source>Note: This chime is only designed as a notification. It is the driver&apos;s responsibility to observe their environment and make decisions accordingly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lead Vehicle Departure Alert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this will notify when the leading vehicle drives away.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1047,10 +1059,6 @@ Isso pode levar até um minuto.</translation>
     <message>
         <source>Error Troubleshoot</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VIEW</source>
-        <translation type="unfinished">VER</translation>
     </message>
     <message>
         <source>Display error from the tmux session when an error has occurred from a system process.</source>
@@ -1162,6 +1170,14 @@ Reboot now?</source>
     </message>
     <message>
         <source>Speedometer: Hide from Onroad Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display End-to-end Longitudinal Status (Beta)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this will display an icon that appears when the End-to-end model decides to start or stop.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1440,6 +1456,10 @@ Reboot now?</source>
         <translation>Desinstalar</translation>
     </message>
     <message>
+        <source>Reboot</source>
+        <translation type="unfinished">Reiniciar</translation>
+    </message>
+    <message>
         <source>Database updates can be downloaded while the car is off.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1451,10 +1471,6 @@ Reboot now?</source>
         <source>Are you sure you want to reboot and perform a database update?
 Estimated time: 30-90 minutes</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reboot</source>
-        <translation type="unfinished">Reiniciar</translation>
     </message>
     <message>
         <source>OpenStreetMap Database</source>

@@ -1048,6 +1048,14 @@ This may take up to a minute.</source>
         <source>Stores snapshot file with current state of some modules.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Lead Vehicle Departure Alert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this will notify when the leading vehicle drives away.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SPVehiclesPanel</name>
@@ -1121,18 +1129,6 @@ Reboot now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Speedometer: Display True Speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display the true vehicle current speed from wheel speed sensors.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Speedometer: Hide from Onroad Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Auto-Hide UI Buttons</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1146,6 +1142,26 @@ Reboot now?</source>
     </message>
     <message>
         <source>Show Driver Monitoring camera while the car is in reverse gear.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speedometer: Display True Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display the true vehicle current speed from wheel speed sensors.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speedometer: Hide from Onroad Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display End-to-end Longitudinal Status (Beta)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this will display an icon that appears when the End-to-end model decides to start or stop.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

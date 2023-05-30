@@ -9916,6 +9916,8 @@ public:
 
   inline bool getDynamicLaneProfileStatus() const;
 
+  inline bool getLaneChangeEdgeBlock() const;
+
 private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
@@ -10107,6 +10109,9 @@ public:
 
   inline bool getDynamicLaneProfileStatus();
   inline void setDynamicLaneProfileStatus(bool value);
+
+  inline bool getLaneChangeEdgeBlock();
+  inline void setLaneChangeEdgeBlock(bool value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -33099,6 +33104,20 @@ inline bool LateralPlan::Builder::getDynamicLaneProfileStatus() {
 inline void LateralPlan::Builder::setDynamicLaneProfileStatus(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<576>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool LateralPlan::Reader::getLaneChangeEdgeBlock() const {
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<577>() * ::capnp::ELEMENTS);
+}
+
+inline bool LateralPlan::Builder::getLaneChangeEdgeBlock() {
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<577>() * ::capnp::ELEMENTS);
+}
+inline void LateralPlan::Builder::setLaneChangeEdgeBlock(bool value) {
+  _builder.setDataField<bool>(
+      ::capnp::bounded<577>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool LiveLocationKalman::Reader::hasPositionECEF() const {
