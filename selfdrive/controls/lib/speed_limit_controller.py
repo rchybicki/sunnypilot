@@ -270,6 +270,8 @@ class SpeedLimitController():
     self._v_cruise_setpoint = 0.
     self._v_cruise_setpoint_prev = 0.
     self._v_cruise_setpoint_changed = False
+    self.last_status = False
+    self.exp_was_active = False
     self._speed_limit = 0.
     self._speed_limit_prev = 0.
     self._speed_limit_changed = False
@@ -440,11 +442,16 @@ class SpeedLimitController():
 
   def _update_experimental_mode(self):
     experimental_mode = self._params.get_bool("ExperimentalMode")
-    experimental_mode_manual = self._params.get_bool("ExperimentalModeConfirmed")
+    if self.last_status != self._resolver.force_exp_mode:
+      self.last_status = self._resolver.force_exp_mode
+      if self._resolver.force_exp_mode:
+        self.exp_was_active = experimental_mode
     if self._resolver.force_exp_mode and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
-    elif not self._resolver.force_exp_mode and experimental_mode and not experimental_mode_manual:
+    elif not self._resolver.force_exp_mode and experimental_mode and not self.exp_was_active:
       put_bool_nonblocking("ExperimentalMode", False)
+
+
 
   def update(self, enabled, v_ego, a_ego, sm, v_cruise_setpoint, events=Events()):
     _car_state = sm['carState']

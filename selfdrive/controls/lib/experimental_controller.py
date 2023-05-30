@@ -24,6 +24,8 @@ class ExperimentalController():
     self.curvature_count = 0
     self.lead_status_count = 0
     self.stop_light_count = 0
+    self.last_status = False
+    self.exp_was_active = False
     self.previous_lead_status = False
     self.params = Params()
     self.enabled = not self.params.get_bool("TurnSpeedControl")
@@ -87,10 +89,13 @@ class ExperimentalController():
     if not self.enabled:
       return
     experimental_mode = self.params.get_bool("ExperimentalMode")
-    experimental_mode_manual = self.params.get_bool("ExperimentalModeConfirmed")
+    if self.last_status != self.active:
+      self.last_status = self.active
+      if self.active:
+        self.exp_was_active = experimental_mode
     if self.active and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
-    elif not self.active and experimental_mode and not experimental_mode_manual:
+    elif not self.active and experimental_mode and not self.exp_was_active:
       put_bool_nonblocking("ExperimentalMode", False)
 
 
