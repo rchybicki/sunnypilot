@@ -22,6 +22,7 @@ class ExperimentalController():
     self.v_ego_kph = 0
     self.curve = False
     self.curvature_count = 0
+    self.enabled_experimental = False
     self.lead_status_count = 0
     self.stop_light_count = 0
     self.previous_lead_status = False
@@ -87,11 +88,13 @@ class ExperimentalController():
     if not self.enabled:
       return
     experimental_mode = self.params.get_bool("ExperimentalMode")
-    experimental_mode_manual = self.params.get_bool("ExperimentalModeManual")
-    if self.active and not experimental_mode:
+    if self.active and not experimental_mode and not self.enabled_experimental:
+      self.enabled_experimental = True
       put_bool_nonblocking("ExperimentalMode", True)
-    elif not self.active and experimental_mode and not experimental_mode_manual:
-      put_bool_nonblocking("ExperimentalMode", False)
+    elif not self.active:
+      if experimental_mode and self.enabled_experimental:
+        put_bool_nonblocking("ExperimentalMode", False)
+      self.enabled_experimental = False
 
 
   def update(self, op_enabled, v_ego, sm):
