@@ -440,7 +440,7 @@ class SpeedLimitController():
 
   def _update_experimental_mode(self):
     experimental_mode = self._params.get_bool("ExperimentalMode")
-    if self.force_exp_mode and not experimental_mode:
+    if self._resolver.force_exp_mode and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
 
   def update(self, enabled, v_ego, a_ego, sm, v_cruise_setpoint, events=Events()):
