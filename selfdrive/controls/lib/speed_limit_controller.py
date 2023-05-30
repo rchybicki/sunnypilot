@@ -271,7 +271,7 @@ class SpeedLimitController():
     self._v_cruise_setpoint_prev = 0.
     self._v_cruise_setpoint_changed = False
     self.last_status = False
-    self.exp_was_active = False
+    self.exp_was_active = True
     self._speed_limit = 0.
     self._speed_limit_prev = 0.
     self._speed_limit_changed = False
@@ -449,6 +449,7 @@ class SpeedLimitController():
     if self._resolver.force_exp_mode and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
     elif not self._resolver.force_exp_mode and experimental_mode and not self.exp_was_active:
+      self.exp_was_active = True
       put_bool_nonblocking("ExperimentalMode", False)
 
 
