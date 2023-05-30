@@ -436,7 +436,7 @@ class CarInterfaceBase(ABC):
           self.gap_button_counter = 0
           self.experimental_mode_hold = True
           put_bool_nonblocking("ExperimentalMode", not self.experimental_mode)
-          put_bool_nonblocking("ExperimentalLongitudinalEnabled", not self.experimental_mode)
+          put_bool_nonblocking("ExperimentalModeConfirmed", not self.experimental_mode)
     else:
       self.gap_button_counter = 0
       self.experimental_mode_hold = False

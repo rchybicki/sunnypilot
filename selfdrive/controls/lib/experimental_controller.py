@@ -87,7 +87,7 @@ class ExperimentalController():
     if not self.enabled:
       return
     experimental_mode = self.params.get_bool("ExperimentalMode")
-    experimental_mode_manual = self.params.get_bool("ExperimentalLongitudinalEnabled")
+    experimental_mode_manual = self.params.get_bool("ExperimentalModeConfirmed")
     if self.active and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
     elif not self.active and experimental_mode and not experimental_mode_manual:

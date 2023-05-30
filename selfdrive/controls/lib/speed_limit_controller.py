@@ -440,7 +440,7 @@ class SpeedLimitController():
 
   def _update_experimental_mode(self):
     experimental_mode = self._params.get_bool("ExperimentalMode")
-    experimental_mode_manual = self._params.get_bool("ExperimentalLongitudinalEnabled")
+    experimental_mode_manual = self._params.get_bool("ExperimentalModeConfirmed")
     if self._resolver.force_exp_mode and not experimental_mode:
       put_bool_nonblocking("ExperimentalMode", True)
     elif not self._resolver.force_exp_mode and experimental_mode and not experimental_mode_manual:
