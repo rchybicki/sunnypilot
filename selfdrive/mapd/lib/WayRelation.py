@@ -338,7 +338,8 @@ speed_overrides_id_backward = {
 }
 
 force_exp_mode_id = [
-  #Obwodnica przed zjazdem do Tyńca od miastas
+  #Obwodnica przed zjazdem do Tyńca od miasta
+  121496055,
   118272063,
   #Obwodnica przed zjazdem na Mokronos
   498067257,

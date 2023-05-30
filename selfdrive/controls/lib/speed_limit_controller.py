@@ -417,7 +417,7 @@ class SpeedLimitController():
       # When adapting we target to achieve the speed limit on the distance if not there yet,
       # otherwise try to keep the speed constant around the control time horizon.
       if self.distance > 0:
-        a_target = (self.speed_limit_offseted**2 - self._v_ego**2) / (1.75 * self.distance)
+        a_target = (self.speed_limit_offseted**2 - self._v_ego**2) / (1.85 * self.distance)
       else:
         a_target = self._v_offset / T_IDXS[CONTROL_N]
     # active

@@ -39,17 +39,19 @@ A_CRUISE_MAX_BP =       [ 0.,   2.,  8.,  11.,  15.,  20.,  25.,  30.,  55.  ]
 #A_CRUISE_MAX_VALS = [1.4, 1.0, 0.7, 0.5] # was [1.6, 1.2, 0.8, 0.6]
 #A_CRUISE_MAX_BP = [0., 10.0, 25., 40.] # 0km/h, 36km/h, 90km/h, 144km/h
 
-CRUISE_MIN_VAL_GAP3 =       [-0.65,  -0.60,  -0.7,  -0.8,   -1.0,  -1.5 ]
-CRUISE_MIN_VAL_GAP4 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75 ]
-CRUISE_MIN_VAL_GAP2 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.3,  -1.2,   -1.6,  -2.0  ]
-CRUISE_MIN_VAL_GAP1 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.5,  -1.7,   -2.0,  -2.5  ]
-#                              0       0.5       36     72      108   195
-CRUISE_MIN_BP =             [ 0.,     0.07,   10.,   20.,    30.,   55.  ]
+# CRUISE_MIN_VAL_GAP3 =       [-0.65,  -0.60,  -0.7,  -0.8,   -1.0,  -1.5 ]
+# CRUISE_MIN_VAL_GAP4 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75 ]
+# CRUISE_MIN_VAL_GAP2 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.3,  -1.2,   -1.6,  -2.0  ]
+# CRUISE_MIN_VAL_GAP1 = CRUISE_MIN_VAL_GAP3 #      [-0.65,  -0.60,  -1.5,  -1.7,   -2.0,  -2.5  ]
+# #                              0       0.5       36     72      108   195
+# CRUISE_MIN_BP =             [ 0.,     0.07,   10.,   20.,    30.,   55.  ]
 
 # _DP_CRUISE_MIN_V =       [-0.65,  -0.60,  -0.73, -0.75,  -0.75, -0.75]
 # _DP_CRUISE_MIN_V_ECO =   [-0.65,  -0.60,  -0.70, -0.70,  -0.65, -0.65]
 # _DP_CRUISE_MIN_V_SPORT = [-0.70,  -0.80,  -0.90, -0.90,  -0.80, -0.70]
 # _DP_CRUISE_MIN_BP =      [0.,     0.07,   10.,   20.,    30.,   55.]
+
+A_CRUISE_MIN = -1.2
 
 # Lookup table for turns
 _A_TOTAL_MAX_V = [1.7, 3.2]
@@ -58,15 +60,27 @@ _A_TOTAL_MAX_BP = [20., 40.]
 EventName = car.CarEvent.EventName
 
 
-def get_min_max_accel(v_ego, carstate):
+# def get_min_max_accel(v_ego, carstate):
+#   if carstate.gapAdjustCruiseTr == 1:
+#     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP1), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
+#   elif carstate.gapAdjustCruiseTr == 2:
+#     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP2), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)]
+#   elif carstate.gapAdjustCruiseTr == 4:
+#     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
+#   else:
+#     return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+
+
+
+def get_max_accel(v_ego, carstate):
   if carstate.gapAdjustCruiseTr == 1:
-    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP1), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)]
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)
   elif carstate.gapAdjustCruiseTr == 2:
-    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP2), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)]
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP2)
   elif carstate.gapAdjustCruiseTr == 4:
-    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP4), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)]
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)
   else:
-    return [interp(v_ego, CRUISE_MIN_BP, CRUISE_MIN_VAL_GAP3), interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)]
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)
 
 
 def limit_accel_in_turns(v_ego, angle_steers, a_target, live_params, VM):
@@ -148,7 +162,7 @@ class LongitudinalPlanner:
     self.VM.update_params(x, sr)
 
     if self.mpc.mode == 'acc':
-      accel_limits = get_min_max_accel(v_ego, sm['carState'])
+      accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego, sm['carState'])]
       accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, lp, self.VM)
     else:
       accel_limits = [MIN_ACCEL, MAX_ACCEL]

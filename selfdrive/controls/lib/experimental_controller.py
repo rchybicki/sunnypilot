@@ -74,7 +74,7 @@ class ExperimentalController():
     # Check if lead is detected for > 0.25s
     return self.lead_status_count >= THRESHOLD and lead_status
 
-  def update_calculations(self, sm):
+  def update_calculations(self):
     lead = self.detect_lead()
     standstill = self.carState.standstill
     signal = self.v_ego < 25 and (self.carState.leftBlinker or self.carState.rightBlinker)
@@ -102,5 +102,5 @@ class ExperimentalController():
     self.v_ego_kph = v_ego * 3.6
 
     self.update_params()
-    self.update_calculations(sm)
+    self.update_calculations()
     self.update_experimental_mode()
