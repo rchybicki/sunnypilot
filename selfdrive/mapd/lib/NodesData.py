@@ -17,11 +17,12 @@ _DIVERTION_SEARCH_RANGE = [-200., 50.]  # mt. Range of distance to current locat
 
 
 def nodes_raw_data_array_for_wr(wr, drop_last=False, feature_sl=False):
-  """Provides an array of raw node data (id, lat, lon, speed_limit, advisory_speed_limit) for all nodes in way relation
+  """Provides an array of raw node data (id, lat, lon, speed_limit, advisory_speed_limit, force_exp_mode) for all nodes in way relation
   """
   sl = wr.speed_limit if wr.advisory_speed_limit == 0. else wr.advisory_speed_limit
   asl = wr.advisory_speed_limit
-  data = np.array([(n.id, n.lat, n.lon, sl, asl) for n in wr.way.nodes], dtype=float)
+  force_exp = wr.force_exp_mode
+  data = np.array([(n.id, n.lat, n.lon, sl, asl, force_exp) for n in wr.way.nodes], dtype=float)
 
   if feature_sl:
     for count, node in enumerate(wr.way.nodes):
@@ -267,12 +268,13 @@ class NodeDataIdx(Enum):
   lon = 2
   speed_limit = 3
   advisory_speed_limit = 4
-  x = 5             # x value of cartesian vector representing the section between last node and this node.
-  y = 6             # y value of cartesian vector representing the section between last node and this node.
-  dist_prev = 7     # distance to previous node.
-  dist_next = 8     # distance to next node
-  dist_route = 9    # cumulative distance on route
-  bearing = 10       # bearing of the vector departing from this node.
+  foce_exp_mode = 5
+  x = 6             # x value of cartesian vector representing the section between last node and this node.
+  y = 7             # y value of cartesian vector representing the section between last node and this node.
+  dist_prev = 8     # distance to previous node.
+  dist_next = 9     # distance to next node
+  dist_route = 10    # cumulative distance on route
+  bearing = 11       # bearing of the vector departing from this node.
 
 
 class NodesData:
@@ -306,7 +308,7 @@ class NodesData:
     vect, dist_prev, dist_next, dist_route, bearing = node_calculations(points)
 
     # append calculations to nodes_data
-    # nodes_data structure: [id, lat, lon, speed_limit, advisory_speed_limit, x, y, dist_prev, dist_next, dist_route, bearing]
+    # nodes_data structure: [id, lat, lon, speed_limit, advisory_speed_limit, force_exp_mode, x, y, dist_prev, dist_next, dist_route, bearing]
     self._nodes_data = np.column_stack((nodes_data, vect, dist_prev, dist_next, dist_route, bearing))
 
     # Build route diversion options data from the wr_index.
@@ -386,6 +388,7 @@ class NodesData:
       start = end
 
     return limits_ahead
+  
 
   def distance_to_end(self, ahead_idx, distance_to_node_ahead):
     if len(self._nodes_data) == 0 or ahead_idx is None:

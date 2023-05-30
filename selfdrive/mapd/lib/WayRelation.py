@@ -337,6 +337,21 @@ speed_overrides_id_backward = {
   1167942314: 45
 }
 
+force_exp_mode_id = [
+  #Obwodnica przed zjazdem do Tyńca od miastas
+  118272063,
+  #Obwodnica przed zjazdem na Mokronos
+  498067257,
+  111853047,
+  227138119,
+  #Obwodnica przed zjazdem do Tyńca od Kobierzyc
+  377273969,
+  95288232,
+  #A4 zjazd do miasta od strony Tyńca
+  272587342,
+  #S5 zjazd na Rawicz
+  486463157
+]
 
 def is_osm_time_condition_active(condition_string):
   """
@@ -636,10 +651,12 @@ class WayRelation():
     self.bearing_rad = bearing_rad
     self._speed_limit = None
     self._advisory_speed_limit = None
+    self._force_exp_mode = None
 
   def update_direction_from_starting_node(self, start_node_id):
     self._speed_limit = None
     self._advisory_speed_limit = None
+    self._force_exp_mode = None
     if self.edge_nodes_ids[0] == start_node_id:
       self.direction = DIRECTION.FORWARD
     elif self.edge_nodes_ids[-1] == start_node_id:
@@ -719,6 +736,15 @@ class WayRelation():
 
     self._advisory_speed_limit = limit
     return self._advisory_speed_limit
+  
+  
+  @property
+  def force_exp_mode(self):
+    if self._force_exp_mode is not None:
+      return self._force_exp_mode
+  
+    self._force_exp_mode = self.way.id in force_exp_mode_id
+    return self._force_exp_mode
   
 
   @property

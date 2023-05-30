@@ -231,6 +231,8 @@ class MapD():
     map_data_msg.liveMapData.lastGpsAccuracy = float(self.last_gps.accuracy)
     map_data_msg.liveMapData.lastGpsBearingAccuracyDeg = float(self.last_gps.bearingAccuracyDeg)
 
+    map_data_msg.liveMapData.forceExperimentalMode = self.route.force_experimental_mode
+
     map_data_msg.liveMapData.speedLimitValid = bool(speed_limit is not None)
     map_data_msg.liveMapData.speedLimit = float(speed_limit if speed_limit is not None else 0.0)
     map_data_msg.liveMapData.speedLimitAheadValid = bool(next_speed_limit_section is not None)

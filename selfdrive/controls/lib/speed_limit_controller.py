@@ -4,7 +4,7 @@ from common.numpy_fast import interp
 from enum import IntEnum
 from cereal import log, car
 from common.conversions import Conversions as CV
-from common.params import Params
+from common.params import Params, put_bool_nonblocking
 from common.realtime import sec_since_boot
 from selfdrive.controls.lib.drive_helpers import LIMIT_ADAPT_ACC, LIMIT_MIN_ACC, LIMIT_MAX_ACC, LIMIT_SPEED_OFFSET_TH, \
   LIMIT_MAX_MAP_DATA_AGE, CONTROL_N
@@ -72,6 +72,7 @@ class SpeedLimitResolver():
     self._limit_solutions = {}  # Store for speed limit solutions from different sources
     self._distance_solutions = {}  # Store for distance to current speed limit start for different sources
     self._v_ego = 0.
+    self.force_exp_mode = False
     self._current_speed_limit = 0.
     self._policy = policy
     self._next_speed_limit_prev = 0.
@@ -83,6 +84,7 @@ class SpeedLimitResolver():
     self._v_ego = v_ego
     self._current_speed_limit = current_speed_limit
     self._sm = sm
+    self.force_exp_mode = False
 
     self._get_from_car_state()
     self._get_from_nav()
@@ -128,6 +130,7 @@ class SpeedLimitResolver():
       _debug(f'SL: Ignoring map data as is too old. Age: {gps_fix_age}')
       return
     
+
     # Calculate the actual distance to the speed limit ahead corrected by gps_fix_age
     distance_since_fix = self._v_ego * gps_fix_age
     distance_to_speed_limit_ahead = max(0., map_data.speedLimitAheadDistance - distance_since_fix)
@@ -146,6 +149,7 @@ class SpeedLimitResolver():
     else: 
       speed_limit =0.
     
+    self.force_exp_mode = map_data.forceExperimentalMode
 
     # When we have no ahead speed limit to consider or it is greater than current speed limit
     # or car has stopped, then provide current value and reset tracking.
@@ -434,6 +438,14 @@ class SpeedLimitController():
     elif self._speed_limit_changed != 0:
       events.add(EventName.speedLimitValueChange)
 
+  def _update_experimental_mode(self):
+    experimental_mode = self._params.get_bool("ExperimentalMode")
+    experimental_mode_manual = self._params.get_bool("ExperimentalModeManual")
+    if self.force_exp_mode and not experimental_mode:
+      put_bool_nonblocking("ExperimentalMode", True)
+    elif not self.force_exp_mode and experimental_mode and not experimental_mode_manual:
+      put_bool_nonblocking("ExperimentalMode", False)
+
   def update(self, enabled, v_ego, a_ego, sm, v_cruise_setpoint, events=Events()):
     _car_state = sm['carState']
     self._op_enabled = sm['controlsState'].enabled and _car_state.cruiseState.enabled and \
@@ -452,3 +464,4 @@ class SpeedLimitController():
     self._state_transition()
     self._update_solution()
     self._update_events(events)
+    self._update_experimental_mode()

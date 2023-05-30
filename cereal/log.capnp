@@ -2034,6 +2034,7 @@ struct LiveMapData {
   speedLimitAheadValid @2 :Bool;
   speedLimitAhead @3 :Float32;
   speedLimitAheadDistance @4 :Float32;
+  forceExperimentalMode @21: Bool;
   turnSpeedLimitValid @5 :Bool;
   turnSpeedLimit @6 :Float32;
   turnSpeedLimitEndDistance @7 :Float32;
