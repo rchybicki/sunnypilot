@@ -114,6 +114,19 @@ speed_overrides_id = {
   316438185: 65,
   316438184: 70,
 
+  #pomiędzy rondami w strone bielan
+  520977978: 65,
+  185542421: 65,
+  119181422: 65,
+  118272068: 65,
+  119181423: 65,
+  904992498: 65,
+  904992499: 65,
+  206282955: 60,
+  546342020: 60,
+  546347506: 55,
+  20555728: 55,
+
   #Mokronos Stawowa
   1171679035: 45,
   25118902: 45,
@@ -236,6 +249,10 @@ speed_overrides_id = {
   1017147198: 60,
   695817935: 60,
 
+  #Wrocław Zabrodzka
+  25121542: 55,
+  794401776: 55,
+
   #Wrocław Parkowa
   204008101: 50,
   309925360: 50,
@@ -351,7 +368,11 @@ force_exp_mode_id = [
   #A4 zjazd do miasta od strony Tyńca
   272587342,
   #S5 zjazd na Rawicz
-  486463157
+  486463157,
+  #Zabrodzie głowna
+  25121881,
+  189327315,
+  189327400
 ]
 
 def is_osm_time_condition_active(condition_string):
