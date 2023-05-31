@@ -170,7 +170,7 @@ class LongitudinalPlanner:
       accel_limits_turns = [MIN_ACCEL, MAX_ACCEL]
 
     leadOne = sm['radarState'].leadOne
-    if leadOne.status and leadOne.dRel != 0. and leadOne.dRel < 50.: 
+    if leadOne.status and leadOne.dRel != 0. and leadOne.dRel < 50. and self.mpc.mode == 'acc': 
       dRel_bp =    [  6.,  15.,  20. ]
       accel_diff = [ -0.2, 0.5,  2   ]
       max_accel_limited = max(0.6, leadOne.aLeadK + interp(leadOne.dRel, dRel_bp, accel_diff)) if self.mpc.mode == 'acc' else  accel_limits[1]
