@@ -309,10 +309,12 @@ class LongitudinalMpc:
   def process_lead(self, lead):
     v_ego = self.x0[1]
     a_ego = self.x0[2]
-    additional_dist_a_bp = [ -2.5,  -1  ]
-    additional_dist_m_bp = [  2.,    1  ]
+    additional_dist_a_bp = [ -2.5, -1 ]
+    additional_dist_a_m = [  2.,    1 ]
     if lead is not None and lead.status:
-      additional_distance = interp(a_ego, additional_dist_a_bp, additional_dist_m_bp) if lead.dRel > 10. else 0
+      additional_dist_rel_bp = [ 5., 10.]
+      additional_dist_rel_m =  [ 0., interp(a_ego, additional_dist_a_bp, additional_dist_a_m) ]
+      additional_distance = interp(lead.dRel, additional_dist_rel_bp, additional_dist_rel_m)
       x_lead = lead.dRel - additional_distance
       v_lead = lead.vLead 
       a_lead = lead.aLeadK
