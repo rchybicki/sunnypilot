@@ -105,8 +105,8 @@ class LongControl:
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
       self.stopping_pid.reset()
 
-      self.stopping_v_bp =  [ 0.,     0.25, 0.39,  0.4,  max(CS.vEgo, 0.6)  ]
-      self.stopping_accel = [-0.075, -0.15, -0.5, -0.5, min(CS.aEgo, -0.5) ] 
+      self.stopping_v_bp =  [ 0.,   0.25, 0.39,  0.4,  max(CS.vEgo, 0.6)  ]
+      self.stopping_accel = [-0.1, -0.16, -0.4, -0.4, min(CS.aEgo, -0.4) ] 
       
       kiBP = [ 0. ]
       kiV = [ 0. ]
@@ -122,21 +122,16 @@ class LongControl:
 
     elif self.long_control_state == LongCtrlState.stopping:
       
-      if CS.aEgo < 0.:
-        # smooth expected stopping accel
-        expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
-        error = expected_accel - CS.aEgo
+      # smooth expected stopping accel
+      expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
+      error = expected_accel - CS.aEgo
 
-        kpV = [ 0.006, 0.015, 0.019, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
-        self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+      kpV = [ 0.006, 0.015, 0.019, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 and CS.vEgo > 0.6 else 0.005 ]
+      self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
 
-        error = error if error < 0 or error > 0.15 * CS.aEgo else 0.
-        update = self.stopping_pid.update(error, speed=CS.vEgo)
-        output_accel += update
-
-      else:
-        #cancel out the car wanting to accelerate when stopping
-        output_accel -= 0.5 * DT_CTRL
+      error = error if error < 0 or error > abs(0.15 * CS.aEgo) else 0.
+      update = self.stopping_pid.update(error, speed=CS.vEgo)
+      output_accel += update
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
 
