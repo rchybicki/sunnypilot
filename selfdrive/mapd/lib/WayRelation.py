@@ -86,13 +86,14 @@ speed_overrides_id = {
   360842012: 60,
 
   #Wjazd na obwodnice z Mokronosu w stronę Tyńca
-  223324845: 60,
+  223324845: 59,
   1169806867: 60, 
   807593955: 70,
   111853026: 120,
+  1176894307: 120,
 
   #Zjazd z obwodnicy od Tyńca w stronę Mokronosu
-  111814380: 59, 
+  111814380: 60, 
   223324842: 45,
 
   #Zjazd z obwodnicy od Kobierzyc w stronę Tyńca
@@ -130,10 +131,10 @@ speed_overrides_id = {
   #Mokronos Stawowa
   1171679035: 45,
   25118902: 45,
-  1172221204: 65, 
-  25118903: 65, 
-  174140507: 65, 
-  448924251: 65,
+  1172221204: 60, 
+  25118903: 60, 
+  174140507: 60, 
+  448924251: 60,
   
   #Mokronos Wrocławska
   1167946125: 50,
@@ -362,6 +363,8 @@ force_exp_mode_id = [
   498067257,
   111853047,
   227138119,
+  227138121,
+  111853025,
   #Obwodnica przed zjazdem do Tyńca od Kobierzyc
   377273969,
   95288232,
