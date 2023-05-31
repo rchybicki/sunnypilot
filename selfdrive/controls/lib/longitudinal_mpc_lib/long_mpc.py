@@ -56,7 +56,8 @@ MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 T_FOLLOW = 1.45
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 3. # was 5.5
+STOP_DISTANCE = 5. # was 5.5
+STOP_DISTANCE_EXP = 1.5 # was 5.5
 
 # DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
 # DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
@@ -79,8 +80,9 @@ def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
     distance_offset = radarstate.leadOne.dRel / v_lead
   return distance + distance_offset
 
-def get_safe_obstacle_distance(v_ego, t_follow=T_FOLLOW):
-  return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + STOP_DISTANCE
+def get_safe_obstacle_distance(v_ego, exp_mode, t_follow=T_FOLLOW):
+  return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego \
+            + (STOP_DISTANCE_EXP if exp_mode else STOP_DISTANCE)
 
 def gen_long_model():
   model = AcadosModel()
@@ -149,7 +151,7 @@ def gen_long_ocp():
   ocp.cost.yref = np.zeros((COST_DIM, ))
   ocp.cost.yref_e = np.zeros((COST_E_DIM, ))
 
-  desired_dist_comfort = get_safe_obstacle_distance(v_ego, lead_t_follow)
+  desired_dist_comfort = get_safe_obstacle_distance(v_ego, False, lead_t_follow)
 
   # The main cost in normal operation is how close you are to the "desired" distance
   # from an obstacle at every timestep. This obstacle can be a lead car
@@ -306,7 +308,7 @@ class LongitudinalMpc:
     lead_xv = np.column_stack((x_lead_traj, v_lead_traj))
     return lead_xv
 
-  def process_lead(self, lead):
+  def process_lead(self, exp_mode, lead):
     v_ego = self.x0[1]
     a_ego = self.x0[2]
     additional_dist_a_bp = [ -2.5, -1 ]
@@ -315,7 +317,7 @@ class LongitudinalMpc:
       additional_dist_rel_bp = [ 5., 10.]
       additional_dist_rel_m =  [ 0., interp(a_ego, additional_dist_a_bp, additional_dist_a_m) ]
       additional_distance = interp(lead.dRel, additional_dist_rel_bp, additional_dist_rel_m)
-      x_lead = lead.dRel #- additional_distance
+      x_lead = lead.dRel - (additional_distance if not exp_mode else 0.)
       v_lead = lead.vLead 
       a_lead = lead.aLeadK
       a_lead_tau = lead.aLeadTau
@@ -357,8 +359,10 @@ class LongitudinalMpc:
     v_ego = self.x0[1]
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
-    lead_xv_0 = self.process_lead(radarstate.leadOne)
-    lead_xv_1 = self.process_lead(radarstate.leadTwo)
+    exp_mode = self.mode == 'blended'
+
+    lead_xv_0 = self.process_lead(exp_mode, radarstate.leadOne)
+    lead_xv_1 = self.process_lead(exp_mode, radarstate.leadTwo)
 
     self.update_TF(carstate)
     self.set_weights(prev_accel_constraint)
@@ -390,7 +394,7 @@ class LongitudinalMpc:
       v_cruise_clipped = np.clip(v_cruise * np.ones(N+1),
                                  v_lower,
                                  v_upper)
-      cruise_obstacle = np.cumsum(T_DIFFS * v_cruise_clipped) + get_safe_obstacle_distance(v_cruise_clipped, self.desired_TF)
+      cruise_obstacle = np.cumsum(T_DIFFS * v_cruise_clipped) + get_safe_obstacle_distance(v_cruise_clipped, False, self.desired_TF)
       x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle])
       self.source = SOURCES[np.argmin(x_obstacles[0])]
 
@@ -440,9 +444,9 @@ class LongitudinalMpc:
     # Check if it got within lead comfort range
     # TODO This should be done cleaner
     if self.mode == 'blended':
-      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0):
+      if any((lead_0_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], True, self.desired_TF))- self.x_sol[:,0] < 0.0):
         self.source = 'lead0'
-      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], self.desired_TF))- self.x_sol[:,0] < 0.0) and \
+      if any((lead_1_obstacle - get_safe_obstacle_distance(self.x_sol[:,1], True, self.desired_TF))- self.x_sol[:,0] < 0.0) and \
          (lead_1_obstacle[0] - lead_0_obstacle[0]):
         self.source = 'lead1'
 
