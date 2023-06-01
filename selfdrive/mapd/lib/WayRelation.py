@@ -52,6 +52,7 @@ speed_overrides_id = {
   #Tyniec Domasławska
   1169316187: 13, #przed domem  
   1169294668: 45,
+  1167942314: 45,
   35551085: 50,
   1169316186: 50,
   1167942316: 50,
@@ -75,6 +76,14 @@ speed_overrides_id = {
   1169807993: 45,
   1169807992: 50,
   185542419: 55,
+  941773896: 55,
+  941773892: 55,
+  941773891: 55,
+  941773895: 55,
+  941773893: 55,
+  941773894: 55,
+  186331570: 55, #Szkolna, boczna Świdnickiej
+  236186142: 60,
 
   #Wjazd na obwodnice z ronda tyniec w stronę miasta
   134429085: 65,
@@ -344,15 +353,11 @@ speed_overrides_id_forward = {
 
   #Wrocław Parkowa
   204008100: 50,
-  977768092: 50,
-  
-  #Tyniec Domasławska
-  1167942314: 50
+  977768092: 50
 }
 
 speed_overrides_id_backward = {
-  #Tyniec Domasławska
-  1167942314: 45
+
 }
 
 force_exp_mode_id = [
