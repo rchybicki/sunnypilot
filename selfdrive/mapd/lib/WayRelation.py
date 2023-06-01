@@ -88,7 +88,6 @@ speed_overrides_id = {
   #Wjazd na obwodnice z Mokronosu w stronę Tyńca
   223324845: 59,
   1169806867: 60, 
-  807593955: 70,
   111853026: 120,
   1176894307: 120,
 
@@ -356,6 +355,8 @@ speed_overrides_id_backward = {
 }
 
 force_exp_mode_id = [
+  #Wjazd na obwodnicę z Mokronosu w stronę Tyńca
+  807593955,
   #Tyniec początek Domasławskiej
   1168346112,
   1172963338,
