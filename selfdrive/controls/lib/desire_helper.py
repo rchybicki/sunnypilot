@@ -53,11 +53,11 @@ class DesireHelper:
                              0.5 if lane_change_set_timer == 2 else 1.0 if lane_change_set_timer == 3 else \
                              1.5 if lane_change_set_timer == 4 else 2.0
     v_ego = carstate.vEgo
-    one_blinker = False #carstate.leftBlinker != carstate.rightBlinker
+    one_blinker = carstate.leftBlinker != carstate.rightBlinker
     below_lane_change_speed = v_ego < LANE_CHANGE_SPEED_MIN
 
     # Lane detection by FrogAi
-    if one_blinker:
+    if False: #one_blinker:
       # Set the minimum lane threshold to 3.0 meters
       min_lane_threshold = 3.0
       # Set the blinker index based on which signal is on

@@ -50,7 +50,7 @@ speed_overrides_id = {
   1167942324: 40, #Przejazd kolejowy pomiędzy Domasławiem a Bielanami
 
   #Tyniec Domasławska
-  1169316187: 10, #przed domem  
+  1169316187: 13, #przed domem  
   1169294668: 45,
   35551085: 50,
   1169316186: 50,
@@ -356,6 +356,9 @@ speed_overrides_id_backward = {
 }
 
 force_exp_mode_id = [
+  #Tyniec początek Domasławskiej
+  1168346112,
+  1172963338,
   #Obwodnica przed zjazdem do Tyńca od miasta
   121496055,
   118272063,

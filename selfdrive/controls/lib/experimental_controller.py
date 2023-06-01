@@ -88,7 +88,7 @@ class ExperimentalController():
     signal = self.v_ego < 25 and (self.carState.leftBlinker or self.carState.rightBlinker)
     self.curve = self.road_curvature(lead, standstill)
     stop_light_detected = self.stop_sign_and_light(lead, standstill)
-    speed = self.v_ego_kph <= 30.
+    speed = self.v_ego_kph <= 25.
     self.active = (self.curve or stop_light_detected or standstill or signal or speed) and not self.gas_pressed and self.op_enabled
 
 
