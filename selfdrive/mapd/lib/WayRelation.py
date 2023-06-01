@@ -88,6 +88,7 @@ speed_overrides_id = {
   #Wjazd na obwodnice z Mokronosu w stronę Tyńca
   223324845: 59,
   1169806867: 60, 
+  807593955: 70,
   111853026: 120,
   1176894307: 120,
 
