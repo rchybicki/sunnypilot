@@ -28,12 +28,12 @@ class ExperimentalController():
     self.previous_lead_status = False
     self.previous_lead_speed = 0
     self.params = Params()
-    self.enabled = not self.params.get_bool("TurnSpeedControl")
+    self.enabled = not self.params.get_bool("TurnVisionControl")
 
   def update_params(self):
     time = sec_since_boot()
     if time > self.last_params_update + 5.0:
-      self.enabled = not self.params.get_bool("TurnSpeedControl")
+      self.enabled = not self.params.get_bool("TurnVisionControl")
       self.last_params_update = time
 
   def road_curvature(self, lead, standstill):
