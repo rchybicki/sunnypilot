@@ -268,12 +268,12 @@ class LongitudinalMpc:
       self.solver.cost_set(i, 'Zl', Zl)
 
   def get_cost_multipliers(self):
-    TFs = [0.8, 1.0, 1.2, T_FOLLOW, 1.8]
+    TFs = [0.8, 1.0, T_FOLLOW, 3.]
     # KRKeegan adjustments to costs for different TFs
     # these were calculated using the test_longitudinal.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.05, .1, .8, 1., 1.1])
-    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, .8, 1., 1.1]) 
-    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1.3, 1., 1.1]) 
+    a_change_tf = interp(self.desired_TF, TFs, [.08, .1, 1., .5 ])
+    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, 1., .25 ]) 
+    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1., .1 ]) 
     return a_change_tf, j_ego_tf, d_zone_tf
 
   def set_weights(self, prev_accel_constraint=True):
@@ -429,9 +429,7 @@ class LongitudinalMpc:
 
     self.params[:,2] = np.min(x_obstacles, axis=1)
     self.params[:,3] = np.copy(self.prev_a)
-    self.params[:,4] = T_FOLLOW
-    if self.mode == 'acc':
-      self.params[:,4] = self.desired_TF
+    self.params[:,4] = self.desired_TF
 
     self.run()
     if (np.any(lead_xv_0[FCW_IDXS,0] - self.x_sol[FCW_IDXS,0] < CRASH_DISTANCE) and
