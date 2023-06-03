@@ -25,7 +25,7 @@ from system.swaglog import cloudlog
 LON_MPC_STEP = 0.2  # first step is 0.2s
 
 A_CRUISE_MAX_VAL_GAP4 = [ 0.75, 0.7, 0.65, 0.6, 0.55, 0.5,  0.5,  0.4,  0.2 ]
-A_CRUISE_MAX_VAL_GAP3 = [ 1.6,  1.5, 1.2,  1.1, 0.9,  0.8,  0.7,  0.6,  0.4 ]
+A_CRUISE_MAX_VAL_GAP3 = [ 1.6,  1.5, 1.3, 1.2,  1.1,   1.,  0.9,  0.8,  0.4 ]
 A_CRUISE_MAX_VAL_GAP2 = A_CRUISE_MAX_VAL_GAP3 #[ 1.2, 1.4, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
 A_CRUISE_MAX_VAL_GAP1 = A_CRUISE_MAX_VAL_GAP2 #[ 1.4, 1.6, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
              # in kph      0   7.2   28   39    54    72    90    108   195

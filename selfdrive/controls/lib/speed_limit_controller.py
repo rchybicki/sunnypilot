@@ -16,9 +16,12 @@ _PARAMS_UPDATE_PERIOD = 2.  # secs. Time between parameter updates.
 _TEMP_INACTIVE_GUARD_PERIOD = 1.  # secs. Time to wait after activation before considering temp deactivation signal.
 
 # Lookup table for speed limit percent offset depending on speed, RCH Custom
-                  # km/h  14     15    41    42     59    60   61     99   100
-_LIMIT_PERC_OFFSET_BP = [ 4.15,  4.16, 11.3, 11.4, 16.4, 16.6, 16.7, 27.5, 27.7] 
-_LIMIT_PERC_OFFSET_V =  [ 0,     1.38, 1.38, 0.83, 0.83, 1.94, 3.33, 3.33, 4.72]
+                        # km/h  14     15    41    42     59    60   61     99   100
+_LIMIT_PERC_OFFSET_BP =      [ 4.15,  4.16, 11.3, 11.4, 16.4, 16.6, 16.7, 27.5, 27.7 ] 
+_LIMIT_PERC_OFFSET_V_GAP4 =  [ 0,     0,       0,    0,    0,    0,    0,    0,    0 ]
+_LIMIT_PERC_OFFSET_V_GAP3 =  [ 0,     1.38, 1.38, 0.83, 0.83, 1.94, 3.33, 3.33, 4.72 ]
+_LIMIT_PERC_OFFSET_V_GAP2 =  [ 0,     2.77, 2.77, 2.77, 2.77, 2.77, 4.16, 4.16, 5.55 ]
+_LIMIT_PERC_OFFSET_V_GAP1 =  [ 0,     4.16, 4.16, 4.16, 4.16, 4.16, 5.55, 5.55, 6.9  ]  
                 # km/h  5     
                 # 3   0.83
                 # 5   1.38
@@ -28,6 +31,7 @@ _LIMIT_PERC_OFFSET_V =  [ 0,     1.38, 1.38, 0.83, 0.83, 1.94, 3.33, 3.33, 4.72]
                 # 15  4.16 
                 # 17  4.72
                 # 20  5.55
+                # 25  6.9
 
 SpeedLimitControlState = log.LongitudinalPlan.SpeedLimitControlState
 EventName = car.CarEvent.EventName
@@ -94,7 +98,7 @@ class SpeedLimitResolver():
     return self.speed_limit, self.distance, self.source
 
   def _get_from_car_state(self):
-    self._limit_solutions[SpeedLimitResolver.Source.car_state] = self._sm['carState'].cruiseState.speedLimit
+    self._limit_solutions[SpeedLimitResolver.Source.car_state] = self.carstate.cruiseState.speedLimit
     self._distance_solutions[SpeedLimitResolver.Source.car_state] = 0.
 
   def _get_from_nav(self):
@@ -318,7 +322,14 @@ class SpeedLimitController():
   def speed_limit_offset(self):
     if self._offset_enabled:
       if self._offset_type == 0:
-        return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V)
+          if self.carstate.gapAdjustCruiseTr == 1:
+            return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V_GAP1)
+          elif self.carstate.gapAdjustCruiseTr == 2:
+            return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V_GAP2)
+          elif self.carstate.gapAdjustCruiseTr == 4:
+            return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V_GAP4)
+          else:
+            return interp(self._speed_limit, _LIMIT_PERC_OFFSET_BP, _LIMIT_PERC_OFFSET_V_GAP3)
       elif self._offset_type == 1:
         return self._offset_value * 0.01 * self._speed_limit
       elif self._offset_type == 2:
@@ -450,15 +461,15 @@ class SpeedLimitController():
       self.enabled_experimental = False
 
   def update(self, enabled, v_ego, a_ego, sm, v_cruise_setpoint, events=Events()):
-    _car_state = sm['carState']
-    self._op_enabled = sm['controlsState'].enabled and _car_state.cruiseState.enabled and \
-                       not (_car_state.brakePressed and (not self._brake_pressed_prev or not _car_state.standstill)) and \
+    self.carstate = sm['carState']
+    self._op_enabled = sm['controlsState'].enabled and self.carstate.cruiseState.enabled and \
+                       not (self.carstate.brakePressed and (not self._brake_pressed_prev or not self.carstate.standstill)) and \
                        not events.any(ET.OVERRIDE_LONGITUDINAL)
     self._v_ego = v_ego
     self._a_ego = a_ego
     self._v_cruise_setpoint = v_cruise_setpoint
-    self._gas_pressed = _car_state.gasPressed
-    self._brake_pressed = _car_state.brakePressed
+    self._gas_pressed = self.carstate.gasPressed
+    self._brake_pressed = self.carstate.brakePressed
 
     self._speed_limit, self._distance, self._source = self._resolver.resolve(v_ego, self.speed_limit, sm)
 
