@@ -199,7 +199,7 @@ class CarController:
 
       if self.frame % 2 == 0 and self.CP.openpilotLongitudinalControl:
         # calculate jerk from plan, give a small offset for the upper limit for the cars ecu
-        lower_jerk = clip(abs(accel - self.accel_last) * 50, 0., 3.0)
+        lower_jerk = clip(abs(accel - self.accel_last) * 50, 0., 3.0) if accel < 3.5 else 3.0
         upper_jerk = lower_jerk + 0.5
 
         if CS.out.vEgoRaw < 4.:
