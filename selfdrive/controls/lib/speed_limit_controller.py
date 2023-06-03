@@ -98,7 +98,7 @@ class SpeedLimitResolver():
     return self.speed_limit, self.distance, self.source
 
   def _get_from_car_state(self):
-    self._limit_solutions[SpeedLimitResolver.Source.car_state] = self.carstate.cruiseState.speedLimit
+    self._limit_solutions[SpeedLimitResolver.Source.car_state] = self._sm['carState'].cruiseState.speedLimit
     self._distance_solutions[SpeedLimitResolver.Source.car_state] = 0.
 
   def _get_from_nav(self):
