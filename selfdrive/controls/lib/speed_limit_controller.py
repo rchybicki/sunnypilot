@@ -18,8 +18,8 @@ _TEMP_INACTIVE_GUARD_PERIOD = 1.  # secs. Time to wait after activation before c
 # Lookup table for speed limit percent offset depending on speed, RCH Custom
                         # km/h  14     15    41    42     59    60   61     99   100
 _LIMIT_PERC_OFFSET_BP =      [ 4.15,  4.16, 11.3, 11.4, 16.4, 16.6, 16.7, 27.5, 27.7 ] 
-_LIMIT_PERC_OFFSET_V_GAP4 =  [ 0,     0,       0,    0,    0,    0,    0,    0,    0 ]
-_LIMIT_PERC_OFFSET_V_GAP3 =  [ 0,     1.38, 1.38, 0.83, 0.83, 1.94, 3.33, 3.33, 4.72 ]
+_LIMIT_PERC_OFFSET_V_GAP4 =  [ 0,     0,       0, 0.83, 0.83,    0,    0,    0,    0 ]
+_LIMIT_PERC_OFFSET_V_GAP3 =  [ 0,     1.38, 1.38, 1.94, 1.94, 1.94, 3.33, 3.33, 4.72 ]
 _LIMIT_PERC_OFFSET_V_GAP2 =  [ 0,     2.77, 2.77, 2.77, 2.77, 2.77, 4.16, 4.16, 5.55 ]
 _LIMIT_PERC_OFFSET_V_GAP1 =  [ 0,     4.16, 4.16, 4.16, 4.16, 4.16, 5.55, 5.55, 6.9  ]  
                 # km/h  5     

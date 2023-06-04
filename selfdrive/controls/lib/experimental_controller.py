@@ -45,7 +45,8 @@ class ExperimentalController():
         curvature_ratios = predicted_lateral_accelerations / (predicted_velocities ** 2)
         predicted_lateral_accelerations = curvature_ratios * (self.v_ego ** 2)
         curvature = np.amax(predicted_lateral_accelerations)
-        if curvature >= 1.3 or (self.curve and curvature > 1.1):
+        curvature_bp = 1.3 if self.v_ego_kph < 120. else 1.5
+        if curvature >= curvature_bp or (self.curve and curvature > 1.1):
           # Setting the maximum to 10 lets it hold the status for 0.25s after it goes "false" to help prevent false negatives
           self.curvature_count = min(10, self.curvature_count + 1)
         else:
