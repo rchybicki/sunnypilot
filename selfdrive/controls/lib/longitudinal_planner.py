@@ -25,7 +25,8 @@ from system.swaglog import cloudlog
 LON_MPC_STEP = 0.2  # first step is 0.2s
 
 A_CRUISE_MAX_VAL_GAP4 = [ 0.75, 0.7, 0.65, 0.6, 0.55, 0.5,  0.5,  0.4,  0.2 ]
-A_CRUISE_MAX_VAL_GAP3 = [ 1.6,  1.5, 1.3, 1.2,  1.1,   1.,  0.9,  0.8,  0.4 ]
+A_CRUISE_MAX_VAL_GAP3 = [ 1.6,  1.5, 1.3,  1.2, 1.1,  1.,   0.9,  0.8,  0.4 ]
+A_CRUISE_MAX_VAL_SLOW = [ 1.6,  1.5, 1.2,  1.1, 0.9,  0.8,  0.7,  0.6,  0.4 ]
 A_CRUISE_MAX_VAL_GAP2 = A_CRUISE_MAX_VAL_GAP3 #[ 1.2, 1.4, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
 A_CRUISE_MAX_VAL_GAP1 = A_CRUISE_MAX_VAL_GAP2 #[ 1.4, 1.6, 1.3, 1.2, 1.0,  0.8,  0.6,  0.5,  0.3]
              # in kph      0   7.2   28   39    54    72    90    108   195
@@ -72,7 +73,7 @@ EventName = car.CarEvent.EventName
 
 
 
-def get_max_accel(v_ego, carstate):
+def get_max_accel(v_ego, carstate, speedlimit):
   if carstate.gapAdjustCruiseTr == 1:
     return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP1)
   elif carstate.gapAdjustCruiseTr == 2:
@@ -80,7 +81,7 @@ def get_max_accel(v_ego, carstate):
   elif carstate.gapAdjustCruiseTr == 4:
     return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)
   else:
-    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3)
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP3 if speedlimit >= 100 else A_CRUISE_MAX_VAL_SLOW)
 
 
 def limit_accel_in_turns(v_ego, angle_steers, a_target, live_params, VM):
@@ -163,7 +164,7 @@ class LongitudinalPlanner:
     self.VM.update_params(x, sr)
 
     if self.mpc.mode == 'acc':
-      accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego, sm['carState'])]
+      accel_limits = [A_CRUISE_MIN, get_max_accel(v_ego, sm['carState'], self.speed_limit_controller.speed_limit)]
       accel_limits_turns = limit_accel_in_turns(v_ego, sm['carState'].steeringAngleDeg, accel_limits, lp, self.VM)
     else:
       accel_limits = [MIN_ACCEL, MAX_ACCEL]
