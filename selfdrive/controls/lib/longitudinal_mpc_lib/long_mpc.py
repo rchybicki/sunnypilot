@@ -76,7 +76,7 @@ def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
   # If we're going 20%+ faster than the lead vehicle and driving over 45 mph, apply the offset
   if np.all(v_ego - v_lead > v_ego * .20) and np.all(v_ego > 20):
     # Decrease following distance according to how far away the lead is
-    distance_offset = radarstate.leadOne.dRel / v_lead
+    distance_offset = radarstate.leadOne.dRel * 1.5 / v_lead
   return distance + distance_offset
 
 def get_safe_obstacle_distance(v_ego, t_follow=T_FOLLOW):
@@ -267,21 +267,16 @@ class LongitudinalMpc:
     for i in range(N):
       self.solver.cost_set(i, 'Zl', Zl)
 
-  def get_cost_multipliers(self):
-    TFs = [0.8, 1.0, T_FOLLOW, 3.]
-    # KRKeegan adjustments to costs for different TFs
-    # these were calculated using the test_longitudinal.py deceleration tests
-    a_change_tf = interp(self.desired_TF, TFs, [.08, .1, 1., .5 ])
-    j_ego_tf = interp(self.desired_TF, TFs, [.5, .6, 1., .25 ]) 
-    d_zone_tf = interp(self.desired_TF, TFs, [1.8, 1.6, 1., .1 ]) 
-    return a_change_tf, j_ego_tf, d_zone_tf
+  def get_jerk_factor(self):
+    TFs = [0.8, 1.0, T_FOLLOW, 1.8]
+    return interp(self.desired_TF, TFs, [.1, .2, .5, 1. ])
 
   def set_weights(self, prev_accel_constraint=True):
     if self.mode == 'acc':
-      cost_multipliers = self.get_cost_multipliers()
+      jerk_factor = self.get_jerk_factor()
       a_change_cost = A_CHANGE_COST if prev_accel_constraint else 0
-      cost_weights = [X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST, A_EGO_COST, a_change_cost * cost_multipliers[0], J_EGO_COST * cost_multipliers[1]]
-      constraint_cost_weights = [LIMIT_COST, LIMIT_COST, LIMIT_COST, DANGER_ZONE_COST * cost_multipliers[2]]
+      cost_weights = [X_EGO_OBSTACLE_COST, X_EGO_COST, V_EGO_COST, A_EGO_COST,jerk_factor * a_change_cost, jerk_factor * J_EGO_COST]
+      constraint_cost_weights = [LIMIT_COST, LIMIT_COST, LIMIT_COST, DANGER_ZONE_COST]
     elif self.mode == 'blended':
       a_change_cost = 40.0 if prev_accel_constraint else 0
       cost_weights = [0., 0.1, 0.2, 5.0, a_change_cost, 1.0]
@@ -342,8 +337,10 @@ class LongitudinalMpc:
     self.cruise_min_a = min_a
     self.max_a = max_a
 
-  def update_TF(self, carstate):
+  def update_TF(self, carstate, exp_mode):
     gac_tr = carstate.gapAdjustCruiseTr
+    if exp_mode:
+      self.desired_TF = 1.0
     if gac_tr == 4:
       self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
     elif gac_tr == 2:
@@ -363,7 +360,7 @@ class LongitudinalMpc:
     lead_xv_0 = self.process_lead(exp_mode, radarstate.leadOne)
     lead_xv_1 = self.process_lead(exp_mode, radarstate.leadTwo)
 
-    self.update_TF(carstate)
+    self.update_TF(carstate, exp_mode)
     self.set_weights(prev_accel_constraint)
 
     # To estimate a safe distance from a moving lead, we calculate how much stopping
