@@ -75,13 +75,13 @@ EventName = car.CarEvent.EventName
 
 def get_max_accel(v_ego, carstate, speedlimit):
   if carstate.gapAdjustCruiseTr == 1:
-    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 100 else A_CRUISE_MAX_VAL_GAP3)
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 27.7 else A_CRUISE_MAX_VAL_GAP3)
   elif carstate.gapAdjustCruiseTr == 2:
-    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 100 else A_CRUISE_MAX_VAL_GAP3)
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 27.7 else A_CRUISE_MAX_VAL_GAP3)
   elif carstate.gapAdjustCruiseTr == 4:
     return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_GAP4)
   else:
-    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 100 else A_CRUISE_MAX_VAL_GAP3)
+    return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VAL_FAST if speedlimit >= 27.7 else A_CRUISE_MAX_VAL_GAP3)
 
 
 def limit_accel_in_turns(v_ego, angle_steers, a_target, live_params, VM):

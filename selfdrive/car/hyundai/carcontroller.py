@@ -75,7 +75,7 @@ class CarController:
 
     # accel + longitudinal
     accel = clip(actuators.accel, CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX)
-    stopping = actuators.longControlState == LongCtrlState.stopping and CS.out.standstill
+    stopping = actuators.longControlState == LongCtrlState.stopping
     set_speed_in_units = hud_control.setSpeed * (CV.MS_TO_KPH if CS.is_metric else CV.MS_TO_MPH)
 
     # HUD messages
@@ -198,7 +198,7 @@ class CarController:
               self.last_button_frame = self.frame
 
       if self.frame % 2 == 0 and self.CP.openpilotLongitudinalControl:
-        min_required_jerk = min(2.5, abs(accel - CS.out.aEgo) * 25)
+        min_required_jerk = min(2.5, abs(accel - CS.out.aEgo) * 15)
         # calculate jerk from plan, give a small offset for the upper limit for the cars ecu
         lower_jerk = clip(abs(accel - self.accel_last) * 50, min_required_jerk, 3.0)
         upper_jerk = lower_jerk + 0.5
@@ -211,6 +211,8 @@ class CarController:
             # When decelerating from very low speeds allow more jerk to prevent a slow stop
             lower_jerk = max(0.2, lower_jerk)
             upper_jerk = lower_jerk + 0.5
+            
+        stopping = stopping and CS.out.vEgoRaw < 0.01
         can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc))
