@@ -205,7 +205,7 @@ class CarController:
 
         if CS.out.vEgoRaw < 4.:
           if accel > 0:
-            lower_jerk = max(0.5, lower_jerk)
+            # lower_jerk = max(0.5, lower_jerk)
             upper_jerk = lower_jerk + 0.5
           else:
             # When decelerating from very low speeds allow more jerk to prevent a slow stop
