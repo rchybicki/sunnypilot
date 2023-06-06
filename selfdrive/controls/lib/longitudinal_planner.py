@@ -155,7 +155,7 @@ class LongitudinalPlanner:
     reset_state = long_control_off if self.CP.openpilotLongitudinalControl else not sm['controlsState'].enabled
 
     # No change cost when user is controlling the speed, or when standstill
-    prev_accel_constraint = not sm['carState'].standstill
+    prev_accel_constraint = not (reset_state or sm['carState'].standstill)
 
     # Update VehicleModel
     lp = sm['liveParameters']
