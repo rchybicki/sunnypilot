@@ -8,6 +8,7 @@ from selfdrive.car.hyundai.radar_interface import RADAR_START_ADDR
 from selfdrive.car import STD_CARGO_KG, create_button_event, scale_tire_stiffness, get_safety_config, create_mads_event
 from selfdrive.car.interfaces import CarInterfaceBase
 from selfdrive.car.disable_ecu import disable_ecu
+from selfdrive.car.hyundai.enable_radar_tracks import enable_radar_tracks
 
 Ecu = car.CarParams.Ecu
 ButtonType = car.CarState.ButtonEvent.Type
@@ -339,6 +340,10 @@ class CarInterface(CarInterfaceBase):
     if CP.flags & HyundaiFlags.ENABLE_BLINKERS:
       disable_ecu(logcan, sendcan, bus=CanBus(CP.ECAN), addr=0x7B1, com_cont_req=b'\x28\x83\x01')
 
+    # for cars that have a radar that turns off when the car is off
+    if CP.carFingerprint in [CAR.SANTA_FE_HEV_2022, CAR.SANTA_FE_2022]:
+      enable_radar_tracks(CP, logcan, sendcan)
+      
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
     self.CS = self.sp_update_params(self.CS)
