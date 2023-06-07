@@ -481,9 +481,11 @@ speed_overrides_id_backward = {
 force_exp_mode_id = [
   #Wjazd na obwodnicę z Mokronosu w stronę Tyńca
   807593950,  #60
+
   #Tyniec początek Domasławskiej
   1168346112, #40
   1172963338, #40
+
   #Tyniec Domasławka przed hopka
   1169294668, # 40
   1174857599, # 40
@@ -492,32 +494,40 @@ force_exp_mode_id = [
   1169297710, # 70
 
   #Obwodnica przed zjazdem do Tyńca od miasta
-  121496050,
-  118272063,
+  121496055, # 120
+  118272063, # 120
+
   #Obwodnica przed zjazdem na Mokronos
-  498067257,
-  111853047,
-  227138119,
-  227138121,
-  111853025,
+  498067257,  # 120
+  111853047,  # 120
+  227138119,  # 120
+  227138121,  # 120
+  111853025,  # 120
+
   #Obwodnica przed zjazdem do Tyńca od Kobierzyc
-  377273969,
-  95288232,
+  377273969, # 120
+  95288232,  # 120
+
   #A4 zjazd do miasta od strony Tyńca
-  272587342,
+  272587342, # 80
+
   #S5 zjazd na Rawicz
-  486463157,
+  486463157, #120
+
   #Zabrodzie głowna
-  25121881,
-  189327315,
-  189327400,
+  25121881,  # 30 and 50
+  189327315, # 50
+  189327400, # 50
+
   #Wrocław Odkrywców
-  362486306,
+  362486306, # 30
+
   #Wrocław Podróżnicza
-  20308568,
+  20308568, # 30
+
   #Wrocław Grabiszyńska przejazd przez tory przy FAT
-  190833105,
-  322072125
+  190833105, # 50
+  322072125  # 50
 ]
 
 def is_osm_time_condition_active(condition_string):
