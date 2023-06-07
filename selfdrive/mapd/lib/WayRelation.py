@@ -60,6 +60,7 @@ speed_overrides_id = {
   1167942322: 45, # 40
   1174857599: 45, # 40
   1169295507: 60, # 50
+  1168346113: 25, # 30 #ostry zakret na koncu
 
   #Tyniec Szczęśliwa
   1171211140: 5, #wjazd
