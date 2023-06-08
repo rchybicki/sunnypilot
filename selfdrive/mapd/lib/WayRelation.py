@@ -486,6 +486,7 @@ force_exp_mode_id = [
   #Tyniec początek Domasławskiej
   1168346112, #40
   1172963338, #40
+  1168346113, #40
 
   #Tyniec Domasławka przed hopka
   1169294668, # 40
