@@ -159,6 +159,17 @@ speed_overrides_id = {
   208287752: 80, # 90
   613473800: 80, # 90
 
+  #Droga pomiędzy domasławiem a rondem w stronę Kobierzyc
+  549996850: 60, # 90
+  446503133: 60, # 90
+  420299397: 60, # 90
+  738968783: 50, # 90
+  738968784: 50, # 90
+  549996852: 50, # forward 50 backward 90
+  549996853: 50, # forward 50 backward 90
+  822118623: 50, # 90
+  305902785: 50, # 90
+
 
   #pomiędzy rondami w strone Bielan od Tyńca
   520977978: 65, # 90
@@ -211,6 +222,11 @@ speed_overrides_id = {
   124879130: 65, # 60
   330027680: 65, # 60
   330027165: 65, # 60
+
+  #Wrocław Wiejska
+  550476301: 45, # 50
+  185988018: 45, # 50
+  650081973: 45, # 50
 
   #Wrocław Aleja Karkonoska w stronę miasta
   897762977: 65, # 60
@@ -480,6 +496,11 @@ speed_overrides_id_backward = {
 }
 
 force_exp_mode_id = [
+  #Droga pomiędzy domasławiem a rondem w stronę Kobierzyc
+  82211862,   # 90
+  1057211573, # 70
+  1124305770, # Wjazd na rondo w stronę Tyńca
+
   #Wjazd na obwodnicę z Mokronosu w stronę Tyńca
   807593950,  #60
 

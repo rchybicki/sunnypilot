@@ -63,12 +63,12 @@ STOP_DISTANCE = 5. # was 5.5
 # DIST_V_GAP2 = [ 0.50, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25, 1.25, 1.25, 1.25, 1.25 ]
 # DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
 
-DIST_V_GAP4 = [ 1.45, 1.45, 1.40, 1.40, 1.35, 1.3,  1.25, 1.25, 1.25, 1.25, 1.25 ]
-DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.20, 1.15, 1.1,  1.0,  0.9,  0.9,  0.9,  0.9 ]
-DIST_V_GAP2 = DIST_V_GAP3 # [ 1.1,  1.1,  1.05, 1.05, 1.00, 0.95, 0.90, 0.8,  0.8,  0.8,  0.8 ]
-DIST_V_GAP1 = DIST_V_GAP3 # [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 ]
-   # in kph       0    16    32    48    64    80    96   112   128   144   160
-DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
+# DIST_V_GAP4 = [ 1.45, 1.45, 1.40, 1.40, 1.35, 1.3,  1.25, 1.25, 1.25, 1.25, 1.25 ]
+# DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.20, 1.15, 1.1,  1.0,  0.9,  0.9,  0.9,  0.9 ]
+# DIST_V_GAP2 = DIST_V_GAP3 # [ 1.1,  1.1,  1.05, 1.05, 1.00, 0.95, 0.90, 0.8,  0.8,  0.8,  0.8 ]
+# DIST_V_GAP1 = DIST_V_GAP3 # [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 ]
+#    # in kph       0    16    32    48    64    80    96   112   128   144   160
+# DIST_V_BP =   [ 0,    4.5,  9,    13.5,  18,  22.5,  27,  31.5, 36,   40.5, 45   ]
 
 def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
   distance = (v_lead**2) / (2 * COMFORT_BRAKE)
@@ -342,13 +342,13 @@ class LongitudinalMpc:
     if exp_mode:
       self.desired_TF = 1.0
     if gac_tr == 4:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+      self.desired_TF = 1.45 # np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
     elif gac_tr == 2:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+      self.desired_TF = 1.25 # np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
     elif gac_tr == 1:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
+      self.desired_TF = 1.25 # np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
     else:
-      self.desired_TF = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+      self.desired_TF = 1.25 # np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
    
 
   def update(self, carstate, radarstate, v_cruise, x, v, a, j, prev_accel_constraint):
