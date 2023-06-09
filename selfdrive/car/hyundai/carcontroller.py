@@ -212,7 +212,7 @@ class CarController:
             lower_jerk = max(0.2, lower_jerk)
             upper_jerk = lower_jerk + 0.5
             
-        stopping = stopping and CS.out.vEgoRaw < 0.01
+        stopping = stopping and CS.out.vEgoRaw < 0.05
         can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc))
