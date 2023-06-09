@@ -4,7 +4,7 @@ import numpy as np
 from common.numpy_fast import clip, interp
 
 import cereal.messaging as messaging
-from cereal import car
+from cereal import car, log
 from common.conversions import Conversions as CV
 from common.filter_simple import FirstOrderFilter
 from common.realtime import DT_MDL
@@ -21,6 +21,7 @@ from selfdrive.controls.lib.experimental_controller import ExperimentalControlle
 from selfdrive.controls.lib.events import Events
 from system.swaglog import cloudlog
 
+TurnSpeedControlState = log.LongitudinalPlan.SpeedLimitControlState
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 
@@ -286,7 +287,8 @@ class LongitudinalPlanner:
       v_solutions['limit'] = self.speed_limit_controller.speed_limit_offseted
 
     if not sm['controlsState'].experimentalMode:
-      if self.turn_speed_controller.is_active:
+      if self.turn_speed_controller.is_active and \
+         (self.vision_turn_controller._is_enabled or self.turn_speed_controller.state == TurnSpeedControlState.adapting):
         a_solutions['turnlimit'] = self.turn_speed_controller.a_target
         v_solutions['turnlimit'] = self.turn_speed_controller.speed_limit
       elif self.vision_turn_controller.is_active:
