@@ -252,7 +252,7 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam, self.cp_loopback)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
@@ -262,13 +262,13 @@ class CarInterface(CarInterfaceBase):
       if self.CS.cruise_buttons != CruiseButtons.UNPRESS and self.CS.prev_cruise_buttons != CruiseButtons.UNPRESS:
         buttonEvents.append(create_button_event(CruiseButtons.UNPRESS, self.CS.prev_cruise_buttons, BUTTONS_DICT, CruiseButtons.UNPRESS))
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
     if not self.CP.pcmCruise:
       if any(b.type == ButtonType.accelCruise and b.pressed for b in buttonEvents):
         self.CS.accEnabled = True
 
-    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret.cruiseState.available, self.CS.accEnabled,
+    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret, self.CS.accEnabled,
                                                                           buttonEvents, c.vCruise)
 
     if ret.cruiseState.available:
@@ -289,7 +289,7 @@ class CarInterface(CarInterfaceBase):
       self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
       ret.cruiseState.enabled = False if self.CP.pcmCruise else self.CS.accEnabled
 
-    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0:
+    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0 and self.CP.pcmCruiseSpeed:
       if ret.gasPressed and not ret.cruiseState.enabled:
         self.CS.accEnabled = False
       self.CS.accEnabled = ret.cruiseState.enabled or self.CS.accEnabled

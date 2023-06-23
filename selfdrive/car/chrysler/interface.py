@@ -2,7 +2,7 @@
 from cereal import car
 from panda import Panda
 from selfdrive.car import STD_CARGO_KG, get_safety_config, create_mads_event
-from selfdrive.car.chrysler.values import CAR, RAM_HD, RAM_DT, RAM_CARS, ChryslerFlags
+from selfdrive.car.chrysler.values import CAR, RAM_HD, RAM_DT, RAM_CARS, ChryslerFlags, ChryslerFlagsSP, BUTTON_STATES
 from selfdrive.car.interfaces import CarInterfaceBase
 
 ButtonType = car.CarState.ButtonEvent.Type
@@ -11,15 +11,19 @@ GearShifter = car.CarState.GearShifter
 
 
 class CarInterface(CarInterfaceBase):
+  def __init__(self, CP, CarController, CarState):
+    super().__init__(CP, CarController, CarState)
+    self.buttonStatesPrev = BUTTON_STATES.copy()
+
   @staticmethod
   def _get_params(ret, candidate, fingerprint, car_fw, experimental_long, docs):
     ret.carName = "chrysler"
-    ret.dashcamOnly = candidate in RAM_HD
 
     # radar parsing needs some work, see https://github.com/commaai/openpilot/issues/26842
     ret.radarUnavailable = True # DBC[candidate]['radar'] is None
     ret.steerActuatorDelay = 0.1
     ret.steerLimitTimer = 0.4
+    ret.customStockLongAvailable = True
 
     # safety config
     ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.chrysler)]
@@ -66,10 +70,10 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 3.88
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
-      ret.minSteerSpeed = 14.5
-      # Older EPS FW allow steer to zero
-      if any(fw.ecu == 'eps' and fw.fwVersion[:4] <= b"6831" for fw in car_fw):
-        ret.minSteerSpeed = 0.
+      ret.minSteerSpeed = 0.5
+      ret.minEnableSpeed = 14.5
+      if any(fw.ecu == 'eps' and fw.fwVersion in (b"68273275AF", b"68273275AG", b"68312176AE", b"68312176AG",) for fw in car_fw):
+        ret.minEnableSpeed = 0.
 
     elif candidate == CAR.RAM_HD:
       ret.steerActuatorDelay = 0.2
@@ -78,6 +82,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 3405. + STD_CARGO_KG
       ret.minSteerSpeed = 16
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning, 1.0, False)
+      ret.spFlags |= ChryslerFlagsSP.SP_RAM_HD_PARAMSD_IGNORE.value
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")
@@ -93,41 +98,54 @@ class CarInterface(CarInterfaceBase):
 
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    for button in self.CS.buttonStates:
+      if self.CS.buttonStates[button] != self.buttonStatesPrev[button]:
+        be = car.CarState.ButtonEvent.new_message()
+        be.type = button
+        be.pressed = self.CS.buttonStates[button]
+        buttonEvents.append(be)
+
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
+
+    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret, self.CS.accEnabled,
+                                                                          buttonEvents, c.vCruise,
+                                                                          enable_buttons=(ButtonType.accelCruise, ButtonType.decelCruise, ButtonType.resumeCruise) if not self.CP.pcmCruiseSpeed else
+                                                                                         (ButtonType.accelCruise, ButtonType.decelCruise),
+                                                                          resume_button=(ButtonType.resumeCruise,) if not self.CP.pcmCruiseSpeed else
+                                                                                        (ButtonType.accelCruise, ButtonType.resumeCruise))
 
     if ret.cruiseState.available:
       if self.enable_mads:
         if not self.CS.prev_mads_enabled and self.CS.mads_enabled:
           self.CS.madsEnabled = True
+        if self.CS.prev_lkas_enabled != 1 and self.CS.lkas_enabled == 1:
+          self.CS.madsEnabled = not self.CS.madsEnabled
         self.CS.madsEnabled = self.get_acc_mads(ret.cruiseState.enabled, self.CS.accEnabled, self.CS.madsEnabled)
     else:
       self.CS.madsEnabled = False
 
-    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0):
-      if self.CS.out.cruiseState.enabled:  # CANCEL
-        if not ret.cruiseState.enabled:
-          self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
-      if self.get_sp_pedal_disengage(ret):
+    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0) or not self.CP.pcmCruiseSpeed:
+      if any(b.type == ButtonType.cancel for b in buttonEvents):
         self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
-        ret.cruiseState.enabled = False if self.CP.pcmCruise else self.CS.accEnabled
+    if self.get_sp_pedal_disengage(ret):
+      self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
+      ret.cruiseState.enabled = False if self.CP.pcmCruise else self.CS.accEnabled
 
-    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0:
+    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0 and self.CP.pcmCruiseSpeed:
+      if ret.gasPressed and not ret.cruiseState.enabled:
+        self.CS.accEnabled = False
+      self.CS.accEnabled = ret.cruiseState.enabled or self.CS.accEnabled
+
+    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0 and self.CP.pcmCruiseSpeed:
       if ret.gasPressed and not ret.cruiseState.enabled:
         self.CS.accEnabled = False
       self.CS.accEnabled = ret.cruiseState.enabled or self.CS.accEnabled
 
     ret, self.CS = self.get_sp_common_state(ret, self.CS)
-
-    # CANCEL
-    if self.CS.out.cruiseState.enabled and not ret.cruiseState.enabled:
-      be = car.CarState.ButtonEvent.new_message()
-      be.pressed = True
-      be.type = ButtonType.cancel
-      buttonEvents.append(be)
 
     # MADS BUTTON
     if self.CS.out.madsEnabled != self.CS.madsEnabled:
@@ -147,14 +165,26 @@ class CarInterface(CarInterfaceBase):
     events, ret = self.create_sp_events(self.CS, ret, events)
 
     # Low speed steer alert hysteresis logic
-    if self.CP.minSteerSpeed > 0. and ret.vEgo < (self.CP.minSteerSpeed + 0.5):
-      self.low_speed_alert = True
-    elif ret.vEgo > (self.CP.minSteerSpeed + 1.):
-      self.low_speed_alert = False
+    if self.CP.carFingerprint in RAM_DT:
+      if self.CS.out.vEgo >= self.CP.minEnableSpeed:
+        self.low_speed_alert = False
+      if (self.CP.minEnableSpeed >= 14.5) and (self.CS.out.gearShifter != car.CarState.GearShifter.drive):
+        self.low_speed_alert = True
+    else:
+      if self.CP.minSteerSpeed > 0. and ret.vEgo < (self.CP.minSteerSpeed + 0.5):
+        self.low_speed_alert = True
+      elif ret.vEgo > (self.CP.minSteerSpeed + 1.):
+        self.low_speed_alert = False
     if self.low_speed_alert:
       events.add(car.CarEvent.EventName.belowSteerSpeed)
 
+    ret.customStockLong = self.CS.update_custom_stock_long(self.CC.cruise_button, self.CC.final_speed_kph,
+                                                           self.CC.target_speed, self.CC.v_set_dis,
+                                                           self.CC.speed_diff, self.CC.button_type)
+
     ret.events = events.to_msg()
+
+    self.buttonStatesPrev = self.CS.buttonStates.copy()
 
     return ret
 

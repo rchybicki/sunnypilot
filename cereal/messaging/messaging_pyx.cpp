@@ -4,12 +4,13 @@
 {
     "distutils": {
         "depends": [
+            "cereal/messaging/impl_fake.h",
             "cereal/messaging/messaging.h"
         ],
         "language": "c++",
         "name": "cereal.messaging.messaging_pyx",
         "sources": [
-            "/data/openpilot-special/cereal/messaging/messaging_pyx.pyx"
+            "/data/openpilot/cereal/messaging/messaging_pyx.pyx"
         ]
     },
     "module_name": "cereal.messaging.messaging_pyx"
@@ -777,8 +778,9 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "new"
 #include "stdexcept"
 #include "typeinfo"
-#include <errno.h>
 #include <vector>
+#include <errno.h>
+#include "cereal/messaging/impl_fake.h"
 #include "cereal/messaging/messaging.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -989,8 +991,8 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "stringsource",
   "cereal/messaging/messaging_pyx.pyx",
+  "stringsource",
 };
 /* NoFastGil.proto */
 #define __Pyx_PyGILState_Ensure PyGILState_Ensure
@@ -1006,12 +1008,41 @@ static const char *__pyx_f[] = {
 
 
 /*--- Type declarations ---*/
+struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event;
+struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle;
 struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context;
 struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Poller;
 struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket;
 struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket;
 
-/* "cereal/messaging/messaging_pyx.pyx":25
+/* "cereal/messaging/messaging_pyx.pyx":55
+ * 
+ * 
+ * cdef class Event:             # <<<<<<<<<<<<<<
+ *   cdef cppEvent event;
+ * 
+ */
+struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event *__pyx_vtab;
+  Event event;
+};
+
+
+/* "cereal/messaging/messaging_pyx.pyx":85
+ * 
+ * 
+ * cdef class SocketEventHandle:             # <<<<<<<<<<<<<<
+ *   cdef cppSocketEventHandle * handle;
+ * 
+ */
+struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle {
+  PyObject_HEAD
+  SocketEventHandle *handle;
+};
+
+
+/* "cereal/messaging/messaging_pyx.pyx":117
  * 
  * 
  * cdef class Context:             # <<<<<<<<<<<<<<
@@ -1024,7 +1055,7 @@ struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context {
 };
 
 
-/* "cereal/messaging/messaging_pyx.pyx":42
+/* "cereal/messaging/messaging_pyx.pyx":134
  * 
  * 
  * cdef class Poller:             # <<<<<<<<<<<<<<
@@ -1038,8 +1069,8 @@ struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Poller {
 };
 
 
-/* "cereal/messaging/messaging_pyx.pyx":71
- *     return sockets
+/* "cereal/messaging/messaging_pyx.pyx":164
+ * 
  * 
  * cdef class SubSocket:             # <<<<<<<<<<<<<<
  *   cdef cppSubSocket * socket
@@ -1053,7 +1084,7 @@ struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket {
 };
 
 
-/* "cereal/messaging/messaging_pyx.pyx":123
+/* "cereal/messaging/messaging_pyx.pyx":216
  * 
  * 
  * cdef class PubSocket:             # <<<<<<<<<<<<<<
@@ -1067,8 +1098,22 @@ struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket {
 
 
 
-/* "cereal/messaging/messaging_pyx.pyx":71
- *     return sockets
+/* "cereal/messaging/messaging_pyx.pyx":55
+ * 
+ * 
+ * cdef class Event:             # <<<<<<<<<<<<<<
+ *   cdef cppEvent event;
+ * 
+ */
+
+struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event {
+  PyObject *(*setEvent)(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *, Event);
+};
+static struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event *__pyx_vtabptr_6cereal_9messaging_13messaging_pyx_Event;
+
+
+/* "cereal/messaging/messaging_pyx.pyx":164
+ * 
  * 
  * cdef class SubSocket:             # <<<<<<<<<<<<<<
  *   cdef cppSubSocket * socket
@@ -1154,12 +1199,49 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* RaiseDoubleKeywords.proto */
+static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
+
+/* ParseKeywords.proto */
+static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
+    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
+    const char* function_name);
+
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
     Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
 
-/* KeywordStringCheck.proto */
-static int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
+/* PyUnicode_Unicode.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj);
+
+/* PyObjectFormatSimple.proto */
+#if CYTHON_COMPILING_IN_PYPY
+    #define __Pyx_PyObject_FormatSimple(s, f) (\
+        likely(PyUnicode_CheckExact(s)) ? (Py_INCREF(s), s) :\
+        PyObject_Format(s, f))
+#elif PY_MAJOR_VERSION < 3
+    #define __Pyx_PyObject_FormatSimple(s, f) (\
+        likely(PyUnicode_CheckExact(s)) ? (Py_INCREF(s), s) :\
+        likely(PyString_CheckExact(s)) ? PyUnicode_FromEncodedObject(s, NULL, "strict") :\
+        PyObject_Format(s, f))
+#elif CYTHON_USE_TYPE_SLOTS
+    #define __Pyx_PyObject_FormatSimple(s, f) (\
+        likely(PyUnicode_CheckExact(s)) ? (Py_INCREF(s), s) :\
+        likely(PyLong_CheckExact(s)) ? PyLong_Type.tp_str(s) :\
+        likely(PyFloat_CheckExact(s)) ? PyFloat_Type.tp_str(s) :\
+        PyObject_Format(s, f))
+#else
+    #define __Pyx_PyObject_FormatSimple(s, f) (\
+        likely(PyUnicode_CheckExact(s)) ? (Py_INCREF(s), s) :\
+        PyObject_Format(s, f))
+#endif
+
+/* IncludeStringH.proto */
+#include <string.h>
+
+/* JoinPyUnicode.proto */
+static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
+                                      Py_UCS4 max_char);
 
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1167,6 +1249,64 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #else
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
+
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
+/* PyFunctionFastCall.proto */
+#if CYTHON_FAST_PYCALL
+#define __Pyx_PyFunction_FastCall(func, args, nargs)\
+    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs);
+#else
+#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
+#endif
+#define __Pyx_BUILD_ASSERT_EXPR(cond)\
+    (sizeof(char [1 - 2*!(cond)]) - 1)
+#ifndef Py_MEMBER_SIZE
+#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
+#endif
+#if CYTHON_FAST_PYCALL
+  static size_t __pyx_pyframe_localsplus_offset = 0;
+  #include "frameobject.h"
+#if PY_VERSION_HEX >= 0x030b00a6
+  #ifndef Py_BUILD_CORE
+    #define Py_BUILD_CORE 1
+  #endif
+  #include "internal/pycore_frame.h"
+#endif
+  #define __Pxy_PyFrame_Initialize_Offsets()\
+    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
+     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
+  #define __Pyx_PyFrame_GetLocalsplus(frame)\
+    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
+#endif // CYTHON_FAST_PYCALL
+#endif
+
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
+/* PyObjectCallMethO.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
+
+/* ArgTypeTest.proto */
+#define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
+    ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
+        __Pyx__ArgTypeTest(obj, type, name, exact))
+static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
+
+/* KeywordStringCheck.proto */
+static int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
 
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1207,11 +1347,12 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* ArgTypeTest.proto */
-#define __Pyx_ArgTypeTest(obj, type, none_allowed, name, exact)\
-    ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
-        __Pyx__ArgTypeTest(obj, type, name, exact))
-static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
 
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
@@ -1228,49 +1369,6 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 }
 #else
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
-#endif
-
-/* PyFunctionFastCall.proto */
-#if CYTHON_FAST_PYCALL
-#define __Pyx_PyFunction_FastCall(func, args, nargs)\
-    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs);
-#else
-#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
-#endif
-#define __Pyx_BUILD_ASSERT_EXPR(cond)\
-    (sizeof(char [1 - 2*!(cond)]) - 1)
-#ifndef Py_MEMBER_SIZE
-#define Py_MEMBER_SIZE(type, member) sizeof(((type *)0)->member)
-#endif
-#if CYTHON_FAST_PYCALL
-  static size_t __pyx_pyframe_localsplus_offset = 0;
-  #include "frameobject.h"
-#if PY_VERSION_HEX >= 0x030b00a6
-  #ifndef Py_BUILD_CORE
-    #define Py_BUILD_CORE 1
-  #endif
-  #include "internal/pycore_frame.h"
-#endif
-  #define __Pxy_PyFrame_Initialize_Offsets()\
-    ((void)__Pyx_BUILD_ASSERT_EXPR(sizeof(PyFrameObject) == offsetof(PyFrameObject, f_localsplus) + Py_MEMBER_SIZE(PyFrameObject, f_localsplus)),\
-     (void)(__pyx_pyframe_localsplus_offset = ((size_t)PyFrame_Type.tp_basicsize) - Py_MEMBER_SIZE(PyFrameObject, f_localsplus)))
-  #define __Pyx_PyFrame_GetLocalsplus(frame)\
-    (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
-#endif // CYTHON_FAST_PYCALL
-#endif
-
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
 
 /* PyDictVersioning.proto */
@@ -1320,27 +1418,6 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
-/* RaiseDoubleKeywords.proto */
-static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
-
-/* ParseKeywords.proto */
-static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
-    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
-    const char* function_name);
-
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name);
@@ -1354,6 +1431,9 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
 #else
 #define __Pyx_PyObject_GenericGetAttr PyObject_GenericGetAttr
 #endif
+
+/* SetVTable.proto */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable);
 
 /* PyErrExceptionMatches.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1369,20 +1449,94 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, P
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
 
-/* SetVTable.proto */
-static int __Pyx_SetVtable(PyObject *dict, void *vtable);
-
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
 /* CalculateMetaclass.proto */
 static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bases);
 
+/* FetchCommonType.proto */
+static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type);
+
+/* CythonFunctionShared.proto */
+#define __Pyx_CyFunction_USED 1
+#define __Pyx_CYFUNCTION_STATICMETHOD  0x01
+#define __Pyx_CYFUNCTION_CLASSMETHOD   0x02
+#define __Pyx_CYFUNCTION_CCLASS        0x04
+#define __Pyx_CyFunction_GetClosure(f)\
+    (((__pyx_CyFunctionObject *) (f))->func_closure)
+#define __Pyx_CyFunction_GetClassObj(f)\
+    (((__pyx_CyFunctionObject *) (f))->func_classobj)
+#define __Pyx_CyFunction_Defaults(type, f)\
+    ((type *)(((__pyx_CyFunctionObject *) (f))->defaults))
+#define __Pyx_CyFunction_SetDefaultsGetter(f, g)\
+    ((__pyx_CyFunctionObject *) (f))->defaults_getter = (g)
+typedef struct {
+    PyCFunctionObject func;
+#if PY_VERSION_HEX < 0x030500A0
+    PyObject *func_weakreflist;
+#endif
+    PyObject *func_dict;
+    PyObject *func_name;
+    PyObject *func_qualname;
+    PyObject *func_doc;
+    PyObject *func_globals;
+    PyObject *func_code;
+    PyObject *func_closure;
+    PyObject *func_classobj;
+    void *defaults;
+    int defaults_pyobjects;
+    size_t defaults_size;  // used by FusedFunction for copying defaults
+    int flags;
+    PyObject *defaults_tuple;
+    PyObject *defaults_kwdict;
+    PyObject *(*defaults_getter)(PyObject *);
+    PyObject *func_annotations;
+} __pyx_CyFunctionObject;
+static PyTypeObject *__pyx_CyFunctionType = 0;
+#define __Pyx_CyFunction_Check(obj)  (__Pyx_TypeCheck(obj, __pyx_CyFunctionType))
+static PyObject *__Pyx_CyFunction_Init(__pyx_CyFunctionObject* op, PyMethodDef *ml,
+                                      int flags, PyObject* qualname,
+                                      PyObject *self,
+                                      PyObject *module, PyObject *globals,
+                                      PyObject* code);
+static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *m,
+                                                         size_t size,
+                                                         int pyobjects);
+static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *m,
+                                                            PyObject *tuple);
+static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *m,
+                                                             PyObject *dict);
+static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *m,
+                                                              PyObject *dict);
+static int __pyx_CyFunction_init(void);
+
+/* CythonFunction.proto */
+static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
+                                      int flags, PyObject* qualname,
+                                      PyObject *closure,
+                                      PyObject *module, PyObject *globals,
+                                      PyObject* code);
+
+/* SetNameInClass.proto */
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+#define __Pyx_SetNameInClass(ns, name, value)\
+    (likely(PyDict_CheckExact(ns)) ? _PyDict_SetItem_KnownHash(ns, name, value, ((PyASCIIObject *) name)->hash) : PyObject_SetItem(ns, name, value))
+#elif CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_SetNameInClass(ns, name, value)\
+    (likely(PyDict_CheckExact(ns)) ? PyDict_SetItem(ns, name, value) : PyObject_SetItem(ns, name, value))
+#else
+#define __Pyx_SetNameInClass(ns, name, value)  PyObject_SetItem(ns, name, value)
+#endif
+
 /* Py3ClassCreate.proto */
 static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name, PyObject *qualname,
                                            PyObject *mkw, PyObject *modname, PyObject *doc);
 static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObject *bases, PyObject *dict,
                                       PyObject *mkw, int calculate_metaclass, int allow_py2_metaclass);
+
+/* CyFunctionClassCell.proto */
+static int __Pyx_CyFunction_InitClassCell(PyObject *cyfunctions, PyObject *classobj);
 
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
@@ -1410,13 +1564,64 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
+/* None.proto */
+#include <new>
+
 /* GCCDiagnostics.proto */
 #if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
 #define __Pyx_HAS_GCC_DIAGNOSTIC
 #endif
 
+/* CppExceptionConversion.proto */
+#ifndef __Pyx_CppExn2PyErr
+#include <new>
+#include <typeinfo>
+#include <stdexcept>
+#include <ios>
+static void __Pyx_CppExn2PyErr() {
+  try {
+    if (PyErr_Occurred())
+      ; // let the latest Python exn pass through and ignore the current one
+    else
+      throw;
+  } catch (const std::bad_alloc& exn) {
+    PyErr_SetString(PyExc_MemoryError, exn.what());
+  } catch (const std::bad_cast& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::bad_typeid& exn) {
+    PyErr_SetString(PyExc_TypeError, exn.what());
+  } catch (const std::domain_error& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::invalid_argument& exn) {
+    PyErr_SetString(PyExc_ValueError, exn.what());
+  } catch (const std::ios_base::failure& exn) {
+    PyErr_SetString(PyExc_IOError, exn.what());
+  } catch (const std::out_of_range& exn) {
+    PyErr_SetString(PyExc_IndexError, exn.what());
+  } catch (const std::overflow_error& exn) {
+    PyErr_SetString(PyExc_OverflowError, exn.what());
+  } catch (const std::range_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::underflow_error& exn) {
+    PyErr_SetString(PyExc_ArithmeticError, exn.what());
+  } catch (const std::exception& exn) {
+    PyErr_SetString(PyExc_RuntimeError, exn.what());
+  }
+  catch (...)
+  {
+    PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
+  }
+}
+#endif
+
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
@@ -1443,11 +1648,14 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_5Event_setEvent(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, Event __pyx_v_event); /* proto*/
 static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket *__pyx_v_self, SubSocket *__pyx_v_ptr); /* proto*/
 
 /* Module declarations from 'libc.string' */
 
 /* Module declarations from 'libcpp.string' */
+
+/* Module declarations from 'libcpp.vector' */
 
 /* Module declarations from 'libcpp' */
 
@@ -1455,41 +1663,64 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
 
 /* Module declarations from 'libc.errno' */
 
-/* Module declarations from 'libcpp.vector' */
-
 /* Module declarations from 'cereal.messaging.messaging' */
 
 /* Module declarations from 'cereal.messaging.messaging_pyx' */
+static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_Event = 0;
+static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_SocketEventHandle = 0;
 static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_Context = 0;
 static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_Poller = 0;
 static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket = 0;
 static PyTypeObject *__pyx_ptype_6cereal_9messaging_13messaging_pyx_PubSocket = 0;
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &); /*proto*/
 #define __Pyx_MODULE_NAME "cereal.messaging.messaging_pyx"
 extern int __pyx_module_is_main_cereal__messaging__messaging_pyx;
 int __pyx_module_is_main_cereal__messaging__messaging_pyx = 0;
 
 /* Implementation of 'cereal.messaging.messaging_pyx' */
+static PyObject *__pyx_builtin_super;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_print;
+static const char __pyx_k_[] = "";
+static const char __pyx_k__2[] = ": ";
 static const char __pyx_k_doc[] = "__doc__";
+static const char __pyx_k_ptr[] = "ptr";
 static const char __pyx_k_sys[] = "sys";
+static const char __pyx_k_None[] = "None";
 static const char __pyx_k_exit[] = "exit";
+static const char __pyx_k_init[] = "__init__";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
+static const char __pyx_k_self[] = "self";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_Event[] = "Event";
+static const char __pyx_k_event[] = "event";
+static const char __pyx_k_items[] = "items";
 static const char __pyx_k_print[] = "print";
+static const char __pyx_k_super[] = "super";
 static const char __pyx_k_Poller[] = "Poller";
+static const char __pyx_k_events[] = "events";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_module[] = "__module__";
+static const char __pyx_k_prefix[] = "prefix";
 static const char __pyx_k_reduce[] = "__reduce__";
+static const char __pyx_k_suffix[] = "suffix";
 static const char __pyx_k_Context[] = "Context";
 static const char __pyx_k_address[] = "address";
 static const char __pyx_k_context[] = "context";
+static const char __pyx_k_enabled[] = "enabled";
+static const char __pyx_k_message[] = "message";
 static const char __pyx_k_prepare[] = "__prepare__";
+static const char __pyx_k_timeout[] = "timeout";
 static const char __pyx_k_conflate[] = "conflate";
 static const char __pyx_k_endpoint[] = "endpoint";
 static const char __pyx_k_getstate[] = "__getstate__";
+static const char __pyx_k_override[] = "override";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_127_0_0_1[] = "127.0.0.1";
@@ -1498,52 +1729,115 @@ static const char __pyx_k_SubSocket[] = "SubSocket";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_identifier[] = "identifier";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_non_blocking[] = "non_blocking";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
+static const char __pyx_k_with_endpoint[] = "with {endpoint}";
 static const char __pyx_k_MessagingError[] = "MessagingError";
+static const char __pyx_k_get_fake_prefix[] = "get_fake_prefix";
+static const char __pyx_k_set_fake_prefix[] = "set_fake_prefix";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
+static const char __pyx_k_Messaging_failure[] = "Messaging failure ";
+static const char __pyx_k_SocketEventHandle[] = "SocketEventHandle";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_delete_fake_prefix[] = "delete_fake_prefix";
+static const char __pyx_k_toggle_fake_events[] = "toggle_fake_events";
+static const char __pyx_k_wait_for_one_event[] = "wait_for_one_event";
+static const char __pyx_k_MessagingError___init[] = "MessagingError.__init__";
 static const char __pyx_k_MultiplePublishersError[] = "MultiplePublishersError";
 static const char __pyx_k_SIGINT_received_exiting[] = "SIGINT received, exiting";
 static const char __pyx_k_cereal_messaging_messaging_pyx[] = "cereal.messaging.messaging_pyx";
+static const char __pyx_k_cereal_messaging_messaging_pyx_p[] = "cereal/messaging/messaging_pyx.pyx";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
+static PyObject *__pyx_kp_b_;
+static PyObject *__pyx_kp_u_;
 static PyObject *__pyx_kp_b_127_0_0_1;
 static PyObject *__pyx_n_s_Context;
+static PyObject *__pyx_n_s_Event;
 static PyObject *__pyx_n_s_MessagingError;
+static PyObject *__pyx_n_s_MessagingError___init;
+static PyObject *__pyx_kp_u_Messaging_failure;
 static PyObject *__pyx_n_s_MultiplePublishersError;
+static PyObject *__pyx_kp_u_None;
 static PyObject *__pyx_n_s_Poller;
 static PyObject *__pyx_n_s_PubSocket;
 static PyObject *__pyx_kp_u_SIGINT_received_exiting;
+static PyObject *__pyx_n_s_SocketEventHandle;
 static PyObject *__pyx_n_s_SubSocket;
 static PyObject *__pyx_n_s_TypeError;
+static PyObject *__pyx_kp_u__2;
 static PyObject *__pyx_n_s_address;
 static PyObject *__pyx_n_s_cereal_messaging_messaging_pyx;
+static PyObject *__pyx_kp_s_cereal_messaging_messaging_pyx_p;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_conflate;
 static PyObject *__pyx_n_s_context;
+static PyObject *__pyx_n_s_delete_fake_prefix;
 static PyObject *__pyx_n_s_doc;
+static PyObject *__pyx_n_s_enabled;
 static PyObject *__pyx_n_s_endpoint;
+static PyObject *__pyx_n_s_event;
+static PyObject *__pyx_n_s_events;
 static PyObject *__pyx_n_s_exit;
+static PyObject *__pyx_n_s_get_fake_prefix;
 static PyObject *__pyx_n_s_getstate;
+static PyObject *__pyx_n_s_identifier;
 static PyObject *__pyx_n_s_import;
+static PyObject *__pyx_n_s_init;
+static PyObject *__pyx_n_s_items;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_message;
 static PyObject *__pyx_n_s_metaclass;
 static PyObject *__pyx_n_s_module;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_non_blocking;
+static PyObject *__pyx_n_s_override;
+static PyObject *__pyx_n_s_prefix;
 static PyObject *__pyx_n_s_prepare;
 static PyObject *__pyx_n_s_print;
+static PyObject *__pyx_n_s_ptr;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_qualname;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
+static PyObject *__pyx_n_s_self;
+static PyObject *__pyx_n_s_set_fake_prefix;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
+static PyObject *__pyx_n_s_suffix;
+static PyObject *__pyx_n_s_super;
 static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_timeout;
+static PyObject *__pyx_n_s_toggle_fake_events;
+static PyObject *__pyx_n_s_wait_for_one_event;
+static PyObject *__pyx_kp_u_with_endpoint;
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_14MessagingError___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_endpoint); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_toggle_fake_events(CYTHON_UNUSED PyObject *__pyx_self, bool __pyx_v_enabled); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_2set_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_prefix); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_4get_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6delete_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_8wait_for_one_event(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_events, int __pyx_v_timeout); /* proto */
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event___cinit__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2set(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_4clear(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_6wait(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, int __pyx_v_timeout); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_8peek(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2fd___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_3ptr___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle___cinit__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, std::string __pyx_v_endpoint, std::string __pyx_v_identifier, bool __pyx_v_override); /* proto */
+static void __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_2__dealloc__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self); /* proto */
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_2__set__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, bool __pyx_v_value); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_6cereal_9messaging_13messaging_pyx_7Context___cinit__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_2term(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context *__pyx_v_self); /* proto */
 static void __pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_4__dealloc__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context *__pyx_v_self); /* proto */
@@ -1569,24 +1863,1869 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
 static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_8all_readers_updated(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_Event(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_SocketEventHandle(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_Context(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_Poller(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_SubSocket(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_PubSocket(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_1;
-static std::string __pyx_k__5;
-static PyObject *__pyx_tuple_;
-static PyObject *__pyx_tuple__2;
+static std::string __pyx_k__11;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
+static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_tuple__10;
+static PyObject *__pyx_tuple__12;
+static PyObject *__pyx_tuple__13;
+static PyObject *__pyx_tuple__14;
+static PyObject *__pyx_tuple__15;
+static PyObject *__pyx_tuple__16;
+static PyObject *__pyx_tuple__17;
+static PyObject *__pyx_tuple__19;
+static PyObject *__pyx_tuple__20;
+static PyObject *__pyx_tuple__22;
+static PyObject *__pyx_tuple__26;
+static PyObject *__pyx_codeobj__18;
+static PyObject *__pyx_codeobj__21;
+static PyObject *__pyx_codeobj__23;
+static PyObject *__pyx_codeobj__24;
+static PyObject *__pyx_codeobj__25;
+static PyObject *__pyx_codeobj__27;
 /* Late includes */
 
-/* "cereal/messaging/messaging_pyx.pyx":28
+/* "cereal/messaging/messaging_pyx.pyx":22
+ * 
+ * class MessagingError(Exception):
+ *   def __init__(self, endpoint=None):             # <<<<<<<<<<<<<<
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_14MessagingError_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_14MessagingError_1__init__ = {"__init__", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cereal_9messaging_13messaging_pyx_14MessagingError_1__init__, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_14MessagingError_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_self = 0;
+  PyObject *__pyx_v_endpoint = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_endpoint,0};
+    PyObject* values[2] = {0,0};
+    values[1] = ((PyObject *)((PyObject *)Py_None));
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_endpoint);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 22, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_self = values[0];
+    __pyx_v_endpoint = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 22, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.MessagingError.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_14MessagingError___init__(__pyx_self, __pyx_v_self, __pyx_v_endpoint);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_14MessagingError___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_endpoint) {
+  PyObject *__pyx_v_suffix = NULL;
+  PyObject *__pyx_v_message = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_UCS4 __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__init__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":23
+ * class MessagingError(Exception):
+ *   def __init__(self, endpoint=None):
+ *     suffix = "with {endpoint}" if endpoint else ""             # <<<<<<<<<<<<<<
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ *     super().__init__(message)
+ */
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_endpoint); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (__pyx_t_2) {
+    __Pyx_INCREF(__pyx_kp_u_with_endpoint);
+    __pyx_t_1 = __pyx_kp_u_with_endpoint;
+  } else {
+    __Pyx_INCREF(__pyx_kp_u_);
+    __pyx_t_1 = __pyx_kp_u_;
+  }
+  __pyx_v_suffix = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":24
+ *   def __init__(self, endpoint=None):
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"             # <<<<<<<<<<<<<<
+ *     super().__init__(message)
+ * 
+ */
+  __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = 0;
+  __pyx_t_4 = 127;
+  __Pyx_INCREF(__pyx_kp_u_Messaging_failure);
+  __pyx_t_3 += 18;
+  __Pyx_GIVEREF(__pyx_kp_u_Messaging_failure);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Messaging_failure);
+  __pyx_t_5 = __Pyx_PyUnicode_Unicode(__pyx_v_suffix); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_4) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_4;
+  __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __Pyx_INCREF(__pyx_kp_u__2);
+  __pyx_t_3 += 2;
+  __Pyx_GIVEREF(__pyx_kp_u__2);
+  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u__2);
+  __pyx_t_5 = __Pyx_PyBytes_FromString(strerror(errno)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_4 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_4) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_4;
+  __pyx_t_3 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_1, 4, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_message = ((PyObject*)__pyx_t_6);
+  __pyx_t_6 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":25
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ *     super().__init__(message)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_1 = __Pyx_CyFunction_GetClassObj(__pyx_self);
+  if (!__pyx_t_1) { PyErr_SetString(PyExc_SystemError, "super(): empty __class__ cell"); __PYX_ERR(0, 25, __pyx_L1_error) }
+  __Pyx_INCREF(__pyx_t_1);
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+  __Pyx_INCREF(__pyx_v_self);
+  __Pyx_GIVEREF(__pyx_v_self);
+  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_self);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_super, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_init); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+    }
+  }
+  __pyx_t_6 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_1, __pyx_v_message) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_message);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":22
+ * 
+ * class MessagingError(Exception):
+ *   def __init__(self, endpoint=None):             # <<<<<<<<<<<<<<
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.MessagingError.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_suffix);
+  __Pyx_XDECREF(__pyx_v_message);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":32
+ * 
+ * 
+ * def toggle_fake_events(bool enabled):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.toggle_fake_events(enabled)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_1toggle_fake_events(PyObject *__pyx_self, PyObject *__pyx_arg_enabled); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_1toggle_fake_events = {"toggle_fake_events", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_1toggle_fake_events, METH_O, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_1toggle_fake_events(PyObject *__pyx_self, PyObject *__pyx_arg_enabled) {
+  bool __pyx_v_enabled;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("toggle_fake_events (wrapper)", 0);
+  assert(__pyx_arg_enabled); {
+    __pyx_v_enabled = __Pyx_PyObject_IsTrue(__pyx_arg_enabled); if (unlikely((__pyx_v_enabled == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.toggle_fake_events", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_toggle_fake_events(__pyx_self, ((bool)__pyx_v_enabled));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_toggle_fake_events(CYTHON_UNUSED PyObject *__pyx_self, bool __pyx_v_enabled) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("toggle_fake_events", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":33
+ * 
+ * def toggle_fake_events(bool enabled):
+ *   cppSocketEventHandle.toggle_fake_events(enabled)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  SocketEventHandle::toggle_fake_events(__pyx_v_enabled);
+
+  /* "cereal/messaging/messaging_pyx.pyx":32
+ * 
+ * 
+ * def toggle_fake_events(bool enabled):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.toggle_fake_events(enabled)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":36
+ * 
+ * 
+ * def set_fake_prefix(string prefix):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(prefix)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_3set_fake_prefix(PyObject *__pyx_self, PyObject *__pyx_arg_prefix); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_3set_fake_prefix = {"set_fake_prefix", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_3set_fake_prefix, METH_O, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_3set_fake_prefix(PyObject *__pyx_self, PyObject *__pyx_arg_prefix) {
+  std::string __pyx_v_prefix;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set_fake_prefix (wrapper)", 0);
+  assert(__pyx_arg_prefix); {
+    __pyx_v_prefix = __pyx_convert_string_from_py_std__in_string(__pyx_arg_prefix); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 36, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.set_fake_prefix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_2set_fake_prefix(__pyx_self, ((std::string)__pyx_v_prefix));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_2set_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_prefix) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set_fake_prefix", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":37
+ * 
+ * def set_fake_prefix(string prefix):
+ *   cppSocketEventHandle.set_fake_prefix(prefix)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  SocketEventHandle::set_fake_prefix(__pyx_v_prefix);
+
+  /* "cereal/messaging/messaging_pyx.pyx":36
+ * 
+ * 
+ * def set_fake_prefix(string prefix):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(prefix)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":40
+ * 
+ * 
+ * def get_fake_prefix():             # <<<<<<<<<<<<<<
+ *   return cppSocketEventHandle.fake_prefix()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5get_fake_prefix(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_5get_fake_prefix = {"get_fake_prefix", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5get_fake_prefix, METH_NOARGS, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5get_fake_prefix(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_fake_prefix (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_4get_fake_prefix(__pyx_self);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_4get_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_fake_prefix", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":41
+ * 
+ * def get_fake_prefix():
+ *   return cppSocketEventHandle.fake_prefix()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(SocketEventHandle::fake_prefix()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":40
+ * 
+ * 
+ * def get_fake_prefix():             # <<<<<<<<<<<<<<
+ *   return cppSocketEventHandle.fake_prefix()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.get_fake_prefix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":44
+ * 
+ * 
+ * def delete_fake_prefix():             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(b"")
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_7delete_fake_prefix(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_7delete_fake_prefix = {"delete_fake_prefix", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_7delete_fake_prefix, METH_NOARGS, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_7delete_fake_prefix(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("delete_fake_prefix (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_6delete_fake_prefix(__pyx_self);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6delete_fake_prefix(CYTHON_UNUSED PyObject *__pyx_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  std::string __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("delete_fake_prefix", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":45
+ * 
+ * def delete_fake_prefix():
+ *   cppSocketEventHandle.set_fake_prefix(b"")             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b_); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+  SocketEventHandle::set_fake_prefix(__pyx_t_1);
+
+  /* "cereal/messaging/messaging_pyx.pyx":44
+ * 
+ * 
+ * def delete_fake_prefix():             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(b"")
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.delete_fake_prefix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":48
+ * 
+ * 
+ * def wait_for_one_event(list events, int timeout=-1):             # <<<<<<<<<<<<<<
+ *   cdef vector[cppEvent] items
+ *   for event in events:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9wait_for_one_event(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9messaging_13messaging_pyx_9wait_for_one_event = {"wait_for_one_event", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cereal_9messaging_13messaging_pyx_9wait_for_one_event, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9wait_for_one_event(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_events = 0;
+  int __pyx_v_timeout;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("wait_for_one_event (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_events,&__pyx_n_s_timeout,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_events)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_timeout);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wait_for_one_event") < 0)) __PYX_ERR(0, 48, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_events = ((PyObject*)values[0]);
+    if (values[1]) {
+      __pyx_v_timeout = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_timeout == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L3_error)
+    } else {
+      __pyx_v_timeout = ((int)-1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("wait_for_one_event", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 48, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.wait_for_one_event", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_events), (&PyList_Type), 1, "events", 1))) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_8wait_for_one_event(__pyx_self, __pyx_v_events, __pyx_v_timeout);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_8wait_for_one_event(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_events, int __pyx_v_timeout) {
+  std::vector<Event>  __pyx_v_items;
+  PyObject *__pyx_v_event = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  size_t __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("wait_for_one_event", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":50
+ * def wait_for_one_event(list events, int timeout=-1):
+ *   cdef vector[cppEvent] items
+ *   for event in events:             # <<<<<<<<<<<<<<
+ *     items.push_back(dereference(<cppEvent*><size_t>event.ptr))
+ *   return cppEvent.wait_for_one(items, timeout)
+ */
+  if (unlikely(__pyx_v_events == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+    __PYX_ERR(0, 50, __pyx_L1_error)
+  }
+  __pyx_t_1 = __pyx_v_events; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
+  for (;;) {
+    if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 50, __pyx_L1_error)
+    #else
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_3);
+    __pyx_t_3 = 0;
+
+    /* "cereal/messaging/messaging_pyx.pyx":51
+ *   cdef vector[cppEvent] items
+ *   for event in events:
+ *     items.push_back(dereference(<cppEvent*><size_t>event.ptr))             # <<<<<<<<<<<<<<
+ *   return cppEvent.wait_for_one(items, timeout)
+ * 
+ */
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_event, __pyx_n_s_ptr); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyInt_As_size_t(__pyx_t_3); if (unlikely((__pyx_t_4 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    try {
+      __pyx_v_items.push_back((*((Event *)((size_t)__pyx_t_4))));
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(0, 51, __pyx_L1_error)
+    }
+
+    /* "cereal/messaging/messaging_pyx.pyx":50
+ * def wait_for_one_event(list events, int timeout=-1):
+ *   cdef vector[cppEvent] items
+ *   for event in events:             # <<<<<<<<<<<<<<
+ *     items.push_back(dereference(<cppEvent*><size_t>event.ptr))
+ *   return cppEvent.wait_for_one(items, timeout)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":52
+ *   for event in events:
+ *     items.push_back(dereference(<cppEvent*><size_t>event.ptr))
+ *   return cppEvent.wait_for_one(items, timeout)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  try {
+    __pyx_t_5 = Event::wait_for_one(__pyx_v_items, __pyx_v_timeout);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 52, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":48
+ * 
+ * 
+ * def wait_for_one_event(list events, int timeout=-1):             # <<<<<<<<<<<<<<
+ *   cdef vector[cppEvent] items
+ *   for event in events:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.wait_for_one_event", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_event);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":58
+ *   cdef cppEvent event;
+ * 
+ *   def __cinit__(self):             # <<<<<<<<<<<<<<
+ *     pass
+ * 
+ */
+
+/* Python wrapper */
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
+  if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
+    __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
+  if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 0))) return -1;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event___cinit__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event___cinit__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__cinit__", 0);
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":61
+ *     pass
+ * 
+ *   cdef setEvent(self, cppEvent event):             # <<<<<<<<<<<<<<
+ *     self.event = event
+ * 
+ */
+
+static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_5Event_setEvent(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, Event __pyx_v_event) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("setEvent", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":62
+ * 
+ *   cdef setEvent(self, cppEvent event):
+ *     self.event = event             # <<<<<<<<<<<<<<
+ * 
+ *   def set(self):
+ */
+  __pyx_v_self->event = __pyx_v_event;
+
+  /* "cereal/messaging/messaging_pyx.pyx":61
+ *     pass
+ * 
+ *   cdef setEvent(self, cppEvent event):             # <<<<<<<<<<<<<<
+ *     self.event = event
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":64
+ *     self.event = event
+ * 
+ *   def set(self):             # <<<<<<<<<<<<<<
+ *     self.event.set()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3set(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3set(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2set(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2set(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":65
+ * 
+ *   def set(self):
+ *     self.event.set()             # <<<<<<<<<<<<<<
+ * 
+ *   def clear(self):
+ */
+  __pyx_v_self->event.set();
+
+  /* "cereal/messaging/messaging_pyx.pyx":64
+ *     self.event = event
+ * 
+ *   def set(self):             # <<<<<<<<<<<<<<
+ *     self.event.set()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":67
+ *     self.event.set()
+ * 
+ *   def clear(self):             # <<<<<<<<<<<<<<
+ *     return self.event.clear()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_5clear(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_5clear(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("clear (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_4clear(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_4clear(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("clear", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":68
+ * 
+ *   def clear(self):
+ *     return self.event.clear()             # <<<<<<<<<<<<<<
+ * 
+ *   def wait(self, int timeout=-1):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->event.clear()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":67
+ *     self.event.set()
+ * 
+ *   def clear(self):             # <<<<<<<<<<<<<<
+ *     return self.event.clear()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.clear", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":70
+ *     return self.event.clear()
+ * 
+ *   def wait(self, int timeout=-1):             # <<<<<<<<<<<<<<
+ *     self.event.wait(timeout)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_7wait(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_7wait(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_v_timeout;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("wait (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_timeout,0};
+    PyObject* values[1] = {0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_timeout);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "wait") < 0)) __PYX_ERR(0, 70, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    if (values[0]) {
+      __pyx_v_timeout = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_timeout == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L3_error)
+    } else {
+      __pyx_v_timeout = ((int)-1);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("wait", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 70, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.wait", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_6wait(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self), __pyx_v_timeout);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_6wait(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, int __pyx_v_timeout) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("wait", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":71
+ * 
+ *   def wait(self, int timeout=-1):
+ *     self.event.wait(timeout)             # <<<<<<<<<<<<<<
+ * 
+ *   def peek(self):
+ */
+  try {
+    __pyx_v_self->event.wait(__pyx_v_timeout);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(0, 71, __pyx_L1_error)
+  }
+
+  /* "cereal/messaging/messaging_pyx.pyx":70
+ *     return self.event.clear()
+ * 
+ *   def wait(self, int timeout=-1):             # <<<<<<<<<<<<<<
+ *     self.event.wait(timeout)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.wait", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":73
+ *     self.event.wait(timeout)
+ * 
+ *   def peek(self):             # <<<<<<<<<<<<<<
+ *     return self.event.peek()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_9peek(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_9peek(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("peek (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_8peek(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_8peek(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("peek", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":74
+ * 
+ *   def peek(self):
+ *     return self.event.peek()             # <<<<<<<<<<<<<<
+ * 
+ *   @property
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->event.peek()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":73
+ *     self.event.wait(timeout)
+ * 
+ *   def peek(self):             # <<<<<<<<<<<<<<
+ *     return self.event.peek()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.peek", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":77
+ * 
+ *   @property
+ *   def fd(self):             # <<<<<<<<<<<<<<
+ *     return self.event.fd()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_2fd_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_2fd_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2fd___get__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_2fd___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":78
+ *   @property
+ *   def fd(self):
+ *     return self.event.fd()             # <<<<<<<<<<<<<<
+ * 
+ *   @property
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->event.fd()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":77
+ * 
+ *   @property
+ *   def fd(self):             # <<<<<<<<<<<<<<
+ *     return self.event.fd()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.fd.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":81
+ * 
+ *   @property
+ *   def ptr(self):             # <<<<<<<<<<<<<<
+ *     return <size_t><void*>&self.event
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3ptr_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3ptr_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_3ptr___get__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_3ptr___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":82
+ *   @property
+ *   def ptr(self):
+ *     return <size_t><void*>&self.event             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(((size_t)((void *)(&__pyx_v_self->event)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":81
+ * 
+ *   @property
+ *   def ptr(self):             # <<<<<<<<<<<<<<
+ *     return <size_t><void*>&self.event
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.ptr.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_11__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_10__reduce_cython__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_10__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 2, __pyx_L1_error)
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_13__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_12__setstate_cython__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_5Event_12__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 4, __pyx_L1_error)
+
+  /* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.Event.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":88
+ *   cdef cppSocketEventHandle * handle;
+ * 
+ *   def __cinit__(self, string endpoint, string identifier, bool override):             # <<<<<<<<<<<<<<
+ *     self.handle = new cppSocketEventHandle(endpoint, identifier, override)
+ * 
+ */
+
+/* Python wrapper */
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  std::string __pyx_v_endpoint;
+  std::string __pyx_v_identifier;
+  bool __pyx_v_override;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_endpoint,&__pyx_n_s_identifier,&__pyx_n_s_override,0};
+    PyObject* values[3] = {0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_endpoint)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_identifier)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 1); __PYX_ERR(0, 88, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_override)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 2); __PYX_ERR(0, 88, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 88, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+    }
+    __pyx_v_endpoint = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+    __pyx_v_identifier = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+    __pyx_v_override = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_override == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 88, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return -1;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle___cinit__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self), __pyx_v_endpoint, __pyx_v_identifier, __pyx_v_override);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle___cinit__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, std::string __pyx_v_endpoint, std::string __pyx_v_identifier, bool __pyx_v_override) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__cinit__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":89
+ * 
+ *   def __cinit__(self, string endpoint, string identifier, bool override):
+ *     self.handle = new cppSocketEventHandle(endpoint, identifier, override)             # <<<<<<<<<<<<<<
+ * 
+ *   def __dealloc__(self):
+ */
+  __pyx_v_self->handle = new SocketEventHandle(__pyx_v_endpoint, __pyx_v_identifier, __pyx_v_override);
+
+  /* "cereal/messaging/messaging_pyx.pyx":88
+ *   cdef cppSocketEventHandle * handle;
+ * 
+ *   def __cinit__(self, string endpoint, string identifier, bool override):             # <<<<<<<<<<<<<<
+ *     self.handle = new cppSocketEventHandle(endpoint, identifier, override)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":91
+ *     self.handle = new cppSocketEventHandle(endpoint, identifier, override)
+ * 
+ *   def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *     del self.handle
+ * 
+ */
+
+/* Python wrapper */
+static void __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_3__dealloc__(PyObject *__pyx_v_self); /*proto*/
+static void __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_3__dealloc__(PyObject *__pyx_v_self) {
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
+  __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_2__dealloc__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+static void __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_2__dealloc__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self) {
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__dealloc__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":92
+ * 
+ *   def __dealloc__(self):
+ *     del self.handle             # <<<<<<<<<<<<<<
+ * 
+ *   @property
+ */
+  delete __pyx_v_self->handle;
+
+  /* "cereal/messaging/messaging_pyx.pyx":91
+ *     self.handle = new cppSocketEventHandle(endpoint, identifier, override)
+ * 
+ *   def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *     del self.handle
+ * 
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":95
+ * 
+ *   @property
+ *   def enabled(self):             # <<<<<<<<<<<<<<
+ *     return self.handle.is_enabled()
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled___get__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":96
+ *   @property
+ *   def enabled(self):
+ *     return self.handle.is_enabled()             # <<<<<<<<<<<<<<
+ * 
+ *   @enabled.setter
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->handle->is_enabled()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":95
+ * 
+ *   @property
+ *   def enabled(self):             # <<<<<<<<<<<<<<
+ *     return self.handle.is_enabled()
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.enabled.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":99
+ * 
+ *   @enabled.setter
+ *   def enabled(self, bool value):             # <<<<<<<<<<<<<<
+ *     self.handle.set_enabled(value)
+ * 
+ */
+
+/* Python wrapper */
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_arg_value); /*proto*/
+static int __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_arg_value) {
+  bool __pyx_v_value;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  assert(__pyx_arg_value); {
+    __pyx_v_value = __Pyx_PyObject_IsTrue(__pyx_arg_value); if (unlikely((__pyx_v_value == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.enabled.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return -1;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_2__set__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self), ((bool)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_2__set__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, bool __pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":100
+ *   @enabled.setter
+ *   def enabled(self, bool value):
+ *     self.handle.set_enabled(value)             # <<<<<<<<<<<<<<
+ * 
+ *   @property
+ */
+  __pyx_v_self->handle->set_enabled(__pyx_v_value);
+
+  /* "cereal/messaging/messaging_pyx.pyx":99
+ * 
+ *   @enabled.setter
+ *   def enabled(self, bool value):             # <<<<<<<<<<<<<<
+ *     self.handle.set_enabled(value)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":103
+ * 
+ *   @property
+ *   def recv_called_event(self):             # <<<<<<<<<<<<<<
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_called())
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event___get__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self) {
+  struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_e = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":104
+ *   @property
+ *   def recv_called_event(self):
+ *     e = Event()             # <<<<<<<<<<<<<<
+ *     e.setEvent(self.handle.recv_called())
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cereal_9messaging_13messaging_pyx_Event)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_e = ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":105
+ *   def recv_called_event(self):
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_called())             # <<<<<<<<<<<<<<
+ * 
+ *     return e
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_e->__pyx_vtab)->setEvent(__pyx_v_e, __pyx_v_self->handle->recv_called()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":107
+ *     e.setEvent(self.handle.recv_called())
+ * 
+ *     return e             # <<<<<<<<<<<<<<
+ * 
+ *   @property
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_e));
+  __pyx_r = ((PyObject *)__pyx_v_e);
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":103
+ * 
+ *   @property
+ *   def recv_called_event(self):             # <<<<<<<<<<<<<<
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_called())
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.recv_called_event.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_e);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":110
+ * 
+ *   @property
+ *   def recv_ready_event(self):             # <<<<<<<<<<<<<<
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_ready())
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event___get__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event___get__(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self) {
+  struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *__pyx_v_e = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "cereal/messaging/messaging_pyx.pyx":111
+ *   @property
+ *   def recv_ready_event(self):
+ *     e = Event()             # <<<<<<<<<<<<<<
+ *     e.setEvent(self.handle.recv_ready())
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cereal_9messaging_13messaging_pyx_Event)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_e = ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":112
+ *   def recv_ready_event(self):
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_ready())             # <<<<<<<<<<<<<<
+ * 
+ *     return e
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event *)__pyx_v_e->__pyx_vtab)->setEvent(__pyx_v_e, __pyx_v_self->handle->recv_ready()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":114
+ *     e.setEvent(self.handle.recv_ready())
+ * 
+ *     return e             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_e));
+  __pyx_r = ((PyObject *)__pyx_v_e);
+  goto __pyx_L0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":110
+ * 
+ *   @property
+ *   def recv_ready_event(self):             # <<<<<<<<<<<<<<
+ *     e = Event()
+ *     e.setEvent(self.handle.recv_ready())
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.recv_ready_event.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_e);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_4__reduce_cython__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 2, __pyx_L1_error)
+
+  /* "(tree fragment)":1
+ * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_6__setstate_cython__(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(1, 4, __pyx_L1_error)
+
+  /* "(tree fragment)":3
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SocketEventHandle.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/messaging/messaging_pyx.pyx":120
  *   cdef cppContext * context
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1615,7 +3754,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_7Context___cinit__(struct
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":29
+  /* "cereal/messaging/messaging_pyx.pyx":121
  * 
  *   def __cinit__(self):
  *     self.context = cppContext.create()             # <<<<<<<<<<<<<<
@@ -1624,7 +3763,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_7Context___cinit__(struct
  */
   __pyx_v_self->context = Context::create();
 
-  /* "cereal/messaging/messaging_pyx.pyx":28
+  /* "cereal/messaging/messaging_pyx.pyx":120
  *   cdef cppContext * context
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1638,7 +3777,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_7Context___cinit__(struct
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":31
+/* "cereal/messaging/messaging_pyx.pyx":123
  *     self.context = cppContext.create()
  * 
  *   def term(self):             # <<<<<<<<<<<<<<
@@ -1664,7 +3803,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_2term(stru
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("term", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":32
+  /* "cereal/messaging/messaging_pyx.pyx":124
  * 
  *   def term(self):
  *     del self.context             # <<<<<<<<<<<<<<
@@ -1673,7 +3812,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_2term(stru
  */
   delete __pyx_v_self->context;
 
-  /* "cereal/messaging/messaging_pyx.pyx":33
+  /* "cereal/messaging/messaging_pyx.pyx":125
  *   def term(self):
  *     del self.context
  *     self.context = NULL             # <<<<<<<<<<<<<<
@@ -1682,7 +3821,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_2term(stru
  */
   __pyx_v_self->context = NULL;
 
-  /* "cereal/messaging/messaging_pyx.pyx":31
+  /* "cereal/messaging/messaging_pyx.pyx":123
  *     self.context = cppContext.create()
  * 
  *   def term(self):             # <<<<<<<<<<<<<<
@@ -1697,7 +3836,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_2term(stru
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":35
+/* "cereal/messaging/messaging_pyx.pyx":127
  *     self.context = NULL
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1758,11 +3897,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_6__reduce_
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 2, __pyx_L1_error)
+  __PYX_ERR(1, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -1814,11 +3953,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_8__setstat
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 4, __pyx_L1_error)
+  __PYX_ERR(1, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -1837,7 +3976,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_7Context_8__setstat
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":46
+/* "cereal/messaging/messaging_pyx.pyx":138
  *   cdef list sub_sockets
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1870,14 +4009,14 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller___cinit__(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":47
+  /* "cereal/messaging/messaging_pyx.pyx":139
  * 
  *   def __cinit__(self):
  *     self.sub_sockets = []             # <<<<<<<<<<<<<<
  *     self.poller = cppPoller.create()
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->sub_sockets);
@@ -1885,7 +4024,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller___cinit__(struct 
   __pyx_v_self->sub_sockets = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":48
+  /* "cereal/messaging/messaging_pyx.pyx":140
  *   def __cinit__(self):
  *     self.sub_sockets = []
  *     self.poller = cppPoller.create()             # <<<<<<<<<<<<<<
@@ -1894,7 +4033,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller___cinit__(struct 
  */
   __pyx_v_self->poller = Poller::create();
 
-  /* "cereal/messaging/messaging_pyx.pyx":46
+  /* "cereal/messaging/messaging_pyx.pyx":138
  *   cdef list sub_sockets
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1914,7 +4053,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller___cinit__(struct 
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":50
+/* "cereal/messaging/messaging_pyx.pyx":142
  *     self.poller = cppPoller.create()
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1937,7 +4076,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_2__dealloc__(str
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":51
+  /* "cereal/messaging/messaging_pyx.pyx":143
  * 
  *   def __dealloc__(self):
  *     del self.poller             # <<<<<<<<<<<<<<
@@ -1946,7 +4085,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_2__dealloc__(str
  */
   delete __pyx_v_self->poller;
 
-  /* "cereal/messaging/messaging_pyx.pyx":50
+  /* "cereal/messaging/messaging_pyx.pyx":142
  *     self.poller = cppPoller.create()
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1958,7 +4097,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_2__dealloc__(str
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":53
+/* "cereal/messaging/messaging_pyx.pyx":145
  *     del self.poller
  * 
  *   def registerSocket(self, SubSocket socket):             # <<<<<<<<<<<<<<
@@ -1975,7 +4114,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_6Poller_5registerSo
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("registerSocket (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_socket), __pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket, 1, "socket", 0))) __PYX_ERR(1, 53, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_socket), __pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket, 1, "socket", 0))) __PYX_ERR(0, 145, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_4registerSocket(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Poller *)__pyx_v_self), ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket *)__pyx_v_socket));
 
   /* function exit code */
@@ -1996,7 +4135,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_4registerSo
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("registerSocket", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":54
+  /* "cereal/messaging/messaging_pyx.pyx":146
  * 
  *   def registerSocket(self, SubSocket socket):
  *     self.sub_sockets.append(socket)             # <<<<<<<<<<<<<<
@@ -2005,11 +4144,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_4registerSo
  */
   if (unlikely(__pyx_v_self->sub_sockets == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-    __PYX_ERR(1, 54, __pyx_L1_error)
+    __PYX_ERR(0, 146, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_Append(__pyx_v_self->sub_sockets, ((PyObject *)__pyx_v_socket)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(1, 54, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyList_Append(__pyx_v_self->sub_sockets, ((PyObject *)__pyx_v_socket)); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 146, __pyx_L1_error)
 
-  /* "cereal/messaging/messaging_pyx.pyx":55
+  /* "cereal/messaging/messaging_pyx.pyx":147
  *   def registerSocket(self, SubSocket socket):
  *     self.sub_sockets.append(socket)
  *     self.poller.registerSocket(socket.socket)             # <<<<<<<<<<<<<<
@@ -2018,7 +4157,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_4registerSo
  */
   __pyx_v_self->poller->registerSocket(__pyx_v_socket->socket);
 
-  /* "cereal/messaging/messaging_pyx.pyx":53
+  /* "cereal/messaging/messaging_pyx.pyx":145
  *     del self.poller
  * 
  *   def registerSocket(self, SubSocket socket):             # <<<<<<<<<<<<<<
@@ -2038,7 +4177,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_4registerSo
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":57
+/* "cereal/messaging/messaging_pyx.pyx":149
  *     self.poller.registerSocket(socket.socket)
  * 
  *   def poll(self, timeout):             # <<<<<<<<<<<<<<
@@ -2077,29 +4216,29 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("poll", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":58
+  /* "cereal/messaging/messaging_pyx.pyx":150
  * 
  *   def poll(self, timeout):
  *     sockets = []             # <<<<<<<<<<<<<<
  *     cdef int t = timeout
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 58, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_sockets = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":59
+  /* "cereal/messaging/messaging_pyx.pyx":151
  *   def poll(self, timeout):
  *     sockets = []
  *     cdef int t = timeout             # <<<<<<<<<<<<<<
  * 
  *     with nogil:
  */
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_timeout); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 59, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_timeout); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
   __pyx_v_t = __pyx_t_2;
 
-  /* "cereal/messaging/messaging_pyx.pyx":61
+  /* "cereal/messaging/messaging_pyx.pyx":153
  *     cdef int t = timeout
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -2114,7 +4253,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
       #endif
       /*try:*/ {
 
-        /* "cereal/messaging/messaging_pyx.pyx":62
+        /* "cereal/messaging/messaging_pyx.pyx":154
  * 
  *     with nogil:
  *       result = self.poller.poll(t)             # <<<<<<<<<<<<<<
@@ -2124,7 +4263,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
         __pyx_v_result = __pyx_v_self->poller->poll(__pyx_v_t);
       }
 
-      /* "cereal/messaging/messaging_pyx.pyx":61
+      /* "cereal/messaging/messaging_pyx.pyx":153
  *     cdef int t = timeout
  * 
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -2143,7 +4282,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
       }
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":64
+  /* "cereal/messaging/messaging_pyx.pyx":156
  *       result = self.poller.poll(t)
  * 
  *     for s in result:             # <<<<<<<<<<<<<<
@@ -2157,39 +4296,39 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
     ++__pyx_t_3;
     __pyx_v_s = __pyx_t_4;
 
-    /* "cereal/messaging/messaging_pyx.pyx":65
+    /* "cereal/messaging/messaging_pyx.pyx":157
  * 
  *     for s in result:
  *       socket = SubSocket()             # <<<<<<<<<<<<<<
  *       socket.setPtr(s)
  *       sockets.append(socket)
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 65, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_socket, ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cereal/messaging/messaging_pyx.pyx":66
+    /* "cereal/messaging/messaging_pyx.pyx":158
  *     for s in result:
  *       socket = SubSocket()
  *       socket.setPtr(s)             # <<<<<<<<<<<<<<
  *       sockets.append(socket)
  * 
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_SubSocket *)__pyx_v_socket->__pyx_vtab)->setPtr(__pyx_v_socket, __pyx_v_s); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 66, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_SubSocket *)__pyx_v_socket->__pyx_vtab)->setPtr(__pyx_v_socket, __pyx_v_s); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cereal/messaging/messaging_pyx.pyx":67
+    /* "cereal/messaging/messaging_pyx.pyx":159
  *       socket = SubSocket()
  *       socket.setPtr(s)
  *       sockets.append(socket)             # <<<<<<<<<<<<<<
  * 
  *     return sockets
  */
-    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_sockets, ((PyObject *)__pyx_v_socket)); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 67, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_sockets, ((PyObject *)__pyx_v_socket)); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 159, __pyx_L1_error)
 
-    /* "cereal/messaging/messaging_pyx.pyx":64
+    /* "cereal/messaging/messaging_pyx.pyx":156
  *       result = self.poller.poll(t)
  * 
  *     for s in result:             # <<<<<<<<<<<<<<
@@ -2198,19 +4337,19 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_6poll(struc
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":69
+  /* "cereal/messaging/messaging_pyx.pyx":161
  *       sockets.append(socket)
  * 
  *     return sockets             # <<<<<<<<<<<<<<
  * 
- * cdef class SubSocket:
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_sockets);
   __pyx_r = __pyx_v_sockets;
   goto __pyx_L0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":57
+  /* "cereal/messaging/messaging_pyx.pyx":149
  *     self.poller.registerSocket(socket.socket)
  * 
  *   def poll(self, timeout):             # <<<<<<<<<<<<<<
@@ -2265,11 +4404,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_8__reduce_c
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 2, __pyx_L1_error)
+  __PYX_ERR(1, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -2321,11 +4460,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_10__setstat
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 4, __pyx_L1_error)
+  __PYX_ERR(1, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -2344,7 +4483,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_6Poller_10__setstat
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":75
+/* "cereal/messaging/messaging_pyx.pyx":168
  *   cdef bool is_owner
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2378,7 +4517,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":76
+  /* "cereal/messaging/messaging_pyx.pyx":169
  * 
  *   def __cinit__(self):
  *     self.socket = cppSubSocket.create()             # <<<<<<<<<<<<<<
@@ -2387,7 +4526,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
  */
   __pyx_v_self->socket = SubSocket::create();
 
-  /* "cereal/messaging/messaging_pyx.pyx":77
+  /* "cereal/messaging/messaging_pyx.pyx":170
  *   def __cinit__(self):
  *     self.socket = cppSubSocket.create()
  *     self.is_owner = True             # <<<<<<<<<<<<<<
@@ -2396,7 +4535,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
  */
   __pyx_v_self->is_owner = 1;
 
-  /* "cereal/messaging/messaging_pyx.pyx":79
+  /* "cereal/messaging/messaging_pyx.pyx":172
  *     self.is_owner = True
  * 
  *     if self.socket == NULL:             # <<<<<<<<<<<<<<
@@ -2406,20 +4545,20 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
   __pyx_t_1 = ((__pyx_v_self->socket == NULL) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":80
+    /* "cereal/messaging/messaging_pyx.pyx":173
  * 
  *     if self.socket == NULL:
  *       raise MessagingError             # <<<<<<<<<<<<<<
  * 
  *   def __dealloc__(self):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 80, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 80, __pyx_L1_error)
+    __PYX_ERR(0, 173, __pyx_L1_error)
 
-    /* "cereal/messaging/messaging_pyx.pyx":79
+    /* "cereal/messaging/messaging_pyx.pyx":172
  *     self.is_owner = True
  * 
  *     if self.socket == NULL:             # <<<<<<<<<<<<<<
@@ -2428,7 +4567,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":75
+  /* "cereal/messaging/messaging_pyx.pyx":168
  *   cdef bool is_owner
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2448,7 +4587,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket___cinit__(stru
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":82
+/* "cereal/messaging/messaging_pyx.pyx":175
  *       raise MessagingError
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2472,7 +4611,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_2__dealloc__(
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":83
+  /* "cereal/messaging/messaging_pyx.pyx":176
  * 
  *   def __dealloc__(self):
  *     if self.is_owner:             # <<<<<<<<<<<<<<
@@ -2482,7 +4621,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_2__dealloc__(
   __pyx_t_1 = (__pyx_v_self->is_owner != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":84
+    /* "cereal/messaging/messaging_pyx.pyx":177
  *   def __dealloc__(self):
  *     if self.is_owner:
  *       del self.socket             # <<<<<<<<<<<<<<
@@ -2491,7 +4630,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_2__dealloc__(
  */
     delete __pyx_v_self->socket;
 
-    /* "cereal/messaging/messaging_pyx.pyx":83
+    /* "cereal/messaging/messaging_pyx.pyx":176
  * 
  *   def __dealloc__(self):
  *     if self.is_owner:             # <<<<<<<<<<<<<<
@@ -2500,7 +4639,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_2__dealloc__(
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":82
+  /* "cereal/messaging/messaging_pyx.pyx":175
  *       raise MessagingError
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2512,7 +4651,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_2__dealloc__(
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":86
+/* "cereal/messaging/messaging_pyx.pyx":179
  *       del self.socket
  * 
  *   cdef setPtr(self, cppSubSocket * ptr):             # <<<<<<<<<<<<<<
@@ -2526,7 +4665,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("setPtr", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":87
+  /* "cereal/messaging/messaging_pyx.pyx":180
  * 
  *   cdef setPtr(self, cppSubSocket * ptr):
  *     if self.is_owner:             # <<<<<<<<<<<<<<
@@ -2536,7 +4675,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
   __pyx_t_1 = (__pyx_v_self->is_owner != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":88
+    /* "cereal/messaging/messaging_pyx.pyx":181
  *   cdef setPtr(self, cppSubSocket * ptr):
  *     if self.is_owner:
  *       del self.socket             # <<<<<<<<<<<<<<
@@ -2545,7 +4684,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
  */
     delete __pyx_v_self->socket;
 
-    /* "cereal/messaging/messaging_pyx.pyx":87
+    /* "cereal/messaging/messaging_pyx.pyx":180
  * 
  *   cdef setPtr(self, cppSubSocket * ptr):
  *     if self.is_owner:             # <<<<<<<<<<<<<<
@@ -2554,7 +4693,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":90
+  /* "cereal/messaging/messaging_pyx.pyx":183
  *       del self.socket
  * 
  *     self.is_owner = False             # <<<<<<<<<<<<<<
@@ -2563,7 +4702,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
  */
   __pyx_v_self->is_owner = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":91
+  /* "cereal/messaging/messaging_pyx.pyx":184
  * 
  *     self.is_owner = False
  *     self.socket = ptr             # <<<<<<<<<<<<<<
@@ -2572,7 +4711,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
  */
   __pyx_v_self->socket = __pyx_v_ptr;
 
-  /* "cereal/messaging/messaging_pyx.pyx":86
+  /* "cereal/messaging/messaging_pyx.pyx":179
  *       del self.socket
  * 
  *   cdef setPtr(self, cppSubSocket * ptr):             # <<<<<<<<<<<<<<
@@ -2587,7 +4726,7 @@ static PyObject *__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr(st
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":93
+/* "cereal/messaging/messaging_pyx.pyx":186
  *     self.socket = ptr
  * 
  *   def connect(self, Context context, string endpoint, string address=b"127.0.0.1", bool conflate=False):             # <<<<<<<<<<<<<<
@@ -2635,7 +4774,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_5connect
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_endpoint)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("connect", 0, 2, 4, 1); __PYX_ERR(1, 93, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("connect", 0, 2, 4, 1); __PYX_ERR(0, 186, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -2651,7 +4790,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_5connect
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "connect") < 0)) __PYX_ERR(1, 93, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "connect") < 0)) __PYX_ERR(0, 186, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2666,27 +4805,27 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_5connect
       }
     }
     __pyx_v_context = ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context *)values[0]);
-    __pyx_v_endpoint = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 93, __pyx_L3_error)
+    __pyx_v_endpoint = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 186, __pyx_L3_error)
     if (values[2]) {
-      __pyx_v_address = __pyx_convert_string_from_py_std__in_string(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 93, __pyx_L3_error)
+      __pyx_v_address = __pyx_convert_string_from_py_std__in_string(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 186, __pyx_L3_error)
     } else {
-      __pyx_v_address = __pyx_k__5;
+      __pyx_v_address = __pyx_k__11;
     }
     if (values[3]) {
-      __pyx_v_conflate = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_conflate == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 93, __pyx_L3_error)
+      __pyx_v_conflate = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_conflate == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 186, __pyx_L3_error)
     } else {
       __pyx_v_conflate = ((bool)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("connect", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 93, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("connect", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 186, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SubSocket.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_context), __pyx_ptype_6cereal_9messaging_13messaging_pyx_Context, 1, "context", 0))) __PYX_ERR(1, 93, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_context), __pyx_ptype_6cereal_9messaging_13messaging_pyx_Context, 1, "context", 0))) __PYX_ERR(0, 186, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_4connect(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket *)__pyx_v_self), __pyx_v_context, __pyx_v_endpoint, __pyx_v_address, __pyx_v_conflate);
 
   /* function exit code */
@@ -2704,12 +4843,15 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_4connect
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":94
+  /* "cereal/messaging/messaging_pyx.pyx":187
  * 
  *   def connect(self, Context context, string endpoint, string address=b"127.0.0.1", bool conflate=False):
  *     r = self.socket.connect(context.context, endpoint, address, conflate)             # <<<<<<<<<<<<<<
@@ -2718,73 +4860,109 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_4connect
  */
   __pyx_v_r = __pyx_v_self->socket->connect(__pyx_v_context->context, __pyx_v_endpoint, __pyx_v_address, __pyx_v_conflate);
 
-  /* "cereal/messaging/messaging_pyx.pyx":96
+  /* "cereal/messaging/messaging_pyx.pyx":189
  *     r = self.socket.connect(context.context, endpoint, address, conflate)
  * 
  *     if r != 0:             # <<<<<<<<<<<<<<
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  */
   __pyx_t_1 = ((__pyx_v_r != 0) != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":97
+    /* "cereal/messaging/messaging_pyx.pyx":190
  * 
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  *       else:
  */
     __pyx_t_1 = ((errno == EADDRINUSE) != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "cereal/messaging/messaging_pyx.pyx":98
+      /* "cereal/messaging/messaging_pyx.pyx":191
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError             # <<<<<<<<<<<<<<
+ *         raise MultiplePublishersError(endpoint)             # <<<<<<<<<<<<<<
  *       else:
- *         raise MessagingError
+ *         raise MessagingError(endpoint)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 98, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 191, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_endpoint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 191, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(1, 98, __pyx_L1_error)
+      __PYX_ERR(0, 191, __pyx_L1_error)
 
-      /* "cereal/messaging/messaging_pyx.pyx":97
+      /* "cereal/messaging/messaging_pyx.pyx":190
  * 
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  *       else:
  */
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":100
- *         raise MultiplePublishersError
+    /* "cereal/messaging/messaging_pyx.pyx":193
+ *         raise MultiplePublishersError(endpoint)
  *       else:
- *         raise MessagingError             # <<<<<<<<<<<<<<
+ *         raise MessagingError(endpoint)             # <<<<<<<<<<<<<<
  * 
  *   def setTimeout(self, int timeout):
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 100, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_endpoint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(1, 100, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":96
+    /* "cereal/messaging/messaging_pyx.pyx":189
  *     r = self.socket.connect(context.context, endpoint, address, conflate)
  * 
  *     if r != 0:             # <<<<<<<<<<<<<<
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":93
+  /* "cereal/messaging/messaging_pyx.pyx":186
  *     self.socket = ptr
  * 
  *   def connect(self, Context context, string endpoint, string address=b"127.0.0.1", bool conflate=False):             # <<<<<<<<<<<<<<
@@ -2797,6 +4975,9 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_4connect
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SubSocket.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -2805,8 +4986,8 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_4connect
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":102
- *         raise MessagingError
+/* "cereal/messaging/messaging_pyx.pyx":195
+ *         raise MessagingError(endpoint)
  * 
  *   def setTimeout(self, int timeout):             # <<<<<<<<<<<<<<
  *     self.socket.setTimeout(timeout)
@@ -2824,7 +5005,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_7setTime
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("setTimeout (wrapper)", 0);
   assert(__pyx_arg_timeout); {
-    __pyx_v_timeout = __Pyx_PyInt_As_int(__pyx_arg_timeout); if (unlikely((__pyx_v_timeout == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 102, __pyx_L3_error)
+    __pyx_v_timeout = __Pyx_PyInt_As_int(__pyx_arg_timeout); if (unlikely((__pyx_v_timeout == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 195, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -2844,7 +5025,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_6setTime
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("setTimeout", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":103
+  /* "cereal/messaging/messaging_pyx.pyx":196
  * 
  *   def setTimeout(self, int timeout):
  *     self.socket.setTimeout(timeout)             # <<<<<<<<<<<<<<
@@ -2853,8 +5034,8 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_6setTime
  */
   __pyx_v_self->socket->setTimeout(__pyx_v_timeout);
 
-  /* "cereal/messaging/messaging_pyx.pyx":102
- *         raise MessagingError
+  /* "cereal/messaging/messaging_pyx.pyx":195
+ *         raise MessagingError(endpoint)
  * 
  *   def setTimeout(self, int timeout):             # <<<<<<<<<<<<<<
  *     self.socket.setTimeout(timeout)
@@ -2868,7 +5049,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_6setTime
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":105
+/* "cereal/messaging/messaging_pyx.pyx":198
  *     self.socket.setTimeout(timeout)
  * 
  *   def receive(self, bool non_blocking=False):             # <<<<<<<<<<<<<<
@@ -2907,7 +5088,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_9receive
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "receive") < 0)) __PYX_ERR(1, 105, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "receive") < 0)) __PYX_ERR(0, 198, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2918,14 +5099,14 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9SubSocket_9receive
       }
     }
     if (values[0]) {
-      __pyx_v_non_blocking = __Pyx_PyObject_IsTrue(values[0]); if (unlikely((__pyx_v_non_blocking == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 105, __pyx_L3_error)
+      __pyx_v_non_blocking = __Pyx_PyObject_IsTrue(values[0]); if (unlikely((__pyx_v_non_blocking == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L3_error)
     } else {
       __pyx_v_non_blocking = ((bool)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("receive", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 105, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("receive", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 198, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.messaging.messaging_pyx.SubSocket.receive", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2953,7 +5134,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("receive", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":106
+  /* "cereal/messaging/messaging_pyx.pyx":199
  * 
  *   def receive(self, bool non_blocking=False):
  *     msg = self.socket.receive(non_blocking)             # <<<<<<<<<<<<<<
@@ -2962,7 +5143,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
  */
   __pyx_v_msg = __pyx_v_self->socket->receive(__pyx_v_non_blocking);
 
-  /* "cereal/messaging/messaging_pyx.pyx":108
+  /* "cereal/messaging/messaging_pyx.pyx":201
  *     msg = self.socket.receive(non_blocking)
  * 
  *     if msg == NULL:             # <<<<<<<<<<<<<<
@@ -2972,7 +5153,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
   __pyx_t_1 = ((__pyx_v_msg == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":110
+    /* "cereal/messaging/messaging_pyx.pyx":203
  *     if msg == NULL:
  *       # If a blocking read returns no message check errno if SIGINT was caught in the C++ code
  *       if errno.errno == errno.EINTR:             # <<<<<<<<<<<<<<
@@ -2982,27 +5163,27 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
     __pyx_t_1 = ((errno == EINTR) != 0);
     if (__pyx_t_1) {
 
-      /* "cereal/messaging/messaging_pyx.pyx":111
+      /* "cereal/messaging/messaging_pyx.pyx":204
  *       # If a blocking read returns no message check errno if SIGINT was caught in the C++ code
  *       if errno.errno == errno.EINTR:
  *         print("SIGINT received, exiting")             # <<<<<<<<<<<<<<
  *         sys.exit(1)
  * 
  */
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 111, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 204, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cereal/messaging/messaging_pyx.pyx":112
+      /* "cereal/messaging/messaging_pyx.pyx":205
  *       if errno.errno == errno.EINTR:
  *         print("SIGINT received, exiting")
  *         sys.exit(1)             # <<<<<<<<<<<<<<
  * 
  *       return None
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sys); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 112, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sys); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 112, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_exit); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_3 = NULL;
@@ -3017,12 +5198,12 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
       }
       __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_int_1) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_int_1);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 112, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cereal/messaging/messaging_pyx.pyx":110
+      /* "cereal/messaging/messaging_pyx.pyx":203
  *     if msg == NULL:
  *       # If a blocking read returns no message check errno if SIGINT was caught in the C++ code
  *       if errno.errno == errno.EINTR:             # <<<<<<<<<<<<<<
@@ -3031,7 +5212,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
  */
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":114
+    /* "cereal/messaging/messaging_pyx.pyx":207
  *         sys.exit(1)
  * 
  *       return None             # <<<<<<<<<<<<<<
@@ -3042,7 +5223,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cereal/messaging/messaging_pyx.pyx":108
+    /* "cereal/messaging/messaging_pyx.pyx":201
  *     msg = self.socket.receive(non_blocking)
  * 
  *     if msg == NULL:             # <<<<<<<<<<<<<<
@@ -3051,7 +5232,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":116
+  /* "cereal/messaging/messaging_pyx.pyx":209
  *       return None
  *     else:
  *       sz = msg.getSize()             # <<<<<<<<<<<<<<
@@ -3061,19 +5242,19 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
   /*else*/ {
     __pyx_v_sz = __pyx_v_msg->getSize();
 
-    /* "cereal/messaging/messaging_pyx.pyx":117
+    /* "cereal/messaging/messaging_pyx.pyx":210
  *     else:
  *       sz = msg.getSize()
  *       m = msg.getData()[:sz]             # <<<<<<<<<<<<<<
  *       del msg
  * 
  */
-    __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_msg->getData() + 0, __pyx_v_sz - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 117, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_msg->getData() + 0, __pyx_v_sz - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_m = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "cereal/messaging/messaging_pyx.pyx":118
+    /* "cereal/messaging/messaging_pyx.pyx":211
  *       sz = msg.getSize()
  *       m = msg.getData()[:sz]
  *       del msg             # <<<<<<<<<<<<<<
@@ -3082,7 +5263,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
  */
     delete __pyx_v_msg;
 
-    /* "cereal/messaging/messaging_pyx.pyx":120
+    /* "cereal/messaging/messaging_pyx.pyx":213
  *       del msg
  * 
  *       return m             # <<<<<<<<<<<<<<
@@ -3095,7 +5276,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_8receive
     goto __pyx_L0;
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":105
+  /* "cereal/messaging/messaging_pyx.pyx":198
  *     self.socket.setTimeout(timeout)
  * 
  *   def receive(self, bool non_blocking=False):             # <<<<<<<<<<<<<<
@@ -3151,11 +5332,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_10__redu
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 2, __pyx_L1_error)
+  __PYX_ERR(1, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -3207,11 +5388,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_12__sets
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 4, __pyx_L1_error)
+  __PYX_ERR(1, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -3230,7 +5411,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9SubSocket_12__sets
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":126
+/* "cereal/messaging/messaging_pyx.pyx":219
  *   cdef cppPubSocket * socket
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -3264,7 +5445,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket___cinit__(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":127
+  /* "cereal/messaging/messaging_pyx.pyx":220
  * 
  *   def __cinit__(self):
  *     self.socket = cppPubSocket.create()             # <<<<<<<<<<<<<<
@@ -3273,7 +5454,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket___cinit__(stru
  */
   __pyx_v_self->socket = PubSocket::create();
 
-  /* "cereal/messaging/messaging_pyx.pyx":128
+  /* "cereal/messaging/messaging_pyx.pyx":221
  *   def __cinit__(self):
  *     self.socket = cppPubSocket.create()
  *     if self.socket == NULL:             # <<<<<<<<<<<<<<
@@ -3283,20 +5464,20 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket___cinit__(stru
   __pyx_t_1 = ((__pyx_v_self->socket == NULL) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":129
+    /* "cereal/messaging/messaging_pyx.pyx":222
  *     self.socket = cppPubSocket.create()
  *     if self.socket == NULL:
  *       raise MessagingError             # <<<<<<<<<<<<<<
  * 
  *   def __dealloc__(self):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 129, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 129, __pyx_L1_error)
+    __PYX_ERR(0, 222, __pyx_L1_error)
 
-    /* "cereal/messaging/messaging_pyx.pyx":128
+    /* "cereal/messaging/messaging_pyx.pyx":221
  *   def __cinit__(self):
  *     self.socket = cppPubSocket.create()
  *     if self.socket == NULL:             # <<<<<<<<<<<<<<
@@ -3305,7 +5486,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket___cinit__(stru
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":126
+  /* "cereal/messaging/messaging_pyx.pyx":219
  *   cdef cppPubSocket * socket
  * 
  *   def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -3325,7 +5506,7 @@ static int __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket___cinit__(stru
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":131
+/* "cereal/messaging/messaging_pyx.pyx":224
  *       raise MessagingError
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -3348,7 +5529,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_2__dealloc__(
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":132
+  /* "cereal/messaging/messaging_pyx.pyx":225
  * 
  *   def __dealloc__(self):
  *     del self.socket             # <<<<<<<<<<<<<<
@@ -3357,7 +5538,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_2__dealloc__(
  */
   delete __pyx_v_self->socket;
 
-  /* "cereal/messaging/messaging_pyx.pyx":131
+  /* "cereal/messaging/messaging_pyx.pyx":224
  *       raise MessagingError
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -3369,7 +5550,7 @@ static void __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_2__dealloc__(
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":134
+/* "cereal/messaging/messaging_pyx.pyx":227
  *     del self.socket
  * 
  *   def connect(self, Context context, string endpoint):             # <<<<<<<<<<<<<<
@@ -3411,11 +5592,11 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9PubSocket_5connect
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_endpoint)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("connect", 1, 2, 2, 1); __PYX_ERR(1, 134, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("connect", 1, 2, 2, 1); __PYX_ERR(0, 227, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "connect") < 0)) __PYX_ERR(1, 134, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "connect") < 0)) __PYX_ERR(0, 227, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3424,17 +5605,17 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9PubSocket_5connect
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_context = ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Context *)values[0]);
-    __pyx_v_endpoint = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 134, __pyx_L3_error)
+    __pyx_v_endpoint = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("connect", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 134, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("connect", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 227, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.messaging.messaging_pyx.PubSocket.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_context), __pyx_ptype_6cereal_9messaging_13messaging_pyx_Context, 1, "context", 0))) __PYX_ERR(1, 134, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_context), __pyx_ptype_6cereal_9messaging_13messaging_pyx_Context, 1, "context", 0))) __PYX_ERR(0, 227, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_4connect(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket *)__pyx_v_self), __pyx_v_context, __pyx_v_endpoint);
 
   /* function exit code */
@@ -3452,12 +5633,15 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_4connect
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":135
+  /* "cereal/messaging/messaging_pyx.pyx":228
  * 
  *   def connect(self, Context context, string endpoint):
  *     r = self.socket.connect(context.context, endpoint)             # <<<<<<<<<<<<<<
@@ -3466,73 +5650,109 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_4connect
  */
   __pyx_v_r = __pyx_v_self->socket->connect(__pyx_v_context->context, __pyx_v_endpoint);
 
-  /* "cereal/messaging/messaging_pyx.pyx":137
+  /* "cereal/messaging/messaging_pyx.pyx":230
  *     r = self.socket.connect(context.context, endpoint)
  * 
  *     if r != 0:             # <<<<<<<<<<<<<<
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  */
   __pyx_t_1 = ((__pyx_v_r != 0) != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":138
+    /* "cereal/messaging/messaging_pyx.pyx":231
  * 
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  *       else:
  */
     __pyx_t_1 = ((errno == EADDRINUSE) != 0);
     if (unlikely(__pyx_t_1)) {
 
-      /* "cereal/messaging/messaging_pyx.pyx":139
+      /* "cereal/messaging/messaging_pyx.pyx":232
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError             # <<<<<<<<<<<<<<
+ *         raise MultiplePublishersError(endpoint)             # <<<<<<<<<<<<<<
  *       else:
- *         raise MessagingError
+ *         raise MessagingError(endpoint)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 139, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_endpoint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(1, 139, __pyx_L1_error)
+      __PYX_ERR(0, 232, __pyx_L1_error)
 
-      /* "cereal/messaging/messaging_pyx.pyx":138
+      /* "cereal/messaging/messaging_pyx.pyx":231
  * 
  *     if r != 0:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  *       else:
  */
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":141
- *         raise MultiplePublishersError
+    /* "cereal/messaging/messaging_pyx.pyx":234
+ *         raise MultiplePublishersError(endpoint)
  *       else:
- *         raise MessagingError             # <<<<<<<<<<<<<<
+ *         raise MessagingError(endpoint)             # <<<<<<<<<<<<<<
  * 
  *   def send(self, bytes data):
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 141, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_endpoint); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 234, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_2, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __PYX_ERR(1, 141, __pyx_L1_error)
+      __PYX_ERR(0, 234, __pyx_L1_error)
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":137
+    /* "cereal/messaging/messaging_pyx.pyx":230
  *     r = self.socket.connect(context.context, endpoint)
  * 
  *     if r != 0:             # <<<<<<<<<<<<<<
  *       if errno.errno == errno.EADDRINUSE:
- *         raise MultiplePublishersError
+ *         raise MultiplePublishersError(endpoint)
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":134
+  /* "cereal/messaging/messaging_pyx.pyx":227
  *     del self.socket
  * 
  *   def connect(self, Context context, string endpoint):             # <<<<<<<<<<<<<<
@@ -3545,6 +5765,9 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_4connect
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("cereal.messaging.messaging_pyx.PubSocket.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3553,8 +5776,8 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_4connect
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":143
- *         raise MessagingError
+/* "cereal/messaging/messaging_pyx.pyx":236
+ *         raise MessagingError(endpoint)
  * 
  *   def send(self, bytes data):             # <<<<<<<<<<<<<<
  *     length = len(data)
@@ -3570,7 +5793,7 @@ static PyObject *__pyx_pw_6cereal_9messaging_13messaging_pyx_9PubSocket_7send(Py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("send (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(1, 143, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(0, 236, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_PubSocket *)__pyx_v_self), ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -3596,7 +5819,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("send", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":144
+  /* "cereal/messaging/messaging_pyx.pyx":237
  * 
  *   def send(self, bytes data):
  *     length = len(data)             # <<<<<<<<<<<<<<
@@ -3605,12 +5828,12 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 144, __pyx_L1_error)
+    __PYX_ERR(0, 237, __pyx_L1_error)
   }
-  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 237, __pyx_L1_error)
   __pyx_v_length = __pyx_t_1;
 
-  /* "cereal/messaging/messaging_pyx.pyx":145
+  /* "cereal/messaging/messaging_pyx.pyx":238
  *   def send(self, bytes data):
  *     length = len(data)
  *     r = self.socket.send(<char*>data, length)             # <<<<<<<<<<<<<<
@@ -3619,12 +5842,12 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(1, 145, __pyx_L1_error)
+    __PYX_ERR(0, 238, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(1, 145, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 238, __pyx_L1_error)
   __pyx_v_r = __pyx_v_self->socket->send(((char *)__pyx_t_2), __pyx_v_length);
 
-  /* "cereal/messaging/messaging_pyx.pyx":147
+  /* "cereal/messaging/messaging_pyx.pyx":240
  *     r = self.socket.send(<char*>data, length)
  * 
  *     if r != length:             # <<<<<<<<<<<<<<
@@ -3634,7 +5857,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
   __pyx_t_3 = ((__pyx_v_r != __pyx_v_length) != 0);
   if (__pyx_t_3) {
 
-    /* "cereal/messaging/messaging_pyx.pyx":148
+    /* "cereal/messaging/messaging_pyx.pyx":241
  * 
  *     if r != length:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
@@ -3644,20 +5867,20 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
     __pyx_t_3 = ((errno == EADDRINUSE) != 0);
     if (unlikely(__pyx_t_3)) {
 
-      /* "cereal/messaging/messaging_pyx.pyx":149
+      /* "cereal/messaging/messaging_pyx.pyx":242
  *     if r != length:
  *       if errno.errno == errno.EADDRINUSE:
  *         raise MultiplePublishersError             # <<<<<<<<<<<<<<
  *       else:
  *         raise MessagingError
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 149, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_MultiplePublishersError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_Raise(__pyx_t_4, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(1, 149, __pyx_L1_error)
+      __PYX_ERR(0, 242, __pyx_L1_error)
 
-      /* "cereal/messaging/messaging_pyx.pyx":148
+      /* "cereal/messaging/messaging_pyx.pyx":241
  * 
  *     if r != length:
  *       if errno.errno == errno.EADDRINUSE:             # <<<<<<<<<<<<<<
@@ -3666,7 +5889,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
  */
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":151
+    /* "cereal/messaging/messaging_pyx.pyx":244
  *         raise MultiplePublishersError
  *       else:
  *         raise MessagingError             # <<<<<<<<<<<<<<
@@ -3674,14 +5897,14 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
  *   def all_readers_updated(self):
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 151, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_Raise(__pyx_t_4, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(1, 151, __pyx_L1_error)
+      __PYX_ERR(0, 244, __pyx_L1_error)
     }
 
-    /* "cereal/messaging/messaging_pyx.pyx":147
+    /* "cereal/messaging/messaging_pyx.pyx":240
  *     r = self.socket.send(<char*>data, length)
  * 
  *     if r != length:             # <<<<<<<<<<<<<<
@@ -3690,8 +5913,8 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
  */
   }
 
-  /* "cereal/messaging/messaging_pyx.pyx":143
- *         raise MessagingError
+  /* "cereal/messaging/messaging_pyx.pyx":236
+ *         raise MessagingError(endpoint)
  * 
  *   def send(self, bytes data):             # <<<<<<<<<<<<<<
  *     length = len(data)
@@ -3711,7 +5934,7 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_6send(st
   return __pyx_r;
 }
 
-/* "cereal/messaging/messaging_pyx.pyx":153
+/* "cereal/messaging/messaging_pyx.pyx":246
  *         raise MessagingError
  * 
  *   def all_readers_updated(self):             # <<<<<<<<<<<<<<
@@ -3740,19 +5963,19 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_8all_rea
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("all_readers_updated", 0);
 
-  /* "cereal/messaging/messaging_pyx.pyx":154
+  /* "cereal/messaging/messaging_pyx.pyx":247
  * 
  *   def all_readers_updated(self):
  *     return self.socket.all_readers_updated()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->socket->all_readers_updated()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 154, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->socket->all_readers_updated()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":153
+  /* "cereal/messaging/messaging_pyx.pyx":246
  *         raise MessagingError
  * 
  *   def all_readers_updated(self):             # <<<<<<<<<<<<<<
@@ -3804,11 +6027,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_10__redu
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 2, __pyx_L1_error)
+  __PYX_ERR(1, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -3860,11 +6083,11 @@ static PyObject *__pyx_pf_6cereal_9messaging_13messaging_pyx_9PubSocket_12__sets
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 4, __pyx_L1_error)
+  __PYX_ERR(1, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -3918,7 +6141,7 @@ static std::string __pyx_convert_string_from_py_std__in_string(PyObject *__pyx_v
  *     return string(data, length)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsStringAndSize(__pyx_v_o, (&__pyx_v_length)); if (unlikely(__pyx_t_1 == ((char const *)NULL))) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsStringAndSize(__pyx_v_o, (&__pyx_v_length)); if (unlikely(__pyx_t_1 == ((char const *)NULL))) __PYX_ERR(1, 15, __pyx_L1_error)
   __pyx_v_data = __pyx_t_1;
 
   /* "string.from_py":16
@@ -3947,6 +6170,521 @@ static std::string __pyx_convert_string_from_py_std__in_string(PyObject *__pyx_v
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
+
+/* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyObject_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":32
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyUnicode_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyObject_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyUnicode_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":38
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyStr_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyUnicode_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyUnicode_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyStr_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":44
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyBytes_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyStr_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyStr_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyBytes_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":50
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyByteArray_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyBytes_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyByteArray_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":56
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyByteArray_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyByteArray_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+static struct __pyx_vtabstruct_6cereal_9messaging_13messaging_pyx_Event __pyx_vtable_6cereal_9messaging_13messaging_pyx_Event;
+
+static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_Event(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_Event;
+  new((void*)&(p->event)) Event();
+  if (unlikely(__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
+  return o;
+  bad:
+  Py_DECREF(o); o = 0;
+  return NULL;
+}
+
+static void __pyx_tp_dealloc_6cereal_9messaging_13messaging_pyx_Event(PyObject *o) {
+  struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *p = (struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *)o;
+  #if CYTHON_USE_TP_FINALIZE
+  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  __Pyx_call_destructor(p->event);
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyObject *__pyx_getprop_6cereal_9messaging_13messaging_pyx_5Event_fd(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_2fd_1__get__(o);
+}
+
+static PyObject *__pyx_getprop_6cereal_9messaging_13messaging_pyx_5Event_ptr(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3ptr_1__get__(o);
+}
+
+static PyMethodDef __pyx_methods_6cereal_9messaging_13messaging_pyx_Event[] = {
+  {"set", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_3set, METH_NOARGS, 0},
+  {"clear", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_5clear, METH_NOARGS, 0},
+  {"wait", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_7wait, METH_VARARGS|METH_KEYWORDS, 0},
+  {"peek", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_9peek, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_11__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_5Event_13__setstate_cython__, METH_O, 0},
+  {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_6cereal_9messaging_13messaging_pyx_Event[] = {
+  {(char *)"fd", __pyx_getprop_6cereal_9messaging_13messaging_pyx_5Event_fd, 0, (char *)0, 0},
+  {(char *)"ptr", __pyx_getprop_6cereal_9messaging_13messaging_pyx_5Event_ptr, 0, (char *)0, 0},
+  {0, 0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_6cereal_9messaging_13messaging_pyx_Event = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "cereal.messaging.messaging_pyx.Event", /*tp_name*/
+  sizeof(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_6cereal_9messaging_13messaging_pyx_Event, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_6cereal_9messaging_13messaging_pyx_Event, /*tp_methods*/
+  0, /*tp_members*/
+  __pyx_getsets_6cereal_9messaging_13messaging_pyx_Event, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_6cereal_9messaging_13messaging_pyx_Event, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1 && (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800)
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+  #if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX >= 0x03090000
+  0, /*tp_pypy_flags*/
+  #endif
+};
+
+static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_SocketEventHandle(PyTypeObject *t, PyObject *a, PyObject *k) {
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  if (unlikely(__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_1__cinit__(o, a, k) < 0)) goto bad;
+  return o;
+  bad:
+  Py_DECREF(o); o = 0;
+  return NULL;
+}
+
+static void __pyx_tp_dealloc_6cereal_9messaging_13messaging_pyx_SocketEventHandle(PyObject *o) {
+  #if CYTHON_USE_TP_FINALIZE
+  if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  {
+    PyObject *etype, *eval, *etb;
+    PyErr_Fetch(&etype, &eval, &etb);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) + 1);
+    __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_3__dealloc__(o);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) - 1);
+    PyErr_Restore(etype, eval, etb);
+  }
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyObject *__pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_enabled(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_1__get__(o);
+}
+
+static int __pyx_setprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_enabled(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7enabled_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
+static PyObject *__pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_recv_called_event(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_17recv_called_event_1__get__(o);
+}
+
+static PyObject *__pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_recv_ready_event(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_16recv_ready_event_1__get__(o);
+}
+
+static PyMethodDef __pyx_methods_6cereal_9messaging_13messaging_pyx_SocketEventHandle[] = {
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_7__setstate_cython__, METH_O, 0},
+  {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_6cereal_9messaging_13messaging_pyx_SocketEventHandle[] = {
+  {(char *)"enabled", __pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_enabled, __pyx_setprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_enabled, (char *)0, 0},
+  {(char *)"recv_called_event", __pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_recv_called_event, 0, (char *)0, 0},
+  {(char *)"recv_ready_event", __pyx_getprop_6cereal_9messaging_13messaging_pyx_17SocketEventHandle_recv_ready_event, 0, (char *)0, 0},
+  {0, 0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "cereal.messaging.messaging_pyx.SocketEventHandle", /*tp_name*/
+  sizeof(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SocketEventHandle), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_6cereal_9messaging_13messaging_pyx_SocketEventHandle, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_6cereal_9messaging_13messaging_pyx_SocketEventHandle, /*tp_methods*/
+  0, /*tp_members*/
+  __pyx_getsets_6cereal_9messaging_13messaging_pyx_SocketEventHandle, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_6cereal_9messaging_13messaging_pyx_SocketEventHandle, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1 && (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800)
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+  #if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX >= 0x03090000
+  0, /*tp_pypy_flags*/
+  #endif
+};
 
 static PyObject *__pyx_tp_new_6cereal_9messaging_13messaging_pyx_Context(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   PyObject *o;
@@ -4471,47 +7209,77 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_kp_b_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 0, 0},
+  {&__pyx_kp_u_, __pyx_k_, sizeof(__pyx_k_), 0, 1, 0, 0},
   {&__pyx_kp_b_127_0_0_1, __pyx_k_127_0_0_1, sizeof(__pyx_k_127_0_0_1), 0, 0, 0, 0},
   {&__pyx_n_s_Context, __pyx_k_Context, sizeof(__pyx_k_Context), 0, 0, 1, 1},
+  {&__pyx_n_s_Event, __pyx_k_Event, sizeof(__pyx_k_Event), 0, 0, 1, 1},
   {&__pyx_n_s_MessagingError, __pyx_k_MessagingError, sizeof(__pyx_k_MessagingError), 0, 0, 1, 1},
+  {&__pyx_n_s_MessagingError___init, __pyx_k_MessagingError___init, sizeof(__pyx_k_MessagingError___init), 0, 0, 1, 1},
+  {&__pyx_kp_u_Messaging_failure, __pyx_k_Messaging_failure, sizeof(__pyx_k_Messaging_failure), 0, 1, 0, 0},
   {&__pyx_n_s_MultiplePublishersError, __pyx_k_MultiplePublishersError, sizeof(__pyx_k_MultiplePublishersError), 0, 0, 1, 1},
+  {&__pyx_kp_u_None, __pyx_k_None, sizeof(__pyx_k_None), 0, 1, 0, 0},
   {&__pyx_n_s_Poller, __pyx_k_Poller, sizeof(__pyx_k_Poller), 0, 0, 1, 1},
   {&__pyx_n_s_PubSocket, __pyx_k_PubSocket, sizeof(__pyx_k_PubSocket), 0, 0, 1, 1},
   {&__pyx_kp_u_SIGINT_received_exiting, __pyx_k_SIGINT_received_exiting, sizeof(__pyx_k_SIGINT_received_exiting), 0, 1, 0, 0},
+  {&__pyx_n_s_SocketEventHandle, __pyx_k_SocketEventHandle, sizeof(__pyx_k_SocketEventHandle), 0, 0, 1, 1},
   {&__pyx_n_s_SubSocket, __pyx_k_SubSocket, sizeof(__pyx_k_SubSocket), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
+  {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
   {&__pyx_n_s_address, __pyx_k_address, sizeof(__pyx_k_address), 0, 0, 1, 1},
   {&__pyx_n_s_cereal_messaging_messaging_pyx, __pyx_k_cereal_messaging_messaging_pyx, sizeof(__pyx_k_cereal_messaging_messaging_pyx), 0, 0, 1, 1},
+  {&__pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_k_cereal_messaging_messaging_pyx_p, sizeof(__pyx_k_cereal_messaging_messaging_pyx_p), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_conflate, __pyx_k_conflate, sizeof(__pyx_k_conflate), 0, 0, 1, 1},
   {&__pyx_n_s_context, __pyx_k_context, sizeof(__pyx_k_context), 0, 0, 1, 1},
+  {&__pyx_n_s_delete_fake_prefix, __pyx_k_delete_fake_prefix, sizeof(__pyx_k_delete_fake_prefix), 0, 0, 1, 1},
   {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
+  {&__pyx_n_s_enabled, __pyx_k_enabled, sizeof(__pyx_k_enabled), 0, 0, 1, 1},
   {&__pyx_n_s_endpoint, __pyx_k_endpoint, sizeof(__pyx_k_endpoint), 0, 0, 1, 1},
+  {&__pyx_n_s_event, __pyx_k_event, sizeof(__pyx_k_event), 0, 0, 1, 1},
+  {&__pyx_n_s_events, __pyx_k_events, sizeof(__pyx_k_events), 0, 0, 1, 1},
   {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
+  {&__pyx_n_s_get_fake_prefix, __pyx_k_get_fake_prefix, sizeof(__pyx_k_get_fake_prefix), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
+  {&__pyx_n_s_identifier, __pyx_k_identifier, sizeof(__pyx_k_identifier), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
+  {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
+  {&__pyx_n_s_items, __pyx_k_items, sizeof(__pyx_k_items), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_message, __pyx_k_message, sizeof(__pyx_k_message), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
   {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_non_blocking, __pyx_k_non_blocking, sizeof(__pyx_k_non_blocking), 0, 0, 1, 1},
+  {&__pyx_n_s_override, __pyx_k_override, sizeof(__pyx_k_override), 0, 0, 1, 1},
+  {&__pyx_n_s_prefix, __pyx_k_prefix, sizeof(__pyx_k_prefix), 0, 0, 1, 1},
   {&__pyx_n_s_prepare, __pyx_k_prepare, sizeof(__pyx_k_prepare), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
+  {&__pyx_n_s_ptr, __pyx_k_ptr, sizeof(__pyx_k_ptr), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_qualname, __pyx_k_qualname, sizeof(__pyx_k_qualname), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
+  {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
+  {&__pyx_n_s_set_fake_prefix, __pyx_k_set_fake_prefix, sizeof(__pyx_k_set_fake_prefix), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
+  {&__pyx_n_s_suffix, __pyx_k_suffix, sizeof(__pyx_k_suffix), 0, 0, 1, 1},
+  {&__pyx_n_s_super, __pyx_k_super, sizeof(__pyx_k_super), 0, 0, 1, 1},
   {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_timeout, __pyx_k_timeout, sizeof(__pyx_k_timeout), 0, 0, 1, 1},
+  {&__pyx_n_s_toggle_fake_events, __pyx_k_toggle_fake_events, sizeof(__pyx_k_toggle_fake_events), 0, 0, 1, 1},
+  {&__pyx_n_s_wait_for_one_event, __pyx_k_wait_for_one_event, sizeof(__pyx_k_wait_for_one_event), 0, 0, 1, 1},
+  {&__pyx_kp_u_with_endpoint, __pyx_k_with_endpoint, sizeof(__pyx_k_with_endpoint), 0, 1, 0, 0},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_builtin_super = __Pyx_GetBuiltinName(__pyx_n_s_super); if (!__pyx_builtin_super) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 204, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4527,26 +7295,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-
-  /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
-
-  /* "(tree fragment)":2
- * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
@@ -4555,18 +7304,26 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "cereal/messaging/messaging_pyx.pyx":111
- *       # If a blocking read returns no message check errno if SIGINT was caught in the C++ code
- *       if errno.errno == errno.EINTR:
- *         print("SIGINT received, exiting")             # <<<<<<<<<<<<<<
- *         sys.exit(1)
- * 
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_SIGINT_received_exiting); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
@@ -4576,7 +7333,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
@@ -4585,7 +7342,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
@@ -4595,7 +7352,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
@@ -4604,9 +7361,127 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
+
+  /* "cereal/messaging/messaging_pyx.pyx":204
+ *       # If a blocking read returns no message check errno if SIGINT was caught in the C++ code
+ *       if errno.errno == errno.EINTR:
+ *         print("SIGINT received, exiting")             # <<<<<<<<<<<<<<
+ *         sys.exit(1)
+ * 
+ */
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_u_SIGINT_received_exiting); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
+
+  /* "(tree fragment)":2
+ * def __reduce_cython__(self):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ */
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+
+  /* "cereal/messaging/messaging_pyx.pyx":22
+ * 
+ * class MessagingError(Exception):
+ *   def __init__(self, endpoint=None):             # <<<<<<<<<<<<<<
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ */
+  __pyx_tuple__17 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_endpoint, __pyx_n_s_suffix, __pyx_n_s_message); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_init, 22, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(1, ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
+
+  /* "cereal/messaging/messaging_pyx.pyx":32
+ * 
+ * 
+ * def toggle_fake_events(bool enabled):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.toggle_fake_events(enabled)
+ * 
+ */
+  __pyx_tuple__20 = PyTuple_Pack(2, __pyx_n_s_enabled, __pyx_n_s_enabled); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_toggle_fake_events, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 32, __pyx_L1_error)
+
+  /* "cereal/messaging/messaging_pyx.pyx":36
+ * 
+ * 
+ * def set_fake_prefix(string prefix):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(prefix)
+ * 
+ */
+  __pyx_tuple__22 = PyTuple_Pack(2, __pyx_n_s_prefix, __pyx_n_s_prefix); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_set_fake_prefix, 36, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 36, __pyx_L1_error)
+
+  /* "cereal/messaging/messaging_pyx.pyx":40
+ * 
+ * 
+ * def get_fake_prefix():             # <<<<<<<<<<<<<<
+ *   return cppSocketEventHandle.fake_prefix()
+ * 
+ */
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_get_fake_prefix, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 40, __pyx_L1_error)
+
+  /* "cereal/messaging/messaging_pyx.pyx":44
+ * 
+ * 
+ * def delete_fake_prefix():             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(b"")
+ * 
+ */
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_delete_fake_prefix, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 44, __pyx_L1_error)
+
+  /* "cereal/messaging/messaging_pyx.pyx":48
+ * 
+ * 
+ * def wait_for_one_event(list events, int timeout=-1):             # <<<<<<<<<<<<<<
+ *   cdef vector[cppEvent] items
+ *   for event in events:
+ */
+  __pyx_tuple__26 = PyTuple_Pack(4, __pyx_n_s_events, __pyx_n_s_timeout, __pyx_n_s_items, __pyx_n_s_event); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_messaging_messaging_pyx_p, __pyx_n_s_wait_for_one_event, 48, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4615,8 +7490,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
-  if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4661,48 +7536,71 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
+  __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_Event = &__pyx_vtable_6cereal_9messaging_13messaging_pyx_Event;
+  __pyx_vtable_6cereal_9messaging_13messaging_pyx_Event.setEvent = (PyObject *(*)(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_Event *, Event))__pyx_f_6cereal_9messaging_13messaging_pyx_5Event_setEvent;
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_Event) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_6cereal_9messaging_13messaging_pyx_Event.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_Event.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_Event.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6cereal_9messaging_13messaging_pyx_Event.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  if (__Pyx_SetVtable(__pyx_type_6cereal_9messaging_13messaging_pyx_Event.tp_dict, __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_Event) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Event, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_Event) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_Event) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_ptype_6cereal_9messaging_13messaging_pyx_Event = &__pyx_type_6cereal_9messaging_13messaging_pyx_Event;
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  }
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SocketEventHandle, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_ptype_6cereal_9messaging_13messaging_pyx_SocketEventHandle = &__pyx_type_6cereal_9messaging_13messaging_pyx_SocketEventHandle;
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9messaging_13messaging_pyx_Context.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_Context.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_Context.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9messaging_13messaging_pyx_Context.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Context, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(1, 25, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Context, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_Context) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
   __pyx_ptype_6cereal_9messaging_13messaging_pyx_Context = &__pyx_type_6cereal_9messaging_13messaging_pyx_Context;
-  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(1, 42, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(0, 134, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9messaging_13messaging_pyx_Poller.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_Poller.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_Poller.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9messaging_13messaging_pyx_Poller.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Poller, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(1, 42, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(1, 42, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Poller, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(0, 134, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_Poller) < 0) __PYX_ERR(0, 134, __pyx_L1_error)
   __pyx_ptype_6cereal_9messaging_13messaging_pyx_Poller = &__pyx_type_6cereal_9messaging_13messaging_pyx_Poller;
   __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_SubSocket = &__pyx_vtable_6cereal_9messaging_13messaging_pyx_SubSocket;
   __pyx_vtable_6cereal_9messaging_13messaging_pyx_SubSocket.setPtr = (PyObject *(*)(struct __pyx_obj_6cereal_9messaging_13messaging_pyx_SubSocket *, SubSocket *))__pyx_f_6cereal_9messaging_13messaging_pyx_9SubSocket_setPtr;
-  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_dict, __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SubSocket, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket.tp_dict, __pyx_vtabptr_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SubSocket, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_ptype_6cereal_9messaging_13messaging_pyx_SubSocket = &__pyx_type_6cereal_9messaging_13messaging_pyx_SubSocket;
-  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(1, 123, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket.tp_dictoffset && __pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PubSocket, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(1, 123, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(1, 123, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PubSocket, (PyObject *)&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
   __pyx_ptype_6cereal_9messaging_13messaging_pyx_PubSocket = &__pyx_type_6cereal_9messaging_13messaging_pyx_PubSocket;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -4833,7 +7731,8 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_messaging_pyx(PyObject *__pyx_pyin
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  std::string __pyx_t_5;
+  PyObject *__pyx_t_5 = NULL;
+  std::string __pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4857,30 +7756,30 @@ if (!__Pyx_RefNanny) {
 }
 #endif
   __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_messaging_pyx(void)", 0);
-  if (__Pyx_check_binary_version() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
   #endif
-  __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __pyx_empty_unicode = PyUnicode_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_unicode)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_empty_unicode = PyUnicode_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_unicode)) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pyx_CyFunction_USED
-  if (__pyx_CyFunction_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_CyFunction_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_FusedFunction_USED
-  if (__pyx_FusedFunction_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_FusedFunction_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_Coroutine_USED
-  if (__pyx_Coroutine_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_Coroutine_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_Generator_USED
-  if (__pyx_Generator_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_Generator_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_AsyncGen_USED
-  if (__pyx_AsyncGen_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_AsyncGen_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   #ifdef __Pyx_StopAsyncIteration_USED
-  if (__pyx_StopAsyncIteration_init() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__pyx_StopAsyncIteration_init() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   /*--- Library function declarations ---*/
   /*--- Threads initialization code ---*/
@@ -4897,46 +7796,46 @@ if (!__Pyx_RefNanny) {
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
-  if (unlikely(!__pyx_m)) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (unlikely(!__pyx_m)) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  __pyx_d = PyModule_GetDict(__pyx_m); if (unlikely(!__pyx_d)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_d = PyModule_GetDict(__pyx_m); if (unlikely(!__pyx_d)) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_INCREF(__pyx_d);
-  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_b)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_b = PyImport_AddModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_b)) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_INCREF(__pyx_b);
-  __pyx_cython_runtime = PyImport_AddModule((char *) "cython_runtime"); if (unlikely(!__pyx_cython_runtime)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_cython_runtime = PyImport_AddModule((char *) "cython_runtime"); if (unlikely(!__pyx_cython_runtime)) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_INCREF(__pyx_cython_runtime);
-  if (PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "__builtins__", __pyx_b) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Initialize various global constants etc. ---*/
-  if (__Pyx_InitGlobals() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_InitGlobals() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
-  if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
   if (__pyx_module_is_main_cereal__messaging__messaging_pyx) {
-    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
-    PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
+    PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
     if (!PyDict_GetItemString(modules, "cereal.messaging.messaging_pyx")) {
-      if (unlikely(PyDict_SetItemString(modules, "cereal.messaging.messaging_pyx", __pyx_m) < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
+      if (unlikely(PyDict_SetItemString(modules, "cereal.messaging.messaging_pyx", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
   /*--- Builtin init code ---*/
-  if (__Pyx_InitCachedBuiltins() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_InitCachedBuiltins() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Constants init code ---*/
-  if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
   (void)__Pyx_modinit_variable_export_code();
   (void)__Pyx_modinit_function_export_code();
-  if (unlikely(__Pyx_modinit_type_init_code() < 0)) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (unlikely(__Pyx_modinit_type_init_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
   (void)__Pyx_modinit_function_import_code();
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
-  if (__Pyx_patch_abc() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
   /* "cereal/messaging/messaging_pyx.pyx":4
@@ -4944,89 +7843,177 @@ if (!__Pyx_RefNanny) {
  * 
  * import sys             # <<<<<<<<<<<<<<
  * from libcpp.string cimport string
- * from libcpp cimport bool
+ * from libcpp.vector cimport vector
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_sys, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_sys, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_1) < 0) __PYX_ERR(1, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":17
+  /* "cereal/messaging/messaging_pyx.pyx":21
  * 
  * 
  * class MessagingError(Exception):             # <<<<<<<<<<<<<<
- *   pass
- * 
+ *   def __init__(self, endpoint=None):
+ *     suffix = "with {endpoint}" if endpoint else ""
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
   __Pyx_GIVEREF(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])));
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_MessagingError, __pyx_n_s_MessagingError, (PyObject *) NULL, __pyx_n_s_cereal_messaging_messaging_pyx, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_MessagingError, __pyx_n_s_MessagingError, (PyObject *) NULL, __pyx_n_s_cereal_messaging_messaging_pyx, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_MessagingError, __pyx_t_1, __pyx_t_3, NULL, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MessagingError, __pyx_t_4) < 0) __PYX_ERR(1, 17, __pyx_L1_error)
+
+  /* "cereal/messaging/messaging_pyx.pyx":22
+ * 
+ * class MessagingError(Exception):
+ *   def __init__(self, endpoint=None):             # <<<<<<<<<<<<<<
+ *     suffix = "with {endpoint}" if endpoint else ""
+ *     message = f"Messaging failure {suffix}: {strerror(errno.errno)}"
+ */
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_14MessagingError_1__init__, 0, __pyx_n_s_MessagingError___init, NULL, __pyx_n_s_cereal_messaging_messaging_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_INCREF(__pyx_t_5);
+  PyList_Append(__pyx_t_4, __pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_5);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_tuple__19);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":21
+ * 
+ * 
+ * class MessagingError(Exception):             # <<<<<<<<<<<<<<
+ *   def __init__(self, endpoint=None):
+ *     suffix = "with {endpoint}" if endpoint else ""
+ */
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_MessagingError, __pyx_t_1, __pyx_t_3, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (__Pyx_CyFunction_InitClassCell(__pyx_t_4, __pyx_t_5) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MessagingError, __pyx_t_5) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":21
+  /* "cereal/messaging/messaging_pyx.pyx":28
  * 
  * 
  * class MultiplePublishersError(MessagingError):             # <<<<<<<<<<<<<<
  *   pass
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 21, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_MessagingError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 21, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MultiplePublishersError, __pyx_n_s_MultiplePublishersError, (PyObject *) NULL, __pyx_n_s_cereal_messaging_messaging_pyx, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 21, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MultiplePublishersError, __pyx_n_s_MultiplePublishersError, (PyObject *) NULL, __pyx_n_s_cereal_messaging_messaging_pyx, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MultiplePublishersError, __pyx_t_2, __pyx_t_3, NULL, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 21, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MultiplePublishersError, __pyx_t_4) < 0) __PYX_ERR(1, 21, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MultiplePublishersError, __pyx_t_2, __pyx_t_3, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MultiplePublishersError, __pyx_t_5) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cereal/messaging/messaging_pyx.pyx":93
+  /* "cereal/messaging/messaging_pyx.pyx":32
+ * 
+ * 
+ * def toggle_fake_events(bool enabled):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.toggle_fake_events(enabled)
+ * 
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_1toggle_fake_events, NULL, __pyx_n_s_cereal_messaging_messaging_pyx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_toggle_fake_events, __pyx_t_2) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":36
+ * 
+ * 
+ * def set_fake_prefix(string prefix):             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(prefix)
+ * 
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_3set_fake_prefix, NULL, __pyx_n_s_cereal_messaging_messaging_pyx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_set_fake_prefix, __pyx_t_2) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":40
+ * 
+ * 
+ * def get_fake_prefix():             # <<<<<<<<<<<<<<
+ *   return cppSocketEventHandle.fake_prefix()
+ * 
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_5get_fake_prefix, NULL, __pyx_n_s_cereal_messaging_messaging_pyx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_fake_prefix, __pyx_t_2) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":44
+ * 
+ * 
+ * def delete_fake_prefix():             # <<<<<<<<<<<<<<
+ *   cppSocketEventHandle.set_fake_prefix(b"")
+ * 
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_7delete_fake_prefix, NULL, __pyx_n_s_cereal_messaging_messaging_pyx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_delete_fake_prefix, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":48
+ * 
+ * 
+ * def wait_for_one_event(list events, int timeout=-1):             # <<<<<<<<<<<<<<
+ *   cdef vector[cppEvent] items
+ *   for event in events:
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9messaging_13messaging_pyx_9wait_for_one_event, NULL, __pyx_n_s_cereal_messaging_messaging_pyx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_wait_for_one_event, __pyx_t_2) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cereal/messaging/messaging_pyx.pyx":186
  *     self.socket = ptr
  * 
  *   def connect(self, Context context, string endpoint, string address=b"127.0.0.1", bool conflate=False):             # <<<<<<<<<<<<<<
  *     r = self.socket.connect(context.context, endpoint, address, conflate)
  * 
  */
-  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b_127_0_0_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 93, __pyx_L1_error)
-  __pyx_k__5 = __pyx_t_5;
+  __pyx_t_6 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b_127_0_0_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_k__11 = __pyx_t_6;
 
   /* "cereal/messaging/messaging_pyx.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * # cython: c_string_encoding=ascii, language_level=3
  * 
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "string.from_py":13
+  /* "string.to_py":55
  * 
- * @cname("__pyx_convert_string_from_py_std__in_string")
- * cdef string __pyx_convert_string_from_py_std__in_string(object o) except *:             # <<<<<<<<<<<<<<
- *     cdef Py_ssize_t length = 0
- *     cdef const char* data = __Pyx_PyObject_AsStringAndSize(o, &length)
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
  */
 
   /*--- Wrapped vars code ---*/
@@ -5037,6 +8024,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init cereal.messaging.messaging_pyx", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -5102,6 +8090,122 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+/* RaiseDoubleKeywords */
+static void __Pyx_RaiseDoubleKeywordsError(
+    const char* func_name,
+    PyObject* kw_name)
+{
+    PyErr_Format(PyExc_TypeError,
+        #if PY_MAJOR_VERSION >= 3
+        "%s() got multiple values for keyword argument '%U'", func_name, kw_name);
+        #else
+        "%s() got multiple values for keyword argument '%s'", func_name,
+        PyString_AsString(kw_name));
+        #endif
+}
+
+/* ParseKeywords */
+static int __Pyx_ParseOptionalKeywords(
+    PyObject *kwds,
+    PyObject **argnames[],
+    PyObject *kwds2,
+    PyObject *values[],
+    Py_ssize_t num_pos_args,
+    const char* function_name)
+{
+    PyObject *key = 0, *value = 0;
+    Py_ssize_t pos = 0;
+    PyObject*** name;
+    PyObject*** first_kw_arg = argnames + num_pos_args;
+    while (PyDict_Next(kwds, &pos, &key, &value)) {
+        name = first_kw_arg;
+        while (*name && (**name != key)) name++;
+        if (*name) {
+            values[name-argnames] = value;
+            continue;
+        }
+        name = first_kw_arg;
+        #if PY_MAJOR_VERSION < 3
+        if (likely(PyString_Check(key))) {
+            while (*name) {
+                if ((CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**name) == PyString_GET_SIZE(key))
+                        && _PyString_Eq(**name, key)) {
+                    values[name-argnames] = value;
+                    break;
+                }
+                name++;
+            }
+            if (*name) continue;
+            else {
+                PyObject*** argname = argnames;
+                while (argname != first_kw_arg) {
+                    if ((**argname == key) || (
+                            (CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**argname) == PyString_GET_SIZE(key))
+                             && _PyString_Eq(**argname, key))) {
+                        goto arg_passed_twice;
+                    }
+                    argname++;
+                }
+            }
+        } else
+        #endif
+        if (likely(PyUnicode_Check(key))) {
+            while (*name) {
+                int cmp = (**name == key) ? 0 :
+                #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
+                    (__Pyx_PyUnicode_GET_LENGTH(**name) != __Pyx_PyUnicode_GET_LENGTH(key)) ? 1 :
+                #endif
+                    PyUnicode_Compare(**name, key);
+                if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
+                if (cmp == 0) {
+                    values[name-argnames] = value;
+                    break;
+                }
+                name++;
+            }
+            if (*name) continue;
+            else {
+                PyObject*** argname = argnames;
+                while (argname != first_kw_arg) {
+                    int cmp = (**argname == key) ? 0 :
+                    #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
+                        (__Pyx_PyUnicode_GET_LENGTH(**argname) != __Pyx_PyUnicode_GET_LENGTH(key)) ? 1 :
+                    #endif
+                        PyUnicode_Compare(**argname, key);
+                    if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
+                    if (cmp == 0) goto arg_passed_twice;
+                    argname++;
+                }
+            }
+        } else
+            goto invalid_keyword_type;
+        if (kwds2) {
+            if (unlikely(PyDict_SetItem(kwds2, key, value))) goto bad;
+        } else {
+            goto invalid_keyword;
+        }
+    }
+    return 0;
+arg_passed_twice:
+    __Pyx_RaiseDoubleKeywordsError(function_name, key);
+    goto bad;
+invalid_keyword_type:
+    PyErr_Format(PyExc_TypeError,
+        "%.200s() keywords must be strings", function_name);
+    goto bad;
+invalid_keyword:
+    PyErr_Format(PyExc_TypeError,
+    #if PY_MAJOR_VERSION < 3
+        "%.200s() got an unexpected keyword argument '%.200s'",
+        function_name, PyString_AsString(key));
+    #else
+        "%s() got an unexpected keyword argument '%U'",
+        function_name, key);
+    #endif
+bad:
+    return -1;
+}
+
 /* RaiseArgTupleInvalid */
 static void __Pyx_RaiseArgtupleInvalid(
     const char* func_name,
@@ -5126,6 +8230,347 @@ static void __Pyx_RaiseArgtupleInvalid(
                  "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
                  func_name, more_or_less, num_expected,
                  (num_expected == 1) ? "" : "s", num_found);
+}
+
+/* PyUnicode_Unicode */
+static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj) {
+    if (unlikely(obj == Py_None))
+        obj = __pyx_kp_u_None;
+    return __Pyx_NewRef(obj);
+}
+
+/* JoinPyUnicode */
+static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
+                                      CYTHON_UNUSED Py_UCS4 max_char) {
+#if CYTHON_USE_UNICODE_INTERNALS && CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    PyObject *result_uval;
+    int result_ukind;
+    Py_ssize_t i, char_pos;
+    void *result_udata;
+#if CYTHON_PEP393_ENABLED
+    result_uval = PyUnicode_New(result_ulength, max_char);
+    if (unlikely(!result_uval)) return NULL;
+    result_ukind = (max_char <= 255) ? PyUnicode_1BYTE_KIND : (max_char <= 65535) ? PyUnicode_2BYTE_KIND : PyUnicode_4BYTE_KIND;
+    result_udata = PyUnicode_DATA(result_uval);
+#else
+    result_uval = PyUnicode_FromUnicode(NULL, result_ulength);
+    if (unlikely(!result_uval)) return NULL;
+    result_ukind = sizeof(Py_UNICODE);
+    result_udata = PyUnicode_AS_UNICODE(result_uval);
+#endif
+    char_pos = 0;
+    for (i=0; i < value_count; i++) {
+        int ukind;
+        Py_ssize_t ulength;
+        void *udata;
+        PyObject *uval = PyTuple_GET_ITEM(value_tuple, i);
+        if (unlikely(__Pyx_PyUnicode_READY(uval)))
+            goto bad;
+        ulength = __Pyx_PyUnicode_GET_LENGTH(uval);
+        if (unlikely(!ulength))
+            continue;
+        if (unlikely(char_pos + ulength < 0))
+            goto overflow;
+        ukind = __Pyx_PyUnicode_KIND(uval);
+        udata = __Pyx_PyUnicode_DATA(uval);
+        if (!CYTHON_PEP393_ENABLED || ukind == result_ukind) {
+            memcpy((char *)result_udata + char_pos * result_ukind, udata, (size_t) (ulength * result_ukind));
+        } else {
+            #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030300F0 || defined(_PyUnicode_FastCopyCharacters)
+            _PyUnicode_FastCopyCharacters(result_uval, char_pos, uval, 0, ulength);
+            #else
+            Py_ssize_t j;
+            for (j=0; j < ulength; j++) {
+                Py_UCS4 uchar = __Pyx_PyUnicode_READ(ukind, udata, j);
+                __Pyx_PyUnicode_WRITE(result_ukind, result_udata, char_pos+j, uchar);
+            }
+            #endif
+        }
+        char_pos += ulength;
+    }
+    return result_uval;
+overflow:
+    PyErr_SetString(PyExc_OverflowError, "join() result is too long for a Python string");
+bad:
+    Py_DECREF(result_uval);
+    return NULL;
+#else
+    result_ulength++;
+    value_count++;
+    return PyUnicode_Join(__pyx_empty_unicode, value_tuple);
+#endif
+}
+
+/* PyObjectCall */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = Py_TYPE(func)->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyCFunctionFastCall */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
+}
+#endif
+
+/* PyFunctionFastCall */
+#if CYTHON_FAST_PYCALL
+static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
+                                               PyObject *globals) {
+    PyFrameObject *f;
+    PyThreadState *tstate = __Pyx_PyThreadState_Current;
+    PyObject **fastlocals;
+    Py_ssize_t i;
+    PyObject *result;
+    assert(globals != NULL);
+    /* XXX Perhaps we should create a specialized
+       PyFrame_New() that doesn't take locals, but does
+       take builtins without sanity checking them.
+       */
+    assert(tstate != NULL);
+    f = PyFrame_New(tstate, co, globals, NULL);
+    if (f == NULL) {
+        return NULL;
+    }
+    fastlocals = __Pyx_PyFrame_GetLocalsplus(f);
+    for (i = 0; i < na; i++) {
+        Py_INCREF(*args);
+        fastlocals[i] = *args++;
+    }
+    result = PyEval_EvalFrameEx(f,0);
+    ++tstate->recursion_depth;
+    Py_DECREF(f);
+    --tstate->recursion_depth;
+    return result;
+}
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs) {
+    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
+    PyObject *globals = PyFunction_GET_GLOBALS(func);
+    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
+    PyObject *closure;
+#if PY_MAJOR_VERSION >= 3
+    PyObject *kwdefs;
+#endif
+    PyObject *kwtuple, **k;
+    PyObject **d;
+    Py_ssize_t nd;
+    Py_ssize_t nk;
+    PyObject *result;
+    assert(kwargs == NULL || PyDict_Check(kwargs));
+    nk = kwargs ? PyDict_Size(kwargs) : 0;
+    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
+        return NULL;
+    }
+    if (
+#if PY_MAJOR_VERSION >= 3
+            co->co_kwonlyargcount == 0 &&
+#endif
+            likely(kwargs == NULL || nk == 0) &&
+            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
+        if (argdefs == NULL && co->co_argcount == nargs) {
+            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
+            goto done;
+        }
+        else if (nargs == 0 && argdefs != NULL
+                 && co->co_argcount == Py_SIZE(argdefs)) {
+            /* function called with no arguments, but all parameters have
+               a default value: use default values as arguments .*/
+            args = &PyTuple_GET_ITEM(argdefs, 0);
+            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
+            goto done;
+        }
+    }
+    if (kwargs != NULL) {
+        Py_ssize_t pos, i;
+        kwtuple = PyTuple_New(2 * nk);
+        if (kwtuple == NULL) {
+            result = NULL;
+            goto done;
+        }
+        k = &PyTuple_GET_ITEM(kwtuple, 0);
+        pos = i = 0;
+        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
+            Py_INCREF(k[i]);
+            Py_INCREF(k[i+1]);
+            i += 2;
+        }
+        nk = i / 2;
+    }
+    else {
+        kwtuple = NULL;
+        k = NULL;
+    }
+    closure = PyFunction_GET_CLOSURE(func);
+#if PY_MAJOR_VERSION >= 3
+    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
+#endif
+    if (argdefs != NULL) {
+        d = &PyTuple_GET_ITEM(argdefs, 0);
+        nd = Py_SIZE(argdefs);
+    }
+    else {
+        d = NULL;
+        nd = 0;
+    }
+#if PY_MAJOR_VERSION >= 3
+    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
+                               args, (int)nargs,
+                               k, (int)nk,
+                               d, (int)nd, kwdefs, closure);
+#else
+    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
+                               args, (int)nargs,
+                               k, (int)nk,
+                               d, (int)nd, closure);
+#endif
+    Py_XDECREF(kwtuple);
+done:
+    Py_LeaveRecursiveCall();
+    return result;
+}
+#endif
+#endif
+
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
+}
+
+/* PyObjectCallMethO */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyObjectCallOneArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, &arg, 1);
+    }
+#endif
+    if (likely(PyCFunction_Check(func))) {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+#if CYTHON_FAST_PYCCALL
+        } else if (__Pyx_PyFastCFunction_Check(func)) {
+            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
+#endif
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_Pack(1, arg);
+    if (unlikely(!args)) return NULL;
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+#endif
+
+/* ArgTypeTest */
+static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact)
+{
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    else if (exact) {
+        #if PY_MAJOR_VERSION == 2
+        if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
+        #endif
+    }
+    else {
+        if (likely(__Pyx_TypeCheck(obj, type))) return 1;
+    }
+    PyErr_Format(PyExc_TypeError,
+        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
+        name, type->tp_name, Py_TYPE(obj)->tp_name);
+    return 0;
 }
 
 /* KeywordStringCheck */
@@ -5167,26 +8612,6 @@ invalid_keyword:
     #endif
     return 0;
 }
-
-/* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    PyObject *result;
-    ternaryfunc call = Py_TYPE(func)->tp_call;
-    if (unlikely(!call))
-        return PyObject_Call(func, arg, kw);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = (*call)(func, arg, kw);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
 
 /* PyErrFetchRestore */
 #if CYTHON_FAST_THREAD_STATE
@@ -5371,166 +8796,6 @@ bad:
 }
 #endif
 
-/* ArgTypeTest */
-static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact)
-{
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    else if (exact) {
-        #if PY_MAJOR_VERSION == 2
-        if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
-        #endif
-    }
-    else {
-        if (likely(__Pyx_TypeCheck(obj, type))) return 1;
-    }
-    PyErr_Format(PyExc_TypeError,
-        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
-        name, type->tp_name, Py_TYPE(obj)->tp_name);
-    return 0;
-}
-
-/* PyFunctionFastCall */
-#if CYTHON_FAST_PYCALL
-static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
-                                               PyObject *globals) {
-    PyFrameObject *f;
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject **fastlocals;
-    Py_ssize_t i;
-    PyObject *result;
-    assert(globals != NULL);
-    /* XXX Perhaps we should create a specialized
-       PyFrame_New() that doesn't take locals, but does
-       take builtins without sanity checking them.
-       */
-    assert(tstate != NULL);
-    f = PyFrame_New(tstate, co, globals, NULL);
-    if (f == NULL) {
-        return NULL;
-    }
-    fastlocals = __Pyx_PyFrame_GetLocalsplus(f);
-    for (i = 0; i < na; i++) {
-        Py_INCREF(*args);
-        fastlocals[i] = *args++;
-    }
-    result = PyEval_EvalFrameEx(f,0);
-    ++tstate->recursion_depth;
-    Py_DECREF(f);
-    --tstate->recursion_depth;
-    return result;
-}
-#if 1 || PY_VERSION_HEX < 0x030600B1
-static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, Py_ssize_t nargs, PyObject *kwargs) {
-    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
-    PyObject *globals = PyFunction_GET_GLOBALS(func);
-    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
-    PyObject *closure;
-#if PY_MAJOR_VERSION >= 3
-    PyObject *kwdefs;
-#endif
-    PyObject *kwtuple, **k;
-    PyObject **d;
-    Py_ssize_t nd;
-    Py_ssize_t nk;
-    PyObject *result;
-    assert(kwargs == NULL || PyDict_Check(kwargs));
-    nk = kwargs ? PyDict_Size(kwargs) : 0;
-    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
-        return NULL;
-    }
-    if (
-#if PY_MAJOR_VERSION >= 3
-            co->co_kwonlyargcount == 0 &&
-#endif
-            likely(kwargs == NULL || nk == 0) &&
-            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
-        if (argdefs == NULL && co->co_argcount == nargs) {
-            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
-            goto done;
-        }
-        else if (nargs == 0 && argdefs != NULL
-                 && co->co_argcount == Py_SIZE(argdefs)) {
-            /* function called with no arguments, but all parameters have
-               a default value: use default values as arguments .*/
-            args = &PyTuple_GET_ITEM(argdefs, 0);
-            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
-            goto done;
-        }
-    }
-    if (kwargs != NULL) {
-        Py_ssize_t pos, i;
-        kwtuple = PyTuple_New(2 * nk);
-        if (kwtuple == NULL) {
-            result = NULL;
-            goto done;
-        }
-        k = &PyTuple_GET_ITEM(kwtuple, 0);
-        pos = i = 0;
-        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
-            Py_INCREF(k[i]);
-            Py_INCREF(k[i+1]);
-            i += 2;
-        }
-        nk = i / 2;
-    }
-    else {
-        kwtuple = NULL;
-        k = NULL;
-    }
-    closure = PyFunction_GET_CLOSURE(func);
-#if PY_MAJOR_VERSION >= 3
-    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
-#endif
-    if (argdefs != NULL) {
-        d = &PyTuple_GET_ITEM(argdefs, 0);
-        nd = Py_SIZE(argdefs);
-    }
-    else {
-        d = NULL;
-        nd = 0;
-    }
-#if PY_MAJOR_VERSION >= 3
-    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
-                               args, (int)nargs,
-                               k, (int)nk,
-                               d, (int)nd, kwdefs, closure);
-#else
-    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
-                               args, (int)nargs,
-                               k, (int)nk,
-                               d, (int)nd, closure);
-#endif
-    Py_XDECREF(kwtuple);
-done:
-    Py_LeaveRecursiveCall();
-    return result;
-}
-#endif
-#endif
-
-/* PyObjectCallMethO */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
-    PyObject *self, *result;
-    PyCFunction cfunc;
-    cfunc = PyCFunction_GET_FUNCTION(func);
-    self = PyCFunction_GET_SELF(func);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = cfunc(self, arg);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
 /* PyObjectCallNoArg */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
@@ -5614,214 +8879,6 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     return __Pyx_GetBuiltinName(name);
 }
 
-/* RaiseDoubleKeywords */
-static void __Pyx_RaiseDoubleKeywordsError(
-    const char* func_name,
-    PyObject* kw_name)
-{
-    PyErr_Format(PyExc_TypeError,
-        #if PY_MAJOR_VERSION >= 3
-        "%s() got multiple values for keyword argument '%U'", func_name, kw_name);
-        #else
-        "%s() got multiple values for keyword argument '%s'", func_name,
-        PyString_AsString(kw_name));
-        #endif
-}
-
-/* ParseKeywords */
-static int __Pyx_ParseOptionalKeywords(
-    PyObject *kwds,
-    PyObject **argnames[],
-    PyObject *kwds2,
-    PyObject *values[],
-    Py_ssize_t num_pos_args,
-    const char* function_name)
-{
-    PyObject *key = 0, *value = 0;
-    Py_ssize_t pos = 0;
-    PyObject*** name;
-    PyObject*** first_kw_arg = argnames + num_pos_args;
-    while (PyDict_Next(kwds, &pos, &key, &value)) {
-        name = first_kw_arg;
-        while (*name && (**name != key)) name++;
-        if (*name) {
-            values[name-argnames] = value;
-            continue;
-        }
-        name = first_kw_arg;
-        #if PY_MAJOR_VERSION < 3
-        if (likely(PyString_Check(key))) {
-            while (*name) {
-                if ((CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**name) == PyString_GET_SIZE(key))
-                        && _PyString_Eq(**name, key)) {
-                    values[name-argnames] = value;
-                    break;
-                }
-                name++;
-            }
-            if (*name) continue;
-            else {
-                PyObject*** argname = argnames;
-                while (argname != first_kw_arg) {
-                    if ((**argname == key) || (
-                            (CYTHON_COMPILING_IN_PYPY || PyString_GET_SIZE(**argname) == PyString_GET_SIZE(key))
-                             && _PyString_Eq(**argname, key))) {
-                        goto arg_passed_twice;
-                    }
-                    argname++;
-                }
-            }
-        } else
-        #endif
-        if (likely(PyUnicode_Check(key))) {
-            while (*name) {
-                int cmp = (**name == key) ? 0 :
-                #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
-                    (__Pyx_PyUnicode_GET_LENGTH(**name) != __Pyx_PyUnicode_GET_LENGTH(key)) ? 1 :
-                #endif
-                    PyUnicode_Compare(**name, key);
-                if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
-                if (cmp == 0) {
-                    values[name-argnames] = value;
-                    break;
-                }
-                name++;
-            }
-            if (*name) continue;
-            else {
-                PyObject*** argname = argnames;
-                while (argname != first_kw_arg) {
-                    int cmp = (**argname == key) ? 0 :
-                    #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
-                        (__Pyx_PyUnicode_GET_LENGTH(**argname) != __Pyx_PyUnicode_GET_LENGTH(key)) ? 1 :
-                    #endif
-                        PyUnicode_Compare(**argname, key);
-                    if (cmp < 0 && unlikely(PyErr_Occurred())) goto bad;
-                    if (cmp == 0) goto arg_passed_twice;
-                    argname++;
-                }
-            }
-        } else
-            goto invalid_keyword_type;
-        if (kwds2) {
-            if (unlikely(PyDict_SetItem(kwds2, key, value))) goto bad;
-        } else {
-            goto invalid_keyword;
-        }
-    }
-    return 0;
-arg_passed_twice:
-    __Pyx_RaiseDoubleKeywordsError(function_name, key);
-    goto bad;
-invalid_keyword_type:
-    PyErr_Format(PyExc_TypeError,
-        "%.200s() keywords must be strings", function_name);
-    goto bad;
-invalid_keyword:
-    PyErr_Format(PyExc_TypeError,
-    #if PY_MAJOR_VERSION < 3
-        "%.200s() got an unexpected keyword argument '%.200s'",
-        function_name, PyString_AsString(key));
-    #else
-        "%s() got an unexpected keyword argument '%U'",
-        function_name, key);
-    #endif
-bad:
-    return -1;
-}
-
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
-}
-#endif
-
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
-}
-
-/* PyObjectCallOneArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_New(1);
-    if (unlikely(!args)) return NULL;
-    Py_INCREF(arg);
-    PyTuple_SET_ITEM(args, 0, arg);
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, &arg, 1);
-    }
-#endif
-    if (likely(PyCFunction_Check(func))) {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
-            return __Pyx_PyObject_CallMethO(func, arg);
-#if CYTHON_FAST_PYCCALL
-        } else if (__Pyx_PyFastCFunction_Check(func)) {
-            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
-#endif
-        }
-    }
-    return __Pyx__PyObject_CallOneArg(func, arg);
-}
-#else
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_Pack(1, arg);
-    if (unlikely(!args)) return NULL;
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-#endif
-
 /* PyObject_GenericGetAttrNoDict */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static PyObject *__Pyx_RaiseGenericGetAttributeError(PyTypeObject *tp, PyObject *attr_name) {
@@ -5871,6 +8928,24 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
     return __Pyx_PyObject_GenericGetAttrNoDict(obj, attr_name);
 }
 #endif
+
+/* SetVTable */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
+#if PY_VERSION_HEX >= 0x02070000
+    PyObject *ob = PyCapsule_New(vtable, 0, 0);
+#else
+    PyObject *ob = PyCObject_FromVoidPtr(vtable, 0);
+#endif
+    if (!ob)
+        goto bad;
+    if (PyDict_SetItem(dict, __pyx_n_s_pyx_vtable, ob) < 0)
+        goto bad;
+    Py_DECREF(ob);
+    return 0;
+bad:
+    Py_XDECREF(ob);
+    return -1;
+}
 
 /* PyErrExceptionMatches */
 #if CYTHON_FAST_THREAD_STATE
@@ -6023,24 +9098,6 @@ __PYX_GOOD:
     return ret;
 }
 
-/* SetVTable */
-static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
-#if PY_VERSION_HEX >= 0x02070000
-    PyObject *ob = PyCapsule_New(vtable, 0, 0);
-#else
-    PyObject *ob = PyCObject_FromVoidPtr(vtable, 0);
-#endif
-    if (!ob)
-        goto bad;
-    if (PyDict_SetItem(dict, __pyx_n_s_pyx_vtable, ob) < 0)
-        goto bad;
-    Py_DECREF(ob);
-    return 0;
-bad:
-    Py_XDECREF(ob);
-    return -1;
-}
-
 /* Import */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
@@ -6145,6 +9202,674 @@ static PyObject *__Pyx_CalculateMetaclass(PyTypeObject *metaclass, PyObject *bas
     return (PyObject*) metaclass;
 }
 
+/* FetchCommonType */
+static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type) {
+    PyObject* fake_module;
+    PyTypeObject* cached_type = NULL;
+    fake_module = PyImport_AddModule((char*) "_cython_" CYTHON_ABI);
+    if (!fake_module) return NULL;
+    Py_INCREF(fake_module);
+    cached_type = (PyTypeObject*) PyObject_GetAttrString(fake_module, type->tp_name);
+    if (cached_type) {
+        if (!PyType_Check((PyObject*)cached_type)) {
+            PyErr_Format(PyExc_TypeError,
+                "Shared Cython type %.200s is not a type object",
+                type->tp_name);
+            goto bad;
+        }
+        if (cached_type->tp_basicsize != type->tp_basicsize) {
+            PyErr_Format(PyExc_TypeError,
+                "Shared Cython type %.200s has the wrong size, try recompiling",
+                type->tp_name);
+            goto bad;
+        }
+    } else {
+        if (!PyErr_ExceptionMatches(PyExc_AttributeError)) goto bad;
+        PyErr_Clear();
+        if (PyType_Ready(type) < 0) goto bad;
+        if (PyObject_SetAttrString(fake_module, type->tp_name, (PyObject*) type) < 0)
+            goto bad;
+        Py_INCREF(type);
+        cached_type = type;
+    }
+done:
+    Py_DECREF(fake_module);
+    return cached_type;
+bad:
+    Py_XDECREF(cached_type);
+    cached_type = NULL;
+    goto done;
+}
+
+/* CythonFunctionShared */
+#include <structmember.h>
+static PyObject *
+__Pyx_CyFunction_get_doc(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *closure)
+{
+    if (unlikely(op->func_doc == NULL)) {
+        if (op->func.m_ml->ml_doc) {
+#if PY_MAJOR_VERSION >= 3
+            op->func_doc = PyUnicode_FromString(op->func.m_ml->ml_doc);
+#else
+            op->func_doc = PyString_FromString(op->func.m_ml->ml_doc);
+#endif
+            if (unlikely(op->func_doc == NULL))
+                return NULL;
+        } else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    Py_INCREF(op->func_doc);
+    return op->func_doc;
+}
+static int
+__Pyx_CyFunction_set_doc(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
+{
+    PyObject *tmp = op->func_doc;
+    if (value == NULL) {
+        value = Py_None;
+    }
+    Py_INCREF(value);
+    op->func_doc = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_name(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    if (unlikely(op->func_name == NULL)) {
+#if PY_MAJOR_VERSION >= 3
+        op->func_name = PyUnicode_InternFromString(op->func.m_ml->ml_name);
+#else
+        op->func_name = PyString_InternFromString(op->func.m_ml->ml_name);
+#endif
+        if (unlikely(op->func_name == NULL))
+            return NULL;
+    }
+    Py_INCREF(op->func_name);
+    return op->func_name;
+}
+static int
+__Pyx_CyFunction_set_name(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
+{
+    PyObject *tmp;
+#if PY_MAJOR_VERSION >= 3
+    if (unlikely(value == NULL || !PyUnicode_Check(value)))
+#else
+    if (unlikely(value == NULL || !PyString_Check(value)))
+#endif
+    {
+        PyErr_SetString(PyExc_TypeError,
+                        "__name__ must be set to a string object");
+        return -1;
+    }
+    tmp = op->func_name;
+    Py_INCREF(value);
+    op->func_name = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_qualname(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    Py_INCREF(op->func_qualname);
+    return op->func_qualname;
+}
+static int
+__Pyx_CyFunction_set_qualname(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
+{
+    PyObject *tmp;
+#if PY_MAJOR_VERSION >= 3
+    if (unlikely(value == NULL || !PyUnicode_Check(value)))
+#else
+    if (unlikely(value == NULL || !PyString_Check(value)))
+#endif
+    {
+        PyErr_SetString(PyExc_TypeError,
+                        "__qualname__ must be set to a string object");
+        return -1;
+    }
+    tmp = op->func_qualname;
+    Py_INCREF(value);
+    op->func_qualname = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_self(__pyx_CyFunctionObject *m, CYTHON_UNUSED void *closure)
+{
+    PyObject *self;
+    self = m->func_closure;
+    if (self == NULL)
+        self = Py_None;
+    Py_INCREF(self);
+    return self;
+}
+static PyObject *
+__Pyx_CyFunction_get_dict(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    if (unlikely(op->func_dict == NULL)) {
+        op->func_dict = PyDict_New();
+        if (unlikely(op->func_dict == NULL))
+            return NULL;
+    }
+    Py_INCREF(op->func_dict);
+    return op->func_dict;
+}
+static int
+__Pyx_CyFunction_set_dict(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
+{
+    PyObject *tmp;
+    if (unlikely(value == NULL)) {
+        PyErr_SetString(PyExc_TypeError,
+               "function's dictionary may not be deleted");
+        return -1;
+    }
+    if (unlikely(!PyDict_Check(value))) {
+        PyErr_SetString(PyExc_TypeError,
+               "setting function's dictionary to a non-dict");
+        return -1;
+    }
+    tmp = op->func_dict;
+    Py_INCREF(value);
+    op->func_dict = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_globals(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    Py_INCREF(op->func_globals);
+    return op->func_globals;
+}
+static PyObject *
+__Pyx_CyFunction_get_closure(CYTHON_UNUSED __pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+static PyObject *
+__Pyx_CyFunction_get_code(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
+{
+    PyObject* result = (op->func_code) ? op->func_code : Py_None;
+    Py_INCREF(result);
+    return result;
+}
+static int
+__Pyx_CyFunction_init_defaults(__pyx_CyFunctionObject *op) {
+    int result = 0;
+    PyObject *res = op->defaults_getter((PyObject *) op);
+    if (unlikely(!res))
+        return -1;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    op->defaults_tuple = PyTuple_GET_ITEM(res, 0);
+    Py_INCREF(op->defaults_tuple);
+    op->defaults_kwdict = PyTuple_GET_ITEM(res, 1);
+    Py_INCREF(op->defaults_kwdict);
+    #else
+    op->defaults_tuple = PySequence_ITEM(res, 0);
+    if (unlikely(!op->defaults_tuple)) result = -1;
+    else {
+        op->defaults_kwdict = PySequence_ITEM(res, 1);
+        if (unlikely(!op->defaults_kwdict)) result = -1;
+    }
+    #endif
+    Py_DECREF(res);
+    return result;
+}
+static int
+__Pyx_CyFunction_set_defaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
+    PyObject* tmp;
+    if (!value) {
+        value = Py_None;
+    } else if (value != Py_None && !PyTuple_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "__defaults__ must be set to a tuple object");
+        return -1;
+    }
+    Py_INCREF(value);
+    tmp = op->defaults_tuple;
+    op->defaults_tuple = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_defaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
+    PyObject* result = op->defaults_tuple;
+    if (unlikely(!result)) {
+        if (op->defaults_getter) {
+            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
+            result = op->defaults_tuple;
+        } else {
+            result = Py_None;
+        }
+    }
+    Py_INCREF(result);
+    return result;
+}
+static int
+__Pyx_CyFunction_set_kwdefaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
+    PyObject* tmp;
+    if (!value) {
+        value = Py_None;
+    } else if (value != Py_None && !PyDict_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "__kwdefaults__ must be set to a dict object");
+        return -1;
+    }
+    Py_INCREF(value);
+    tmp = op->defaults_kwdict;
+    op->defaults_kwdict = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_kwdefaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
+    PyObject* result = op->defaults_kwdict;
+    if (unlikely(!result)) {
+        if (op->defaults_getter) {
+            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
+            result = op->defaults_kwdict;
+        } else {
+            result = Py_None;
+        }
+    }
+    Py_INCREF(result);
+    return result;
+}
+static int
+__Pyx_CyFunction_set_annotations(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
+    PyObject* tmp;
+    if (!value || value == Py_None) {
+        value = NULL;
+    } else if (!PyDict_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "__annotations__ must be set to a dict object");
+        return -1;
+    }
+    Py_XINCREF(value);
+    tmp = op->func_annotations;
+    op->func_annotations = value;
+    Py_XDECREF(tmp);
+    return 0;
+}
+static PyObject *
+__Pyx_CyFunction_get_annotations(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
+    PyObject* result = op->func_annotations;
+    if (unlikely(!result)) {
+        result = PyDict_New();
+        if (unlikely(!result)) return NULL;
+        op->func_annotations = result;
+    }
+    Py_INCREF(result);
+    return result;
+}
+static PyGetSetDef __pyx_CyFunction_getsets[] = {
+    {(char *) "func_doc", (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
+    {(char *) "__doc__",  (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
+    {(char *) "func_name", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
+    {(char *) "__name__", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
+    {(char *) "__qualname__", (getter)__Pyx_CyFunction_get_qualname, (setter)__Pyx_CyFunction_set_qualname, 0, 0},
+    {(char *) "__self__", (getter)__Pyx_CyFunction_get_self, 0, 0, 0},
+    {(char *) "func_dict", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
+    {(char *) "__dict__", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
+    {(char *) "func_globals", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
+    {(char *) "__globals__", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
+    {(char *) "func_closure", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
+    {(char *) "__closure__", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
+    {(char *) "func_code", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
+    {(char *) "__code__", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
+    {(char *) "func_defaults", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
+    {(char *) "__defaults__", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
+    {(char *) "__kwdefaults__", (getter)__Pyx_CyFunction_get_kwdefaults, (setter)__Pyx_CyFunction_set_kwdefaults, 0, 0},
+    {(char *) "__annotations__", (getter)__Pyx_CyFunction_get_annotations, (setter)__Pyx_CyFunction_set_annotations, 0, 0},
+    {0, 0, 0, 0, 0}
+};
+static PyMemberDef __pyx_CyFunction_members[] = {
+    {(char *) "__module__", T_OBJECT, offsetof(PyCFunctionObject, m_module), PY_WRITE_RESTRICTED, 0},
+    {0, 0, 0,  0, 0}
+};
+static PyObject *
+__Pyx_CyFunction_reduce(__pyx_CyFunctionObject *m, CYTHON_UNUSED PyObject *args)
+{
+#if PY_MAJOR_VERSION >= 3
+    Py_INCREF(m->func_qualname);
+    return m->func_qualname;
+#else
+    return PyString_FromString(m->func.m_ml->ml_name);
+#endif
+}
+static PyMethodDef __pyx_CyFunction_methods[] = {
+    {"__reduce__", (PyCFunction)__Pyx_CyFunction_reduce, METH_VARARGS, 0},
+    {0, 0, 0, 0}
+};
+#if PY_VERSION_HEX < 0x030500A0
+#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func_weakreflist)
+#else
+#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func.m_weakreflist)
+#endif
+static PyObject *__Pyx_CyFunction_Init(__pyx_CyFunctionObject *op, PyMethodDef *ml, int flags, PyObject* qualname,
+                                       PyObject *closure, PyObject *module, PyObject* globals, PyObject* code) {
+    if (unlikely(op == NULL))
+        return NULL;
+    op->flags = flags;
+    __Pyx_CyFunction_weakreflist(op) = NULL;
+    op->func.m_ml = ml;
+    op->func.m_self = (PyObject *) op;
+    Py_XINCREF(closure);
+    op->func_closure = closure;
+    Py_XINCREF(module);
+    op->func.m_module = module;
+    op->func_dict = NULL;
+    op->func_name = NULL;
+    Py_INCREF(qualname);
+    op->func_qualname = qualname;
+    op->func_doc = NULL;
+    op->func_classobj = NULL;
+    op->func_globals = globals;
+    Py_INCREF(op->func_globals);
+    Py_XINCREF(code);
+    op->func_code = code;
+    op->defaults_pyobjects = 0;
+    op->defaults_size = 0;
+    op->defaults = NULL;
+    op->defaults_tuple = NULL;
+    op->defaults_kwdict = NULL;
+    op->defaults_getter = NULL;
+    op->func_annotations = NULL;
+    return (PyObject *) op;
+}
+static int
+__Pyx_CyFunction_clear(__pyx_CyFunctionObject *m)
+{
+    Py_CLEAR(m->func_closure);
+    Py_CLEAR(m->func.m_module);
+    Py_CLEAR(m->func_dict);
+    Py_CLEAR(m->func_name);
+    Py_CLEAR(m->func_qualname);
+    Py_CLEAR(m->func_doc);
+    Py_CLEAR(m->func_globals);
+    Py_CLEAR(m->func_code);
+    Py_CLEAR(m->func_classobj);
+    Py_CLEAR(m->defaults_tuple);
+    Py_CLEAR(m->defaults_kwdict);
+    Py_CLEAR(m->func_annotations);
+    if (m->defaults) {
+        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
+        int i;
+        for (i = 0; i < m->defaults_pyobjects; i++)
+            Py_XDECREF(pydefaults[i]);
+        PyObject_Free(m->defaults);
+        m->defaults = NULL;
+    }
+    return 0;
+}
+static void __Pyx__CyFunction_dealloc(__pyx_CyFunctionObject *m)
+{
+    if (__Pyx_CyFunction_weakreflist(m) != NULL)
+        PyObject_ClearWeakRefs((PyObject *) m);
+    __Pyx_CyFunction_clear(m);
+    PyObject_GC_Del(m);
+}
+static void __Pyx_CyFunction_dealloc(__pyx_CyFunctionObject *m)
+{
+    PyObject_GC_UnTrack(m);
+    __Pyx__CyFunction_dealloc(m);
+}
+static int __Pyx_CyFunction_traverse(__pyx_CyFunctionObject *m, visitproc visit, void *arg)
+{
+    Py_VISIT(m->func_closure);
+    Py_VISIT(m->func.m_module);
+    Py_VISIT(m->func_dict);
+    Py_VISIT(m->func_name);
+    Py_VISIT(m->func_qualname);
+    Py_VISIT(m->func_doc);
+    Py_VISIT(m->func_globals);
+    Py_VISIT(m->func_code);
+    Py_VISIT(m->func_classobj);
+    Py_VISIT(m->defaults_tuple);
+    Py_VISIT(m->defaults_kwdict);
+    if (m->defaults) {
+        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
+        int i;
+        for (i = 0; i < m->defaults_pyobjects; i++)
+            Py_VISIT(pydefaults[i]);
+    }
+    return 0;
+}
+static PyObject *__Pyx_CyFunction_descr_get(PyObject *func, PyObject *obj, PyObject *type)
+{
+#if PY_MAJOR_VERSION < 3
+    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
+    if (m->flags & __Pyx_CYFUNCTION_STATICMETHOD) {
+        Py_INCREF(func);
+        return func;
+    }
+    if (m->flags & __Pyx_CYFUNCTION_CLASSMETHOD) {
+        if (type == NULL)
+            type = (PyObject *)(Py_TYPE(obj));
+        return __Pyx_PyMethod_New(func, type, (PyObject *)(Py_TYPE(type)));
+    }
+    if (obj == Py_None)
+        obj = NULL;
+#endif
+    return __Pyx_PyMethod_New(func, obj, type);
+}
+static PyObject*
+__Pyx_CyFunction_repr(__pyx_CyFunctionObject *op)
+{
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_FromFormat("<cyfunction %U at %p>",
+                                op->func_qualname, (void *)op);
+#else
+    return PyString_FromFormat("<cyfunction %s at %p>",
+                               PyString_AsString(op->func_qualname), (void *)op);
+#endif
+}
+static PyObject * __Pyx_CyFunction_CallMethod(PyObject *func, PyObject *self, PyObject *arg, PyObject *kw) {
+    PyCFunctionObject* f = (PyCFunctionObject*)func;
+    PyCFunction meth = f->m_ml->ml_meth;
+    Py_ssize_t size;
+    switch (f->m_ml->ml_flags & (METH_VARARGS | METH_KEYWORDS | METH_NOARGS | METH_O)) {
+    case METH_VARARGS:
+        if (likely(kw == NULL || PyDict_Size(kw) == 0))
+            return (*meth)(self, arg);
+        break;
+    case METH_VARARGS | METH_KEYWORDS:
+        return (*(PyCFunctionWithKeywords)(void*)meth)(self, arg, kw);
+    case METH_NOARGS:
+        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
+            size = PyTuple_GET_SIZE(arg);
+            if (likely(size == 0))
+                return (*meth)(self, NULL);
+            PyErr_Format(PyExc_TypeError,
+                "%.200s() takes no arguments (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                f->m_ml->ml_name, size);
+            return NULL;
+        }
+        break;
+    case METH_O:
+        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
+            size = PyTuple_GET_SIZE(arg);
+            if (likely(size == 1)) {
+                PyObject *result, *arg0;
+                #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+                arg0 = PyTuple_GET_ITEM(arg, 0);
+                #else
+                arg0 = PySequence_ITEM(arg, 0); if (unlikely(!arg0)) return NULL;
+                #endif
+                result = (*meth)(self, arg0);
+                #if !(CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS)
+                Py_DECREF(arg0);
+                #endif
+                return result;
+            }
+            PyErr_Format(PyExc_TypeError,
+                "%.200s() takes exactly one argument (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                f->m_ml->ml_name, size);
+            return NULL;
+        }
+        break;
+    default:
+        PyErr_SetString(PyExc_SystemError, "Bad call flags in "
+                        "__Pyx_CyFunction_Call. METH_OLDARGS is no "
+                        "longer supported!");
+        return NULL;
+    }
+    PyErr_Format(PyExc_TypeError, "%.200s() takes no keyword arguments",
+                 f->m_ml->ml_name);
+    return NULL;
+}
+static CYTHON_INLINE PyObject *__Pyx_CyFunction_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    return __Pyx_CyFunction_CallMethod(func, ((PyCFunctionObject*)func)->m_self, arg, kw);
+}
+static PyObject *__Pyx_CyFunction_CallAsMethod(PyObject *func, PyObject *args, PyObject *kw) {
+    PyObject *result;
+    __pyx_CyFunctionObject *cyfunc = (__pyx_CyFunctionObject *) func;
+    if ((cyfunc->flags & __Pyx_CYFUNCTION_CCLASS) && !(cyfunc->flags & __Pyx_CYFUNCTION_STATICMETHOD)) {
+        Py_ssize_t argc;
+        PyObject *new_args;
+        PyObject *self;
+        argc = PyTuple_GET_SIZE(args);
+        new_args = PyTuple_GetSlice(args, 1, argc);
+        if (unlikely(!new_args))
+            return NULL;
+        self = PyTuple_GetItem(args, 0);
+        if (unlikely(!self)) {
+            Py_DECREF(new_args);
+#if PY_MAJOR_VERSION > 2
+            PyErr_Format(PyExc_TypeError,
+                         "unbound method %.200S() needs an argument",
+                         cyfunc->func_qualname);
+#else
+            PyErr_SetString(PyExc_TypeError,
+                            "unbound method needs an argument");
+#endif
+            return NULL;
+        }
+        result = __Pyx_CyFunction_CallMethod(func, self, new_args, kw);
+        Py_DECREF(new_args);
+    } else {
+        result = __Pyx_CyFunction_Call(func, args, kw);
+    }
+    return result;
+}
+static PyTypeObject __pyx_CyFunctionType_type = {
+    PyVarObject_HEAD_INIT(0, 0)
+    "cython_function_or_method",
+    sizeof(__pyx_CyFunctionObject),
+    0,
+    (destructor) __Pyx_CyFunction_dealloc,
+    0,
+    0,
+    0,
+#if PY_MAJOR_VERSION < 3
+    0,
+#else
+    0,
+#endif
+    (reprfunc) __Pyx_CyFunction_repr,
+    0,
+    0,
+    0,
+    0,
+    __Pyx_CyFunction_CallAsMethod,
+    0,
+    0,
+    0,
+    0,
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
+    0,
+    (traverseproc) __Pyx_CyFunction_traverse,
+    (inquiry) __Pyx_CyFunction_clear,
+    0,
+#if PY_VERSION_HEX < 0x030500A0
+    offsetof(__pyx_CyFunctionObject, func_weakreflist),
+#else
+    offsetof(PyCFunctionObject, m_weakreflist),
+#endif
+    0,
+    0,
+    __pyx_CyFunction_methods,
+    __pyx_CyFunction_members,
+    __pyx_CyFunction_getsets,
+    0,
+    0,
+    __Pyx_CyFunction_descr_get,
+    0,
+    offsetof(__pyx_CyFunctionObject, func_dict),
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+#if PY_VERSION_HEX >= 0x030400a1
+    0,
+#endif
+#if PY_VERSION_HEX >= 0x030800b1 && (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07030800)
+    0,
+#endif
+#if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+    0,
+#endif
+#if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX >= 0x03090000
+    0,
+#endif
+};
+static int __pyx_CyFunction_init(void) {
+    __pyx_CyFunctionType = __Pyx_FetchCommonType(&__pyx_CyFunctionType_type);
+    if (unlikely(__pyx_CyFunctionType == NULL)) {
+        return -1;
+    }
+    return 0;
+}
+static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *func, size_t size, int pyobjects) {
+    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
+    m->defaults = PyObject_Malloc(size);
+    if (unlikely(!m->defaults))
+        return PyErr_NoMemory();
+    memset(m->defaults, 0, size);
+    m->defaults_pyobjects = pyobjects;
+    m->defaults_size = size;
+    return m->defaults;
+}
+static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *func, PyObject *tuple) {
+    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
+    m->defaults_tuple = tuple;
+    Py_INCREF(tuple);
+}
+static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *func, PyObject *dict) {
+    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
+    m->defaults_kwdict = dict;
+    Py_INCREF(dict);
+}
+static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *func, PyObject *dict) {
+    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
+    m->func_annotations = dict;
+    Py_INCREF(dict);
+}
+
+/* CythonFunction */
+static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml, int flags, PyObject* qualname,
+                                      PyObject *closure, PyObject *module, PyObject* globals, PyObject* code) {
+    PyObject *op = __Pyx_CyFunction_Init(
+        PyObject_GC_New(__pyx_CyFunctionObject, __pyx_CyFunctionType),
+        ml, flags, qualname, closure, module, globals, code
+    );
+    if (likely(op)) {
+        PyObject_GC_Track(op);
+    }
+    return op;
+}
+
 /* Py3ClassCreate */
 static PyObject *__Pyx_Py3MetaclassPrepare(PyObject *metaclass, PyObject *bases, PyObject *name,
                                            PyObject *qualname, PyObject *mkw, PyObject *modname, PyObject *doc) {
@@ -6210,6 +9935,27 @@ static PyObject *__Pyx_Py3ClassCreate(PyObject *metaclass, PyObject *name, PyObj
     }
     Py_XDECREF(owned_metaclass);
     return result;
+}
+
+/* CyFunctionClassCell */
+static int __Pyx_CyFunction_InitClassCell(PyObject *cyfunctions, PyObject *classobj) {
+    Py_ssize_t i, count = PyList_GET_SIZE(cyfunctions);
+    for (i = 0; i < count; i++) {
+        __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *)
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+            PyList_GET_ITEM(cyfunctions, i);
+#else
+            PySequence_ITEM(cyfunctions, i);
+        if (unlikely(!m))
+            return -1;
+#endif
+        Py_INCREF(classobj);
+        m->func_classobj = classobj;
+#if !(CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS)
+        Py_DECREF((PyObject*)m);
+#endif
+    }
+    return 0;
 }
 
 /* CLineInTraceback */
@@ -6657,6 +10403,240 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const int neg_one = (int) -1, const_zero = (int) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+    }
 }
 
 /* CIntToPy */

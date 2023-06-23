@@ -48,6 +48,7 @@ def create_lkas_hud(packer, CP, lkas_active, mads_enabled, hud_alert, hud_count,
 
   if CP.carFingerprint in RAM_CARS:
     values['AUTO_HIGH_BEAM_ON'] = auto_high_beam
+    values['LKAS_Disabled'] = 0 if mads_enabled else 1
 
   return packer.make_can_msg("DAS_6", 0, values)
 
@@ -62,10 +63,26 @@ def create_lkas_command(packer, CP, apply_steer, lkas_control_bit):
   return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
 
-def create_cruise_buttons(packer, frame, bus, cancel=False, resume=False):
+def create_cruise_buttons(packer, frame, bus, CP, cruise_buttons_msg=None, buttons=0, cancel=False, resume=False):
+
+  acc_accel = 1 if buttons == 1 else 0
+  acc_decel = 1 if buttons == 2 else 0
+
   values = {
     "ACC_Cancel": cancel,
     "ACC_Resume": resume,
+    "ACC_Accel": acc_accel,
+    "ACC_Decel": acc_decel,
     "COUNTER": frame % 0x10,
   }
+
+  if buttons == 0 and not (cancel or resume) and CP.carFingerprint in RAM_CARS:
+    values = cruise_buttons_msg.copy()
   return packer.make_can_msg("CRUISE_BUTTONS", bus, values)
+
+
+def create_lkas_heartbit(packer, mads_enabled, lkas_heartbit):
+  # LKAS_HEARTBIT (697) LKAS heartbeat
+  values = lkas_heartbit.copy()  # forward what we parsed
+  values["LKAS_DISABLED"] = 0 if mads_enabled else 1
+  return packer.make_can_msg("LKAS_HEARTBIT", 0, values)

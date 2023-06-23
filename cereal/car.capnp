@@ -23,7 +23,6 @@ struct CarEvent @0x9b1657f34caf3ad3 {
   enum EventName @0xbaa8c5d505f727de {
     canError @0;
     steerUnavailable @1;
-    brakeUnavailable @2;
     wrongGear @4;
     doorOpen @5;
     seatbeltNotLatched @6;
@@ -157,6 +156,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     startupOneplusDEPRECATED @82;
     startupFuzzyFingerprintDEPRECATED @97;
     noTargetDEPRECATED @25;
+    brakeUnavailableDEPRECATED @2;
   }
 }
 
@@ -184,6 +184,8 @@ struct CarState {
   gas @3 :Float32;        # this is user pedal only
   gasPressed @4 :Bool;    # this is user pedal only
 
+  engineRpm @46 :Float32;
+
   # brake pedal, 0.0-1.0
   brake @5 :Float32;      # this is user pedal only
   brakePressed @6 :Bool;  # this is user pedal only
@@ -204,6 +206,7 @@ struct CarState {
   stockFcw @31 :Bool;
   espDisabled @32 :Bool;
   accFaulted @42 :Bool;
+  carFaultedNonCritical @47 :Bool;  # some ECU is faulted, but car remains controllable
 
   # cruise state
   cruiseState @10 :CruiseState;
@@ -224,16 +227,16 @@ struct CarState {
   # clutch (manual transmission only)
   clutchPressed @28 :Bool;
 
-  madsEnabled @46 :Bool;
-  leftBlinkerOn @47 :Bool;
-  rightBlinkerOn @48 :Bool;
-  disengageByBrake @49 :Bool;
-  belowLaneChangeSpeed @50 :Bool;
-  accEnabled @51 :Bool;
-  latActive @52 :Bool;
-  gapAdjustCruiseTr @53 :Int32;
-  endToEndLong @54 :Bool;
-  customStockLong @55 :CustomStockLong;
+  madsEnabled @48 :Bool;
+  leftBlinkerOn @49 :Bool;
+  rightBlinkerOn @50 :Bool;
+  disengageByBrake @51 :Bool;
+  belowLaneChangeSpeed @52 :Bool;
+  accEnabled @53 :Bool;
+  latActive @54 :Bool;
+  gapAdjustCruiseTr @55 :Int32;
+  endToEndLong @56 :Bool;
+  customStockLong @57 :CustomStockLong;
 
   struct CustomStockLong {
     cruiseButton @0 :Int16;
@@ -471,6 +474,7 @@ struct CarParams {
   experimentalLongitudinalAvailable @71 :Bool;
   pcmCruiseSpeed @72 :Bool;  # is openpilot's state tied to the PCM's cruise speed?
   customStockLongAvailable @73 :Bool;
+  spFlags @74 :UInt32;       # flags for car specific quirks in sunnypilot
 
   minEnableSpeed @7 :Float32;
   minSteerSpeed @8 :Float32;

@@ -89,6 +89,7 @@ class CarInterface(CarInterfaceBase):
         ret.minEnableSpeed = 4.5
 
     ret.pcmCruise = not ret.openpilotLongitudinalControl
+    ret.customStockLongAvailable = True
     ret.stoppingControl = True
     ret.startingState = True
     ret.startAccel = 1.0
@@ -225,7 +226,7 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam, self.cp_ext, self.CP.transmissionType)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
@@ -238,9 +239,9 @@ class CarInterface(CarInterfaceBase):
         be.pressed = self.CS.buttonStates[button]
         buttonEvents.append(be)
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
-    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret.cruiseState.available, self.CS.accEnabled,
+    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret, self.CS.accEnabled,
                                                                           buttonEvents, c.vCruise,
                                                                           enable_buttons=(ButtonType.setCruise, ButtonType.resumeCruise))
 
@@ -253,14 +254,14 @@ class CarInterface(CarInterfaceBase):
     else:
       self.CS.madsEnabled = False
 
-    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0):
+    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0) or not self.CP.pcmCruiseSpeed:
       if any(b.type == ButtonType.cancel for b in buttonEvents):
         self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
     if self.get_sp_pedal_disengage(ret):
       self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
       ret.cruiseState.enabled = False if self.CP.pcmCruise else self.CS.accEnabled
 
-    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0:
+    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0 and self.CP.pcmCruiseSpeed:
       if ret.gasPressed and not ret.cruiseState.enabled:
         self.CS.accEnabled = False
       self.CS.accEnabled = ret.cruiseState.enabled or self.CS.accEnabled
@@ -299,6 +300,10 @@ class CarInterface(CarInterfaceBase):
         events.add(EventName.belowEngageSpeed)
       if c.enabled and ret.vEgo < self.CP.minEnableSpeed:
         events.add(EventName.speedTooLow)
+
+    ret.customStockLong = self.CS.update_custom_stock_long(self.CC.cruise_button, self.CC.final_speed_kph,
+                                                           self.CC.target_speed, self.CC.v_set_dis,
+                                                           self.CC.speed_diff, self.CC.button_type)
 
     ret.events = events.to_msg()
 

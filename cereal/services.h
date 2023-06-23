@@ -28,7 +28,7 @@ static struct service services[] = {
   { "carState", 8024, true, 100, 10 },
   { "carControl", 8025, true, 100, 10 },
   { "longitudinalPlan", 8026, true, 20, 5 },
-  { "procLog", 8027, true, 0, -1 },
+  { "procLog", 8027, true, 0, 15 },
   { "gpsLocationExternal", 8028, true, 10, 10 },
   { "gpsLocation", 8029, true, 1, 1 },
   { "ubloxGnss", 8030, true, 10, -1 },
@@ -70,6 +70,12 @@ static struct service services[] = {
   { "driverEncodeData", 8066, false, 20, -1 },
   { "wideRoadEncodeData", 8067, false, 20, -1 },
   { "qRoadEncodeData", 8068, false, 20, -1 },
+  { "livestreamWideRoadEncodeIdx", 8069, false, 20, -1 },
+  { "livestreamRoadEncodeIdx", 8070, false, 20, -1 },
+  { "livestreamDriverEncodeIdx", 8071, false, 20, -1 },
+  { "livestreamWideRoadEncodeData", 8072, false, 20, -1 },
+  { "livestreamRoadEncodeData", 8073, false, 20, -1 },
+  { "livestreamDriverEncodeData", 8074, false, 20, -1 },
 };
 #endif
 

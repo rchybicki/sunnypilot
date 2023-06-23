@@ -8,13 +8,13 @@ from common.params import Params
 from system.hardware import HARDWARE, PC
 from system.swaglog import cloudlog
 from system.version import get_branch, get_commit, get_origin, get_version, \
-                              is_comma_remote, is_dirty, is_tested_branch
+                              is_comma_remote, is_dirty, is_tested_branch, get_branch_type
 
 import os
 import traceback
-import requests
 from cereal import car
 from datetime import datetime
+
 
 class SentryProject(Enum):
   # python project
@@ -23,7 +23,7 @@ class SentryProject(Enum):
   SELFDRIVE_NATIVE = "https://7e3be9bfcfe04c9abe58bd25fe290d1a@o1138119.ingest.sentry.io/6191481"
 
 
-CRASHES_DIR = os.path.join('/data/community/crashes')
+CRASHES_DIR = '/data/community/crashes/'
 ret = car.CarParams.new_message()
 candidate = ret.carFingerprint
 params = Params()
@@ -36,10 +36,6 @@ try:
   gitname = params.get("GithubUsername", encoding='utf-8')
 except Exception:
   gitname = ""
-try:
-  ip = requests.get('https://checkip.amazonaws.com/').text.strip()
-except Exception:
-  ip = "255.255.255.255"
 error_tags = {
   'dirty': is_dirty(),
   'dongle_id': dongle_id,
@@ -48,6 +44,8 @@ error_tags = {
   'fingerprintedAs': candidate,
   'gitname': gitname
 }
+ip = "{{auto}}"
+
 
 def report_tombstone(fn: str, message: str, contents: str) -> None:
   cloudlog.error({'tombstone': message})
@@ -62,6 +60,7 @@ def report_tombstone(fn: str, message: str, contents: str) -> None:
 def capture_exception(*args, **kwargs) -> None:
   save_exception(traceback.format_exc())
   cloudlog.error("crash", exc_info=kwargs.get('exc_info', 1))
+  bind_user(id=dongle_id, ip_address=ip, username=gitname)
 
   try:
     sentry_sdk.capture_exception(*args, **kwargs)
@@ -74,15 +73,16 @@ def save_exception(exc_text):
   if not os.path.exists(CRASHES_DIR):
     os.makedirs(CRASHES_DIR)
 
-  log_file = '{}/{}'.format(CRASHES_DIR, datetime.now().strftime('%m-%d-%Y--%I:%M.%S-%p.log'))
-  log_file_2 = f'{CRASHES_DIR}/error.txt'
-  with open(log_file, 'w') as f:
-    f.write(exc_text)
-    f.close()
-  with open(log_file_2, 'w') as f2:
-    f2.write(exc_text)
-    f2.close()
-  print('Logged current crash to {}'.format(log_file))
+  files = [
+    os.path.join(CRASHES_DIR, datetime.now().strftime('%Y-%m-%d--%H-%M-%S.log')),
+    os.path.join(CRASHES_DIR, 'error.txt')
+  ]
+
+  for file in files:
+    with open(file, 'w') as f:
+      f.write(exc_text)
+
+  print('Logged current crash to {}'.format(files))
 
 
 def bind_user(**kwargs) -> None:
@@ -113,8 +113,10 @@ def init(project: SentryProject) -> None:
   #if not comma_remote or not is_registered_device() or PC:
   #  return
 
-  env = "release" if is_tested_branch() else "master"
+  #env = "release" if is_tested_branch() else "master"
+  env = get_branch_type()
   dongle_id = Params().get("DongleId", encoding='utf-8')
+  ip = "{{auto}}"
   gitname = Params().get("GithubUsername", encoding='utf-8')
 
   integrations = []
@@ -128,10 +130,12 @@ def init(project: SentryProject) -> None:
                   release=get_version(),
                   integrations=integrations,
                   traces_sample_rate=1.0,
-                  environment=env)
+                  environment=env,
+                  send_default_pii=True)
 
   sentry_sdk.set_user({"id": dongle_id})
-  sentry_sdk.set_user({"gitname": gitname})
+  sentry_sdk.set_user({"ip_address": ip})
+  sentry_sdk.set_user({"username": gitname})
   sentry_sdk.set_tag("dirty", is_dirty())
   sentry_sdk.set_tag("origin", get_origin())
   sentry_sdk.set_tag("branch", get_branch())

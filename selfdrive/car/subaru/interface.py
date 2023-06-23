@@ -57,7 +57,8 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0., 20.], [0., 20.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.2, 0.3], [0.02, 0.03]]
       # Certain Impreza / Crosstrek EPS use 3071 max value and do not work with stock value/scaling.
-      if any(fw.ecu == "eps" and fw.fwVersion in (b'z\xc0\x00\x00', b'z\xc0\x04\x00', b'z\xc0\x08\x00', b'\x8a\xc0\x00\x00') for fw in car_fw):
+      if any(fw.ecu == "eps" and fw.fwVersion in (b'z\xc0\x00\x00', b'z\xc0\x04\x00', b'z\xc0\x08\x00', b'\x8a\xc0\x00\x00',
+                                                  b'\x8a\xc0\x10\x00') for fw in car_fw):
         ret.safetyConfigs[0].safetyParam = Panda.FLAG_SUBARU_MAX_STEER_IMPREZA_2018
         ret.steerActuatorDelay = 0.18  # measured
         ret.lateralTuning.pid.kf = 0.00003333
@@ -120,11 +121,11 @@ class CarInterface(CarInterfaceBase):
   def _update(self, c):
 
     ret = self.CS.update(self.cp, self.cp_cam, self.cp_body)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
     if ret.cruiseState.available:
       if self.enable_mads:

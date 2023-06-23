@@ -256,29 +256,30 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
     if self.CS.gap_dist_button != self.CS.prev_gap_dist_button:
       buttonEvents.append(create_button_event(self.CS.gap_dist_button, self.CS.prev_gap_dist_button, {1: ButtonType.gapAdjustCruise}))
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
     if ret.cruiseState.available:
       if self.enable_mads:
         if not self.CS.prev_mads_enabled and self.CS.mads_enabled:
           self.CS.madsEnabled = True
-        if self.CS.lta_status_active:
-          if (self.CS.prev_lkas_enabled == 16 and self.CS.lkas_enabled == 0) or \
-            (self.CS.prev_lkas_enabled == 0 and self.CS.lkas_enabled == 16):
-            self.CS.madsEnabled = not self.CS.madsEnabled
-        else:
-          if (not self.CS.prev_lkas_enabled and self.CS.lkas_enabled) or \
-            (self.CS.prev_lkas_enabled == 1 and not self.CS.lkas_enabled):
-            self.CS.madsEnabled = not self.CS.madsEnabled
+        if self.lkas_toggle:
+          if self.CS.lta_status_active:
+            if (self.CS.prev_lkas_enabled == 16 and self.CS.lkas_enabled == 0) or \
+              (self.CS.prev_lkas_enabled == 0 and self.CS.lkas_enabled == 16):
+              self.CS.madsEnabled = not self.CS.madsEnabled
+          else:
+            if (not self.CS.prev_lkas_enabled and self.CS.lkas_enabled) or \
+              (self.CS.prev_lkas_enabled == 1 and not self.CS.lkas_enabled):
+              self.CS.madsEnabled = not self.CS.madsEnabled
         self.CS.madsEnabled = self.get_acc_mads(ret.cruiseState.enabled, self.CS.accEnabled, self.CS.madsEnabled)
-      if (not (self.CP.openpilotLongitudinalControl or self.gac)) or (self.experimental_mode and self.CP.openpilotLongitudinalControl):
+      if not (self.CP.openpilotLongitudinalControl or self.gac):
         ret.gapAdjustCruiseTr = 3
       else:
         if self.gac_min != 1:

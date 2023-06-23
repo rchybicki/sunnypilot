@@ -12,7 +12,7 @@
         "language": "c++",
         "name": "cereal.visionipc.visionipc_pyx",
         "sources": [
-            "/data/openpilot-special/cereal/visionipc/visionipc_pyx.pyx"
+            "/data/openpilot/cereal/visionipc/visionipc_pyx.pyx"
         ]
     },
     "module_name": "cereal.visionipc.visionipc_pyx"
@@ -1411,8 +1411,8 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "cereal/visionipc/visionipc_pyx.pyx":18
- * from .visionipc cimport VisionIpcBufExtra
+/* "cereal/visionipc/visionipc_pyx.pyx":24
+ * 
  * 
  * cpdef enum VisionStreamType:             # <<<<<<<<<<<<<<
  *   VISION_STREAM_ROAD
@@ -1425,7 +1425,7 @@ enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType {
   __pyx_e_6cereal_9visionipc_13visionipc_pyx_VISION_STREAM_MAP
 };
 
-/* "cereal/visionipc/visionipc_pyx.pyx":25
+/* "cereal/visionipc/visionipc_pyx.pyx":31
  * 
  * 
  * cdef class VisionIpcServer:             # <<<<<<<<<<<<<<
@@ -1438,7 +1438,7 @@ struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer {
 };
 
 
-/* "cereal/visionipc/visionipc_pyx.pyx":59
+/* "cereal/visionipc/visionipc_pyx.pyx":65
  * 
  * 
  * cdef class VisionIpcClient:             # <<<<<<<<<<<<<<
@@ -1663,6 +1663,10 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* RaiseArgTupleInvalid.proto */
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
@@ -1671,9 +1675,37 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
 
-/* RaiseArgTupleInvalid.proto */
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+/* IncludeCppStringH.proto */
+#include <string>
+
+/* decode_c_string_utf16.proto */
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 0;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = -1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+
+/* decode_c_bytes.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
+
+/* decode_cpp_string.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_cpp_string(
+         std::string cppstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    return __Pyx_decode_c_bytes(
+        cppstring.data(), cppstring.size(), start, stop, encoding, errors, decode_func);
+}
 
 /* BufferIndexError.proto */
 static void __Pyx_RaiseBufferIndexError(int axis);
@@ -1978,20 +2010,6 @@ static CYTHON_INLINE Py_ssize_t __Pyx_div_Py_ssize_t(Py_ssize_t, Py_ssize_t);
 
 static CYTHON_UNUSED int __pyx_array_getbuffer(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /*proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *); /*proto*/
-/* decode_c_string_utf16.proto */
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 0;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = -1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-
 /* decode_c_string.proto */
 static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
          const char* cstring, Py_ssize_t start, Py_ssize_t stop,
@@ -2550,6 +2568,11 @@ static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
 static PyObject *__Pyx_globals = 0;
 static std::string __pyx_convert_string_from_py_std__in_string(PyObject *); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &); /*proto*/
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &); /*proto*/
 static PyObject *__pyx_convert_set_to_py_enum__VisionStreamType(std::set<enum VisionStreamType>  const &); /*proto*/
 static PyObject *__pyx_unpickle___Pyx_EnumMeta__set_state(struct __pyx_obj___Pyx_EnumMeta *, PyObject *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
@@ -2714,6 +2737,7 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_VisionStreamType[] = "VisionStreamType";
 static const char __pyx_k_VISION_STREAM_MAP[] = "VISION_STREAM_MAP";
 static const char __pyx_k_available_streams[] = "available_streams";
+static const char __pyx_k_get_endpoint_name[] = "get_endpoint_name";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_Pyx_EnumBase___new[] = "__Pyx_EnumBase.__new__";
 static const char __pyx_k_Pyx_EnumBase___str[] = "__Pyx_EnumBase.__str__";
@@ -2826,6 +2850,7 @@ static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_n_s_frame_id;
+static PyObject *__pyx_n_s_get_endpoint_name;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_height;
@@ -2908,6 +2933,7 @@ static PyObject *__pyx_n_s_v;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_width;
+static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_get_endpoint_name(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType __pyx_v_stream); /* proto */
 static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer___init__(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer *__pyx_v_self, std::string __pyx_v_name); /* proto */
 static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_2create_buffers(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer *__pyx_v_self, enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType __pyx_v_tp, size_t __pyx_v_num_buffers, bool __pyx_v_rgb, size_t __pyx_v_width, size_t __pyx_v_height); /* proto */
 static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_4create_buffers_with_sizes(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer *__pyx_v_self, enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType __pyx_v_tp, size_t __pyx_v_num_buffers, bool __pyx_v_rgb, size_t __pyx_v_width, size_t __pyx_v_height, size_t __pyx_v_size, size_t __pyx_v_stride, size_t __pyx_v_uv_offset); /* proto */
@@ -3024,24 +3050,141 @@ static PyObject *__pyx_tuple__26;
 static PyObject *__pyx_tuple__27;
 static PyObject *__pyx_tuple__29;
 static PyObject *__pyx_tuple__31;
-static PyObject *__pyx_tuple__32;
+static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__34;
 static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_tuple__38;
-static PyObject *__pyx_tuple__39;
 static PyObject *__pyx_tuple__40;
 static PyObject *__pyx_tuple__41;
 static PyObject *__pyx_tuple__42;
 static PyObject *__pyx_tuple__43;
+static PyObject *__pyx_tuple__44;
+static PyObject *__pyx_tuple__45;
 static PyObject *__pyx_codeobj__28;
 static PyObject *__pyx_codeobj__30;
-static PyObject *__pyx_codeobj__33;
+static PyObject *__pyx_codeobj__32;
 static PyObject *__pyx_codeobj__35;
 static PyObject *__pyx_codeobj__37;
-static PyObject *__pyx_codeobj__44;
+static PyObject *__pyx_codeobj__39;
+static PyObject *__pyx_codeobj__46;
 /* Late includes */
 
-/* "cereal/visionipc/visionipc_pyx.pyx":28
+/* "cereal/visionipc/visionipc_pyx.pyx":20
+ * 
+ * 
+ * def get_endpoint_name(string name, VisionStreamType stream):             # <<<<<<<<<<<<<<
+ *   return cpp_get_endpoint_name(name, stream).decode('utf-8')
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_1get_endpoint_name(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6cereal_9visionipc_13visionipc_pyx_1get_endpoint_name = {"get_endpoint_name", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cereal_9visionipc_13visionipc_pyx_1get_endpoint_name, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_1get_endpoint_name(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  std::string __pyx_v_name;
+  enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType __pyx_v_stream;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_endpoint_name (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_name,&__pyx_n_s_stream,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_name)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_stream)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("get_endpoint_name", 1, 2, 2, 1); __PYX_ERR(0, 20, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_endpoint_name") < 0)) __PYX_ERR(0, 20, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+    }
+    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L3_error)
+    __pyx_v_stream = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[1])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("get_endpoint_name", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 20, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.get_endpoint_name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6cereal_9visionipc_13visionipc_pyx_get_endpoint_name(__pyx_self, __pyx_v_name, __pyx_v_stream);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_get_endpoint_name(CYTHON_UNUSED PyObject *__pyx_self, std::string __pyx_v_name, enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType __pyx_v_stream) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_endpoint_name", 0);
+
+  /* "cereal/visionipc/visionipc_pyx.pyx":21
+ * 
+ * def get_endpoint_name(string name, VisionStreamType stream):
+ *   return cpp_get_endpoint_name(name, stream).decode('utf-8')             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_decode_cpp_string(get_endpoint_name(__pyx_v_name, ((enum VisionStreamType)__pyx_v_stream)), 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cereal/visionipc/visionipc_pyx.pyx":20
+ * 
+ * 
+ * def get_endpoint_name(string name, VisionStreamType stream):             # <<<<<<<<<<<<<<
+ *   return cpp_get_endpoint_name(name, stream).decode('utf-8')
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.get_endpoint_name", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cereal/visionipc/visionipc_pyx.pyx":34
  *   cdef cppVisionIpcServer * server
  * 
  *   def __init__(self, string name):             # <<<<<<<<<<<<<<
@@ -3078,18 +3221,18 @@ static int __pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_1__init
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 34, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 34, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcServer.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3107,7 +3250,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer___init_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":29
+  /* "cereal/visionipc/visionipc_pyx.pyx":35
  * 
  *   def __init__(self, string name):
  *     self.server = new cppVisionIpcServer(name, NULL, NULL)             # <<<<<<<<<<<<<<
@@ -3116,7 +3259,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer___init_
  */
   __pyx_v_self->server = new VisionIpcServer(__pyx_v_name, NULL, NULL);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":28
+  /* "cereal/visionipc/visionipc_pyx.pyx":34
  *   cdef cppVisionIpcServer * server
  * 
  *   def __init__(self, string name):             # <<<<<<<<<<<<<<
@@ -3130,7 +3273,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer___init_
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":31
+/* "cereal/visionipc/visionipc_pyx.pyx":37
  *     self.server = new cppVisionIpcServer(name, NULL, NULL)
  * 
  *   def create_buffers(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height):             # <<<<<<<<<<<<<<
@@ -3181,29 +3324,29 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_3
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_buffers)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 1); __PYX_ERR(0, 31, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 1); __PYX_ERR(0, 37, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_rgb)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 2); __PYX_ERR(0, 31, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 2); __PYX_ERR(0, 37, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 3); __PYX_ERR(0, 31, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 3); __PYX_ERR(0, 37, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_height)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 4); __PYX_ERR(0, 31, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, 4); __PYX_ERR(0, 37, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_buffers") < 0)) __PYX_ERR(0, 31, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_buffers") < 0)) __PYX_ERR(0, 37, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -3214,15 +3357,15 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_3
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L3_error)
-    __pyx_v_num_buffers = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_num_buffers == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L3_error)
-    __pyx_v_rgb = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_rgb == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L3_error)
-    __pyx_v_width = __Pyx_PyInt_As_size_t(values[3]); if (unlikely((__pyx_v_width == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L3_error)
-    __pyx_v_height = __Pyx_PyInt_As_size_t(values[4]); if (unlikely((__pyx_v_height == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L3_error)
+    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+    __pyx_v_num_buffers = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_num_buffers == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+    __pyx_v_rgb = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_rgb == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+    __pyx_v_width = __Pyx_PyInt_As_size_t(values[3]); if (unlikely((__pyx_v_width == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+    __pyx_v_height = __Pyx_PyInt_As_size_t(values[4]); if (unlikely((__pyx_v_height == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 31, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("create_buffers", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 37, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcServer.create_buffers", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3240,7 +3383,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_2
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("create_buffers", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":32
+  /* "cereal/visionipc/visionipc_pyx.pyx":38
  * 
  *   def create_buffers(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height):
  *     self.server.create_buffers(tp, num_buffers, rgb, width, height)             # <<<<<<<<<<<<<<
@@ -3249,7 +3392,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_2
  */
   __pyx_v_self->server->create_buffers(((enum VisionStreamType)__pyx_v_tp), __pyx_v_num_buffers, __pyx_v_rgb, __pyx_v_width, __pyx_v_height);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":31
+  /* "cereal/visionipc/visionipc_pyx.pyx":37
  *     self.server = new cppVisionIpcServer(name, NULL, NULL)
  * 
  *   def create_buffers(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height):             # <<<<<<<<<<<<<<
@@ -3264,7 +3407,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_2
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":34
+/* "cereal/visionipc/visionipc_pyx.pyx":40
  *     self.server.create_buffers(tp, num_buffers, rgb, width, height)
  * 
  *   def create_buffers_with_sizes(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height, size_t size, size_t stride, size_t uv_offset):             # <<<<<<<<<<<<<<
@@ -3324,47 +3467,47 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_5
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_buffers)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 1); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 1); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_rgb)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 2); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 2); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 3); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 3); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_height)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 4); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 4); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 5); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 5); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_stride)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 6); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 6); __PYX_ERR(0, 40, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (likely((values[7] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_uv_offset)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 7); __PYX_ERR(0, 34, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, 7); __PYX_ERR(0, 40, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_buffers_with_sizes") < 0)) __PYX_ERR(0, 34, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_buffers_with_sizes") < 0)) __PYX_ERR(0, 40, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 8) {
       goto __pyx_L5_argtuple_error;
@@ -3378,18 +3521,18 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_5
       values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
     }
-    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_num_buffers = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_num_buffers == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_rgb = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_rgb == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_width = __Pyx_PyInt_As_size_t(values[3]); if (unlikely((__pyx_v_width == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_height = __Pyx_PyInt_As_size_t(values[4]); if (unlikely((__pyx_v_height == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_size = __Pyx_PyInt_As_size_t(values[5]); if (unlikely((__pyx_v_size == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_stride = __Pyx_PyInt_As_size_t(values[6]); if (unlikely((__pyx_v_stride == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
-    __pyx_v_uv_offset = __Pyx_PyInt_As_size_t(values[7]); if (unlikely((__pyx_v_uv_offset == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L3_error)
+    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_num_buffers = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_num_buffers == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_rgb = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_rgb == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_width = __Pyx_PyInt_As_size_t(values[3]); if (unlikely((__pyx_v_width == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_height = __Pyx_PyInt_As_size_t(values[4]); if (unlikely((__pyx_v_height == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_size = __Pyx_PyInt_As_size_t(values[5]); if (unlikely((__pyx_v_size == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_stride = __Pyx_PyInt_As_size_t(values[6]); if (unlikely((__pyx_v_stride == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_uv_offset = __Pyx_PyInt_As_size_t(values[7]); if (unlikely((__pyx_v_uv_offset == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 34, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("create_buffers_with_sizes", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 40, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcServer.create_buffers_with_sizes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3407,7 +3550,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_4
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("create_buffers_with_sizes", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":35
+  /* "cereal/visionipc/visionipc_pyx.pyx":41
  * 
  *   def create_buffers_with_sizes(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height, size_t size, size_t stride, size_t uv_offset):
  *     self.server.create_buffers_with_sizes(tp, num_buffers, rgb, width, height, size, stride, uv_offset)             # <<<<<<<<<<<<<<
@@ -3416,7 +3559,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_4
  */
   __pyx_v_self->server->create_buffers_with_sizes(((enum VisionStreamType)__pyx_v_tp), __pyx_v_num_buffers, __pyx_v_rgb, __pyx_v_width, __pyx_v_height, __pyx_v_size, __pyx_v_stride, __pyx_v_uv_offset);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":34
+  /* "cereal/visionipc/visionipc_pyx.pyx":40
  *     self.server.create_buffers(tp, num_buffers, rgb, width, height)
  * 
  *   def create_buffers_with_sizes(self, VisionStreamType tp, size_t num_buffers, bool rgb, size_t width, size_t height, size_t size, size_t stride, size_t uv_offset):             # <<<<<<<<<<<<<<
@@ -3431,7 +3574,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_4
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":37
+/* "cereal/visionipc/visionipc_pyx.pyx":43
  *     self.server.create_buffers_with_sizes(tp, num_buffers, rgb, width, height, size, stride, uv_offset)
  * 
  *   def send(self, VisionStreamType tp, const unsigned char[:] data, uint32_t frame_id=0, uint64_t timestamp_sof=0, uint64_t timestamp_eof=0):             # <<<<<<<<<<<<<<
@@ -3482,7 +3625,7 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_7
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("send", 0, 2, 5, 1); __PYX_ERR(0, 37, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("send", 0, 2, 5, 1); __PYX_ERR(0, 43, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -3504,7 +3647,7 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_7
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "send") < 0)) __PYX_ERR(0, 37, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "send") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3520,27 +3663,27 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_7
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
-    __pyx_v_data = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(values[1], 0); if (unlikely(!__pyx_v_data.memview)) __PYX_ERR(0, 37, __pyx_L3_error)
+    __pyx_v_tp = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[0])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
+    __pyx_v_data = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_char__const__(values[1], 0); if (unlikely(!__pyx_v_data.memview)) __PYX_ERR(0, 43, __pyx_L3_error)
     if (values[2]) {
-      __pyx_v_frame_id = __Pyx_PyInt_As_uint32_t(values[2]); if (unlikely((__pyx_v_frame_id == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+      __pyx_v_frame_id = __Pyx_PyInt_As_uint32_t(values[2]); if (unlikely((__pyx_v_frame_id == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
     } else {
       __pyx_v_frame_id = ((uint32_t)0);
     }
     if (values[3]) {
-      __pyx_v_timestamp_sof = __Pyx_PyInt_As_uint64_t(values[3]); if (unlikely((__pyx_v_timestamp_sof == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+      __pyx_v_timestamp_sof = __Pyx_PyInt_As_uint64_t(values[3]); if (unlikely((__pyx_v_timestamp_sof == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
     } else {
       __pyx_v_timestamp_sof = ((uint64_t)0);
     }
     if (values[4]) {
-      __pyx_v_timestamp_eof = __Pyx_PyInt_As_uint64_t(values[4]); if (unlikely((__pyx_v_timestamp_eof == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+      __pyx_v_timestamp_eof = __Pyx_PyInt_As_uint64_t(values[4]); if (unlikely((__pyx_v_timestamp_eof == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L3_error)
     } else {
       __pyx_v_timestamp_eof = ((uint64_t)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("send", 0, 2, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 37, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("send", 0, 2, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcServer.send", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3566,7 +3709,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("send", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":38
+  /* "cereal/visionipc/visionipc_pyx.pyx":44
  * 
  *   def send(self, VisionStreamType tp, const unsigned char[:] data, uint32_t frame_id=0, uint64_t timestamp_sof=0, uint64_t timestamp_eof=0):
  *     cdef cppVisionBuf * buf = self.server.get_buffer(tp)             # <<<<<<<<<<<<<<
@@ -3575,7 +3718,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_buf = __pyx_v_self->server->get_buffer(((enum VisionStreamType)__pyx_v_tp));
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":41
+  /* "cereal/visionipc/visionipc_pyx.pyx":47
  * 
  *     # Populate buffer
  *     assert buf.len == len(data)             # <<<<<<<<<<<<<<
@@ -3587,12 +3730,12 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
     __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_data); 
     if (unlikely(!((__pyx_v_buf->len == __pyx_t_1) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 41, __pyx_L1_error)
+      __PYX_ERR(0, 47, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":42
+  /* "cereal/visionipc/visionipc_pyx.pyx":48
  *     # Populate buffer
  *     assert buf.len == len(data)
  *     memcpy(buf.addr, &data[0], len(data))             # <<<<<<<<<<<<<<
@@ -3607,12 +3750,12 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
   } else if (unlikely(__pyx_t_2 >= __pyx_v_data.shape[0])) __pyx_t_3 = 0;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(0, 42, __pyx_L1_error)
+    __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_data); 
   (void)(memcpy(__pyx_v_buf->addr, (&(*((unsigned char const  *) ( /* dim=0 */ (__pyx_v_data.data + __pyx_t_2 * __pyx_v_data.strides[0]) )))), __pyx_t_1));
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":43
+  /* "cereal/visionipc/visionipc_pyx.pyx":49
  *     assert buf.len == len(data)
  *     memcpy(buf.addr, &data[0], len(data))
  *     buf.set_frame_id(frame_id)             # <<<<<<<<<<<<<<
@@ -3621,7 +3764,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_buf->set_frame_id(__pyx_v_frame_id);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":46
+  /* "cereal/visionipc/visionipc_pyx.pyx":52
  * 
  *     cdef VisionIpcBufExtra extra
  *     extra.frame_id = frame_id             # <<<<<<<<<<<<<<
@@ -3630,7 +3773,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_extra.frame_id = __pyx_v_frame_id;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":47
+  /* "cereal/visionipc/visionipc_pyx.pyx":53
  *     cdef VisionIpcBufExtra extra
  *     extra.frame_id = frame_id
  *     extra.timestamp_sof = timestamp_sof             # <<<<<<<<<<<<<<
@@ -3639,7 +3782,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_extra.timestamp_sof = __pyx_v_timestamp_sof;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":48
+  /* "cereal/visionipc/visionipc_pyx.pyx":54
  *     extra.frame_id = frame_id
  *     extra.timestamp_sof = timestamp_sof
  *     extra.timestamp_eof = timestamp_eof             # <<<<<<<<<<<<<<
@@ -3648,7 +3791,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_extra.timestamp_eof = __pyx_v_timestamp_eof;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":50
+  /* "cereal/visionipc/visionipc_pyx.pyx":56
  *     extra.timestamp_eof = timestamp_eof
  * 
  *     self.server.send(buf, &extra, False)             # <<<<<<<<<<<<<<
@@ -3657,7 +3800,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
  */
   __pyx_v_self->server->send(__pyx_v_buf, (&__pyx_v_extra), 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":37
+  /* "cereal/visionipc/visionipc_pyx.pyx":43
  *     self.server.create_buffers_with_sizes(tp, num_buffers, rgb, width, height, size, stride, uv_offset)
  * 
  *   def send(self, VisionStreamType tp, const unsigned char[:] data, uint32_t frame_id=0, uint64_t timestamp_sof=0, uint64_t timestamp_eof=0):             # <<<<<<<<<<<<<<
@@ -3678,7 +3821,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_6
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":52
+/* "cereal/visionipc/visionipc_pyx.pyx":58
  *     self.server.send(buf, &extra, False)
  * 
  *   def start_listener(self):             # <<<<<<<<<<<<<<
@@ -3704,7 +3847,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_8
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("start_listener", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":53
+  /* "cereal/visionipc/visionipc_pyx.pyx":59
  * 
  *   def start_listener(self):
  *     self.server.start_listener()             # <<<<<<<<<<<<<<
@@ -3713,7 +3856,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_8
  */
   __pyx_v_self->server->start_listener();
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":52
+  /* "cereal/visionipc/visionipc_pyx.pyx":58
  *     self.server.send(buf, &extra, False)
  * 
  *   def start_listener(self):             # <<<<<<<<<<<<<<
@@ -3728,7 +3871,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_8
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":55
+/* "cereal/visionipc/visionipc_pyx.pyx":61
  *     self.server.start_listener()
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -3751,7 +3894,7 @@ static void __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_10__de
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":56
+  /* "cereal/visionipc/visionipc_pyx.pyx":62
  * 
  *   def __dealloc__(self):
  *     del self.server             # <<<<<<<<<<<<<<
@@ -3760,7 +3903,7 @@ static void __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_10__de
  */
   delete __pyx_v_self->server;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":55
+  /* "cereal/visionipc/visionipc_pyx.pyx":61
  *     self.server.start_listener()
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -3885,7 +4028,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcServer_1
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":63
+/* "cereal/visionipc/visionipc_pyx.pyx":69
  *   cdef cppVisionIpcClient * client
  * 
  *   def __cinit__(self, string name, VisionStreamType stream, bool conflate):             # <<<<<<<<<<<<<<
@@ -3930,17 +4073,17 @@ static int __pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_1__cini
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_stream)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 1); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 1); __PYX_ERR(0, 69, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_conflate)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 2); __PYX_ERR(0, 63, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, 2); __PYX_ERR(0, 69, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 63, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 69, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -3949,13 +4092,13 @@ static int __pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_1__cini
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_stream = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[1])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
-    __pyx_v_conflate = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_conflate == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L3_error)
+    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_stream = ((enum __pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType)__Pyx_PyInt_As_enum____pyx_t_6cereal_9visionipc_13visionipc_pyx_VisionStreamType(values[1])); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
+    __pyx_v_conflate = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_conflate == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 63, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcClient.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3973,7 +4116,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient___cinit
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":64
+  /* "cereal/visionipc/visionipc_pyx.pyx":70
  * 
  *   def __cinit__(self, string name, VisionStreamType stream, bool conflate):
  *     self.client = new cppVisionIpcClient(name, stream, conflate, NULL, NULL)             # <<<<<<<<<<<<<<
@@ -3982,7 +4125,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient___cinit
  */
   __pyx_v_self->client = new VisionIpcClient(__pyx_v_name, ((enum VisionStreamType)__pyx_v_stream), __pyx_v_conflate, NULL, NULL);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":65
+  /* "cereal/visionipc/visionipc_pyx.pyx":71
  *   def __cinit__(self, string name, VisionStreamType stream, bool conflate):
  *     self.client = new cppVisionIpcClient(name, stream, conflate, NULL, NULL)
  *     self.buf = NULL             # <<<<<<<<<<<<<<
@@ -3991,7 +4134,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient___cinit
  */
   __pyx_v_self->buf = NULL;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":63
+  /* "cereal/visionipc/visionipc_pyx.pyx":69
  *   cdef cppVisionIpcClient * client
  * 
  *   def __cinit__(self, string name, VisionStreamType stream, bool conflate):             # <<<<<<<<<<<<<<
@@ -4005,7 +4148,7 @@ static int __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient___cinit
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":67
+/* "cereal/visionipc/visionipc_pyx.pyx":73
  *     self.buf = NULL
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4028,7 +4171,7 @@ static void __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_2__dea
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":68
+  /* "cereal/visionipc/visionipc_pyx.pyx":74
  * 
  *   def __dealloc__(self):
  *     del self.client             # <<<<<<<<<<<<<<
@@ -4037,7 +4180,7 @@ static void __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_2__dea
  */
   delete __pyx_v_self->client;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":67
+  /* "cereal/visionipc/visionipc_pyx.pyx":73
  *     self.buf = NULL
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4049,7 +4192,7 @@ static void __pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_2__dea
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":71
+/* "cereal/visionipc/visionipc_pyx.pyx":77
  * 
  *   @property
  *   def width(self):             # <<<<<<<<<<<<<<
@@ -4080,7 +4223,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":72
+  /* "cereal/visionipc/visionipc_pyx.pyx":78
  *   @property
  *   def width(self):
  *     return None if not self.buf else self.buf.width             # <<<<<<<<<<<<<<
@@ -4092,7 +4235,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
     __Pyx_INCREF(Py_None);
     __pyx_t_1 = Py_None;
   } else {
-    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->width); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -4101,7 +4244,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":71
+  /* "cereal/visionipc/visionipc_pyx.pyx":77
  * 
  *   @property
  *   def width(self):             # <<<<<<<<<<<<<<
@@ -4121,7 +4264,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":75
+/* "cereal/visionipc/visionipc_pyx.pyx":81
  * 
  *   @property
  *   def height(self):             # <<<<<<<<<<<<<<
@@ -4152,7 +4295,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":76
+  /* "cereal/visionipc/visionipc_pyx.pyx":82
  *   @property
  *   def height(self):
  *     return None if not self.buf else self.buf.height             # <<<<<<<<<<<<<<
@@ -4164,7 +4307,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
     __Pyx_INCREF(Py_None);
     __pyx_t_1 = Py_None;
   } else {
-    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->height); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->height); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -4173,7 +4316,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":75
+  /* "cereal/visionipc/visionipc_pyx.pyx":81
  * 
  *   @property
  *   def height(self):             # <<<<<<<<<<<<<<
@@ -4193,7 +4336,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":79
+/* "cereal/visionipc/visionipc_pyx.pyx":85
  * 
  *   @property
  *   def stride(self):             # <<<<<<<<<<<<<<
@@ -4224,7 +4367,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":80
+  /* "cereal/visionipc/visionipc_pyx.pyx":86
  *   @property
  *   def stride(self):
  *     return None if not self.buf else self.buf.stride             # <<<<<<<<<<<<<<
@@ -4236,7 +4379,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
     __Pyx_INCREF(Py_None);
     __pyx_t_1 = Py_None;
   } else {
-    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->stride); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->stride); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -4245,7 +4388,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":79
+  /* "cereal/visionipc/visionipc_pyx.pyx":85
  * 
  *   @property
  *   def stride(self):             # <<<<<<<<<<<<<<
@@ -4265,7 +4408,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":83
+/* "cereal/visionipc/visionipc_pyx.pyx":89
  * 
  *   @property
  *   def uv_offset(self):             # <<<<<<<<<<<<<<
@@ -4296,7 +4439,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_9
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":84
+  /* "cereal/visionipc/visionipc_pyx.pyx":90
  *   @property
  *   def uv_offset(self):
  *     return None if not self.buf else self.buf.uv_offset             # <<<<<<<<<<<<<<
@@ -4308,7 +4451,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_9
     __Pyx_INCREF(Py_None);
     __pyx_t_1 = Py_None;
   } else {
-    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->uv_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->uv_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -4317,7 +4460,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_9
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":83
+  /* "cereal/visionipc/visionipc_pyx.pyx":89
  * 
  *   @property
  *   def uv_offset(self):             # <<<<<<<<<<<<<<
@@ -4337,7 +4480,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_9
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":86
+/* "cereal/visionipc/visionipc_pyx.pyx":92
  *     return None if not self.buf else self.buf.uv_offset
  * 
  *   def recv(self, int timeout_ms=100):             # <<<<<<<<<<<<<<
@@ -4376,7 +4519,7 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "recv") < 0)) __PYX_ERR(0, 86, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "recv") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4387,14 +4530,14 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_5
       }
     }
     if (values[0]) {
-      __pyx_v_timeout_ms = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_timeout_ms == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
+      __pyx_v_timeout_ms = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_timeout_ms == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
     } else {
       __pyx_v_timeout_ms = ((int)0x64);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("recv", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 86, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("recv", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcClient.recv", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4426,7 +4569,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("recv", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":87
+  /* "cereal/visionipc/visionipc_pyx.pyx":93
  * 
  *   def recv(self, int timeout_ms=100):
  *     self.buf = self.client.recv(NULL, timeout_ms)             # <<<<<<<<<<<<<<
@@ -4435,7 +4578,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
  */
   __pyx_v_self->buf = __pyx_v_self->client->recv(NULL, __pyx_v_timeout_ms);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":88
+  /* "cereal/visionipc/visionipc_pyx.pyx":94
  *   def recv(self, int timeout_ms=100):
  *     self.buf = self.client.recv(NULL, timeout_ms)
  *     if not self.buf:             # <<<<<<<<<<<<<<
@@ -4445,7 +4588,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
   __pyx_t_1 = ((!(__pyx_v_self->buf != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "cereal/visionipc/visionipc_pyx.pyx":89
+    /* "cereal/visionipc/visionipc_pyx.pyx":95
  *     self.buf = self.client.recv(NULL, timeout_ms)
  *     if not self.buf:
  *       return None             # <<<<<<<<<<<<<<
@@ -4456,7 +4599,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cereal/visionipc/visionipc_pyx.pyx":88
+    /* "cereal/visionipc/visionipc_pyx.pyx":94
  *   def recv(self, int timeout_ms=100):
  *     self.buf = self.client.recv(NULL, timeout_ms)
  *     if not self.buf:             # <<<<<<<<<<<<<<
@@ -4465,56 +4608,56 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
  */
   }
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":90
+  /* "cereal/visionipc/visionipc_pyx.pyx":96
  *     if not self.buf:
  *       return None
  *     cdef cnp.ndarray dat = np.empty(self.buf.len, dtype=np.uint8)             # <<<<<<<<<<<<<<
  *     cdef char[:] dat_view = dat
  *     memcpy(&dat_view[0], self.buf.addr, self.buf.len)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->len); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_v_self->buf->len); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_uint8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_uint8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 90, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 90, __pyx_L1_error)
+  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 96, __pyx_L1_error)
   __pyx_v_dat = ((PyArrayObject *)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":91
+  /* "cereal/visionipc/visionipc_pyx.pyx":97
  *       return None
  *     cdef cnp.ndarray dat = np.empty(self.buf.len, dtype=np.uint8)
  *     cdef char[:] dat_view = dat             # <<<<<<<<<<<<<<
  *     memcpy(&dat_view[0], self.buf.addr, self.buf.len)
  *     return dat
  */
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_ds_char(((PyObject *)__pyx_v_dat), PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_ds_char(((PyObject *)__pyx_v_dat), PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 97, __pyx_L1_error)
   __pyx_v_dat_view = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":92
+  /* "cereal/visionipc/visionipc_pyx.pyx":98
  *     cdef cnp.ndarray dat = np.empty(self.buf.len, dtype=np.uint8)
  *     cdef char[:] dat_view = dat
  *     memcpy(&dat_view[0], self.buf.addr, self.buf.len)             # <<<<<<<<<<<<<<
@@ -4529,11 +4672,11 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
   } else if (unlikely(__pyx_t_8 >= __pyx_v_dat_view.shape[0])) __pyx_t_9 = 0;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 92, __pyx_L1_error)
+    __PYX_ERR(0, 98, __pyx_L1_error)
   }
   (void)(memcpy((&(*((char *) ( /* dim=0 */ (__pyx_v_dat_view.data + __pyx_t_8 * __pyx_v_dat_view.strides[0]) )))), __pyx_v_self->buf->addr, __pyx_v_self->buf->len));
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":93
+  /* "cereal/visionipc/visionipc_pyx.pyx":99
  *     cdef char[:] dat_view = dat
  *     memcpy(&dat_view[0], self.buf.addr, self.buf.len)
  *     return dat             # <<<<<<<<<<<<<<
@@ -4545,7 +4688,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
   __pyx_r = ((PyObject *)__pyx_v_dat);
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":86
+  /* "cereal/visionipc/visionipc_pyx.pyx":92
  *     return None if not self.buf else self.buf.uv_offset
  * 
  *   def recv(self, int timeout_ms=100):             # <<<<<<<<<<<<<<
@@ -4571,7 +4714,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_4
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":95
+/* "cereal/visionipc/visionipc_pyx.pyx":101
  *     return dat
  * 
  *   def connect(self, bool blocking):             # <<<<<<<<<<<<<<
@@ -4590,7 +4733,7 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_7
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("connect (wrapper)", 0);
   assert(__pyx_arg_blocking); {
-    __pyx_v_blocking = __Pyx_PyObject_IsTrue(__pyx_arg_blocking); if (unlikely((__pyx_v_blocking == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+    __pyx_v_blocking = __Pyx_PyObject_IsTrue(__pyx_arg_blocking); if (unlikely((__pyx_v_blocking == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4614,7 +4757,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":96
+  /* "cereal/visionipc/visionipc_pyx.pyx":102
  * 
  *   def connect(self, bool blocking):
  *     return self.client.connect(blocking)             # <<<<<<<<<<<<<<
@@ -4622,13 +4765,13 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
  *   def is_connected(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->client->connect(__pyx_v_blocking)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->client->connect(__pyx_v_blocking)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":95
+  /* "cereal/visionipc/visionipc_pyx.pyx":101
  *     return dat
  * 
  *   def connect(self, bool blocking):             # <<<<<<<<<<<<<<
@@ -4647,7 +4790,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_6
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":98
+/* "cereal/visionipc/visionipc_pyx.pyx":104
  *     return self.client.connect(blocking)
  * 
  *   def is_connected(self):             # <<<<<<<<<<<<<<
@@ -4677,7 +4820,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_8
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_connected", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":99
+  /* "cereal/visionipc/visionipc_pyx.pyx":105
  * 
  *   def is_connected(self):
  *     return self.client.is_connected()             # <<<<<<<<<<<<<<
@@ -4685,13 +4828,13 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_8
  *   @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->client->is_connected()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->client->is_connected()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":98
+  /* "cereal/visionipc/visionipc_pyx.pyx":104
  *     return self.client.connect(blocking)
  * 
  *   def is_connected(self):             # <<<<<<<<<<<<<<
@@ -4710,7 +4853,7 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_8
   return __pyx_r;
 }
 
-/* "cereal/visionipc/visionipc_pyx.pyx":102
+/* "cereal/visionipc/visionipc_pyx.pyx":108
  * 
  *   @staticmethod
  *   def available_streams(string name, bool block):             # <<<<<<<<<<<<<<
@@ -4752,11 +4895,11 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_1
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_block)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("available_streams", 1, 2, 2, 1); __PYX_ERR(0, 102, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("available_streams", 1, 2, 2, 1); __PYX_ERR(0, 108, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "available_streams") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "available_streams") < 0)) __PYX_ERR(0, 108, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4764,12 +4907,12 @@ static PyObject *__pyx_pw_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_1
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
-    __pyx_v_block = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_block == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
+    __pyx_v_name = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L3_error)
+    __pyx_v_block = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_block == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("available_streams", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("available_streams", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 108, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cereal.visionipc.visionipc_pyx.VisionIpcClient.available_streams", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4791,19 +4934,19 @@ static PyObject *__pyx_pf_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("available_streams", 0);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":103
+  /* "cereal/visionipc/visionipc_pyx.pyx":109
  *   @staticmethod
  *   def available_streams(string name, bool block):
  *     return cppVisionIpcClient.getAvailableStreams(name, block)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_set_to_py_enum__VisionStreamType(VisionIpcClient::getAvailableStreams(__pyx_v_name, __pyx_v_block)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_set_to_py_enum__VisionStreamType(VisionIpcClient::getAvailableStreams(__pyx_v_name, __pyx_v_block)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":102
+  /* "cereal/visionipc/visionipc_pyx.pyx":108
  * 
  *   @staticmethod
  *   def available_streams(string name, bool block):             # <<<<<<<<<<<<<<
@@ -6012,6 +6155,255 @@ static std::string __pyx_convert_string_from_py_std__in_string(PyObject *__pyx_v
   __Pyx_AddTraceback("string.from_py.__pyx_convert_string_from_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyObject_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyObject_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":32
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyUnicode_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":31
+ * 
+ * @cname("__pyx_convert_PyObject_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyObject_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyObject_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyObject_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyUnicode_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyUnicode_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":38
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyStr_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyUnicode_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":37
+ * 
+ * @cname("__pyx_convert_PyUnicode_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyUnicode_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyUnicode_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyUnicode_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyStr_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyStr_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":44
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyBytes_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyStr_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":43
+ * 
+ * @cname("__pyx_convert_PyStr_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyStr_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyStr_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyStr_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyBytes_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyBytes_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":50
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * cdef extern from *:
+ *     cdef object __Pyx_PyByteArray_FromStringAndSize(const char*, size_t)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":49
+ * 
+ * @cname("__pyx_convert_PyBytes_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyBytes_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyBytes_FromStringAndSize(s.data(), s.size())
+ * cdef extern from *:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyBytes_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_string(std::string const &__pyx_v_s) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__pyx_convert_PyByteArray_string_to_py_std__in_string", 0);
+
+  /* "string.to_py":56
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())             # <<<<<<<<<<<<<<
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyByteArray_FromStringAndSize(__pyx_v_s.data(), __pyx_v_s.size()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "string.to_py":55
+ * 
+ * @cname("__pyx_convert_PyByteArray_string_to_py_std__in_string")
+ * cdef inline object __pyx_convert_PyByteArray_string_to_py_std__in_string(const string& s):             # <<<<<<<<<<<<<<
+ *     return __Pyx_PyByteArray_FromStringAndSize(s.data(), s.size())
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("string.to_py.__pyx_convert_PyByteArray_string_to_py_std__in_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -21951,6 +22343,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_n_s_frame_id, __pyx_k_frame_id, sizeof(__pyx_k_frame_id), 0, 0, 1, 1},
+  {&__pyx_n_s_get_endpoint_name, __pyx_k_get_endpoint_name, sizeof(__pyx_k_get_endpoint_name), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_height, __pyx_k_height, sizeof(__pyx_k_height), 0, 0, 1, 1},
@@ -22036,7 +22429,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 107, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 944, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 33, __pyx_L1_error)
@@ -22321,16 +22714,28 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":102
+  /* "cereal/visionipc/visionipc_pyx.pyx":20
+ * 
+ * 
+ * def get_endpoint_name(string name, VisionStreamType stream):             # <<<<<<<<<<<<<<
+ *   return cpp_get_endpoint_name(name, stream).decode('utf-8')
+ * 
+ */
+  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_name, __pyx_n_s_stream); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_visionipc_visionipc_pyx_p, __pyx_n_s_get_endpoint_name, 20, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 20, __pyx_L1_error)
+
+  /* "cereal/visionipc/visionipc_pyx.pyx":108
  * 
  *   @staticmethod
  *   def available_streams(string name, bool block):             # <<<<<<<<<<<<<<
  *     return cppVisionIpcClient.getAvailableStreams(name, block)
  */
-  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_name, __pyx_n_s_block); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 102, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_visionipc_visionipc_pyx_p, __pyx_n_s_available_streams, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(2, __pyx_n_s_name, __pyx_n_s_block); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cereal_visionipc_visionipc_pyx_p, __pyx_n_s_available_streams, 108, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 108, __pyx_L1_error)
 
   /* "EnumBase":28
  * class __Pyx_EnumBase(int):
@@ -22339,13 +22744,13 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         for v in cls:
  *             if v == value:
  */
-  __pyx_tuple__29 = PyTuple_Pack(5, __pyx_n_s_cls, __pyx_n_s_value, __pyx_n_s_name, __pyx_n_s_v, __pyx_n_s_res); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_new, 28, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(1, 28, __pyx_L1_error)
-  __pyx_tuple__31 = PyTuple_Pack(1, ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 28, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(5, __pyx_n_s_cls, __pyx_n_s_value, __pyx_n_s_name, __pyx_n_s_v, __pyx_n_s_res); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(1, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_new, 28, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(1, 28, __pyx_L1_error)
+  __pyx_tuple__33 = PyTuple_Pack(1, ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
 
   /* "EnumBase":39
  *         cls.__members__[name] = res
@@ -22354,10 +22759,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         return "<%s.%s: %d>" % (self.__class__.__name__, self.name, self)
  *     def __str__(self):
  */
-  __pyx_tuple__32 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_repr, 39, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_repr, 39, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 39, __pyx_L1_error)
 
   /* "EnumBase":41
  *     def __repr__(self):
@@ -22366,20 +22771,20 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *         return "%s.%s" % (self.__class__.__name__, self.name)
  * 
  */
-  __pyx_tuple__34 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__34);
-  __Pyx_GIVEREF(__pyx_tuple__34);
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_str, 41, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 41, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 41, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_str, 41, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 41, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __pyx_unpickle___Pyx_EnumMeta(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__36 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle___Pyx_EnumMeta, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__38 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle___Pyx_EnumMeta, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "View.MemoryView":287
  *         return self.name
@@ -22388,9 +22793,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(1, 287, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct_or_indirect); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
 
   /* "View.MemoryView":288
  * 
@@ -22399,9 +22804,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_tuple__39 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(1, 288, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__39);
-  __Pyx_GIVEREF(__pyx_tuple__39);
+  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_strided_and_direct); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__41);
+  __Pyx_GIVEREF(__pyx_tuple__41);
 
   /* "View.MemoryView":289
  * cdef generic = Enum("<strided and direct or indirect>")
@@ -22410,9 +22815,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__40 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(1, 289, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__40);
-  __Pyx_GIVEREF(__pyx_tuple__40);
+  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_kp_s_strided_and_indirect); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
 
   /* "View.MemoryView":292
  * 
@@ -22421,9 +22826,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_tuple__41 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(1, 292, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__41);
-  __Pyx_GIVEREF(__pyx_tuple__41);
+  __pyx_tuple__43 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_direct); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__43);
+  __Pyx_GIVEREF(__pyx_tuple__43);
 
   /* "View.MemoryView":293
  * 
@@ -22432,19 +22837,19 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  */
-  __pyx_tuple__42 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(1, 293, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__42);
-  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_tuple__44 = PyTuple_Pack(1, __pyx_kp_s_contiguous_and_indirect); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__44);
+  __Pyx_GIVEREF(__pyx_tuple__44);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Enum(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple__43 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__43);
-  __Pyx_GIVEREF(__pyx_tuple__43);
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__45);
+  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -22515,25 +22920,25 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer.tp_dictoffset && __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VisionIpcServer, (PyObject *)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VisionIpcServer, (PyObject *)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
   __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer = &__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcServer;
-  if (PyType_Ready(&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient.tp_dictoffset && __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VisionIpcClient, (PyObject *)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VisionIpcClient, (PyObject *)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
   __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient = &__pyx_type_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient;
   __Pyx_EnumMeta.tp_base = (&PyType_Type);
   if (PyType_Ready(&__Pyx_EnumMeta) < 0) __PYX_ERR(1, 15, __pyx_L1_error)
@@ -22924,31 +23329,43 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":102
+  /* "cereal/visionipc/visionipc_pyx.pyx":20
+ * 
+ * 
+ * def get_endpoint_name(string name, VisionStreamType stream):             # <<<<<<<<<<<<<<
+ *   return cpp_get_endpoint_name(name, stream).decode('utf-8')
+ * 
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9visionipc_13visionipc_pyx_1get_endpoint_name, NULL, __pyx_n_s_cereal_visionipc_visionipc_pyx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_endpoint_name, __pyx_t_1) < 0) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cereal/visionipc/visionipc_pyx.pyx":108
  * 
  *   @staticmethod
  *   def available_streams(string name, bool block):             # <<<<<<<<<<<<<<
  *     return cppVisionIpcClient.getAvailableStreams(name, block)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_11available_streams, NULL, __pyx_n_s_cereal_visionipc_visionipc_pyx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6cereal_9visionipc_13visionipc_pyx_15VisionIpcClient_11available_streams, NULL, __pyx_n_s_cereal_visionipc_visionipc_pyx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient->tp_dict, __pyx_n_s_available_streams, __pyx_t_1) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient->tp_dict, __pyx_n_s_available_streams, __pyx_t_1) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient);
 
-  /* "cereal/visionipc/visionipc_pyx.pyx":101
+  /* "cereal/visionipc/visionipc_pyx.pyx":107
  *     return self.client.is_connected()
  * 
  *   @staticmethod             # <<<<<<<<<<<<<<
  *   def available_streams(string name, bool block):
  *     return cppVisionIpcClient.getAvailableStreams(name, block)
  */
-  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient, __pyx_n_s_available_streams); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient, __pyx_n_s_available_streams); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient->tp_dict, __pyx_n_s_available_streams, __pyx_t_2) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient->tp_dict, __pyx_n_s_available_streams, __pyx_t_2) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionIpcClient);
 
@@ -23054,9 +23471,9 @@ if (!__Pyx_RefNanny) {
  *         for v in cls:
  *             if v == value:
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_Pyx_EnumBase___new, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 28, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_1__new__, __Pyx_CYFUNCTION_STATICMETHOD, __pyx_n_s_Pyx_EnumBase___new, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_tuple__31);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_tuple__33);
   if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_new, __pyx_t_5) < 0) __PYX_ERR(1, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
@@ -23067,7 +23484,7 @@ if (!__Pyx_RefNanny) {
  *         return "<%s.%s: %d>" % (self.__class__.__name__, self.name, self)
  *     def __str__(self):
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_3__repr__, 0, __pyx_n_s_Pyx_EnumBase___repr, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_3__repr__, 0, __pyx_n_s_Pyx_EnumBase___repr, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_repr, __pyx_t_5) < 0) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -23079,7 +23496,7 @@ if (!__Pyx_RefNanny) {
  *         return "%s.%s" % (self.__class__.__name__, self.name)
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_5__str__, 0, __pyx_n_s_Pyx_EnumBase___str, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 41, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_8EnumBase_14__Pyx_EnumBase_5__str__, 0, __pyx_n_s_Pyx_EnumBase___str, NULL, __pyx_n_s_EnumBase, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_str, __pyx_t_5) < 0) __PYX_ERR(1, 41, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -23173,7 +23590,7 @@ if (!__Pyx_RefNanny) {
  * cdef strided = Enum("<strided and direct>") # default
  * cdef indirect = Enum("<strided and indirect>")
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__38, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(generic);
   __Pyx_DECREF_SET(generic, __pyx_t_2);
@@ -23187,7 +23604,7 @@ if (!__Pyx_RefNanny) {
  * cdef indirect = Enum("<strided and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__39, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(strided);
   __Pyx_DECREF_SET(strided, __pyx_t_2);
@@ -23201,7 +23618,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__40, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 289, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__42, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect);
   __Pyx_DECREF_SET(indirect, __pyx_t_2);
@@ -23215,7 +23632,7 @@ if (!__Pyx_RefNanny) {
  * cdef indirect_contiguous = Enum("<contiguous and indirect>")
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__41, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__43, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 292, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(contiguous);
   __Pyx_DECREF_SET(contiguous, __pyx_t_2);
@@ -23229,7 +23646,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__42, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 293, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_MemviewEnum_type), __pyx_tuple__44, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 293, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(indirect_contiguous);
   __Pyx_DECREF_SET(indirect_contiguous, __pyx_t_2);
@@ -23739,6 +24156,32 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+/* RaiseArgTupleInvalid */
+static void __Pyx_RaiseArgtupleInvalid(
+    const char* func_name,
+    int exact,
+    Py_ssize_t num_min,
+    Py_ssize_t num_max,
+    Py_ssize_t num_found)
+{
+    Py_ssize_t num_expected;
+    const char *more_or_less;
+    if (num_found < num_min) {
+        num_expected = num_min;
+        more_or_less = "at least";
+    } else {
+        num_expected = num_max;
+        more_or_less = "at most";
+    }
+    if (exact) {
+        more_or_less = "exactly";
+    }
+    PyErr_Format(PyExc_TypeError,
+                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                 func_name, more_or_less, num_expected,
+                 (num_expected == 1) ? "" : "s", num_found);
+}
+
 /* RaiseDoubleKeywords */
 static void __Pyx_RaiseDoubleKeywordsError(
     const char* func_name,
@@ -23855,30 +24298,31 @@ bad:
     return -1;
 }
 
-/* RaiseArgTupleInvalid */
-static void __Pyx_RaiseArgtupleInvalid(
-    const char* func_name,
-    int exact,
-    Py_ssize_t num_min,
-    Py_ssize_t num_max,
-    Py_ssize_t num_found)
-{
-    Py_ssize_t num_expected;
-    const char *more_or_less;
-    if (num_found < num_min) {
-        num_expected = num_min;
-        more_or_less = "at least";
+/* decode_c_bytes */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    if (unlikely((start < 0) | (stop < 0))) {
+        if (start < 0) {
+            start += length;
+            if (start < 0)
+                start = 0;
+        }
+        if (stop < 0)
+            stop += length;
+    }
+    if (stop > length)
+        stop = length;
+    if (unlikely(stop <= start))
+        return __Pyx_NewRef(__pyx_empty_unicode);
+    length = stop - start;
+    cstring += start;
+    if (decode_func) {
+        return decode_func(cstring, length, errors);
     } else {
-        num_expected = num_max;
-        more_or_less = "at most";
+        return PyUnicode_Decode(cstring, length, encoding, errors);
     }
-    if (exact) {
-        more_or_less = "exactly";
-    }
-    PyErr_Format(PyExc_TypeError,
-                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                 func_name, more_or_less, num_expected,
-                 (num_expected == 1) ? "" : "s", num_found);
 }
 
 /* BufferIndexError */

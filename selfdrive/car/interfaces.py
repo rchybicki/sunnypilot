@@ -112,6 +112,8 @@ class CarInterfaceBase(ABC):
     self.gac_min = -1
     self.gac_max = -1
     self.reverse_dm_cam = self.param_s.get_bool("ReverseDmCam")
+    self.mads_main_toggle = self.param_s.get_bool("MadsCruiseMain")
+    self.lkas_toggle = self.param_s.get_bool("LkasToggle")
 
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
@@ -188,6 +190,7 @@ class CarInterfaceBase(ABC):
     ret.wheelSpeedFactor = 1.0
 
     ret.pcmCruise = True     # openpilot's state is tied to the PCM's cruise state on most cars
+    ret.pcmCruiseSpeed = True     # openpilot's state is tied to the PCM's cruise speed
     ret.minEnableSpeed = -1. # enable is done by stock ACC, so ignore this
     ret.steerRatioRear = 0.  # no rear steering, at least on the listed cars aboveA
     ret.openpilotLongitudinalControl = False
@@ -367,15 +370,20 @@ class CarInterfaceBase(ABC):
 
     return mads_enabled
 
-  def get_sp_v_cruise_non_pcm_state(self, cruiseState_available, acc_enabled, button_events, vCruise,
-                                    enable_buttons=(ButtonType.accelCruise, ButtonType.decelCruise)):
+  def get_sp_v_cruise_non_pcm_state(self, cs_out, acc_enabled, button_events, vCruise,
+                                    enable_buttons=(ButtonType.accelCruise, ButtonType.decelCruise),
+                                    resume_button=(ButtonType.accelCruise, ButtonType.resumeCruise)):
 
-    if cruiseState_available:
+    if cs_out.cruiseState.available:
       for b in button_events:
-        if not self.CP.pcmCruise:
+        if not self.CP.pcmCruise or not self.CP.pcmCruiseSpeed:
           if b.type in enable_buttons and not b.pressed:
             acc_enabled = True
-          if b.type in (ButtonType.accelCruise, ButtonType.resumeCruise) and not self.sp_v_cruise_initialized(vCruise):
+        if not self.CP.pcmCruise:
+          if b.type in resume_button and not self.sp_v_cruise_initialized(vCruise):
+            acc_enabled = False
+        if not self.CP.pcmCruiseSpeed:
+          if b.type == ButtonType.accelCruise and not cs_out.cruiseState.enabled:
             acc_enabled = False
     else:
       acc_enabled = False
@@ -391,8 +399,16 @@ class CarInterfaceBase(ABC):
     regen = cs_out.regenBraking and (not self.CS.out.regenBraking or not cs_out.standstill)
     return brake or regen
 
+  def get_sp_cruise_main_state(self, cs_out, CS):
+    if not CS.control_initialized or not self.mads_main_toggle:
+      mads_enabled = False
+    else:
+      mads_enabled = cs_out.cruiseState.available
+
+    return mads_enabled
+
   def get_sp_common_state(self, cs_out, CS, gear_allowed=True, gap_button=False):
-    cs_out.cruiseState.enabled = cs_out.cruiseState.enabled if self.CP.pcmCruise else CS.accEnabled
+    cs_out.cruiseState.enabled = CS.accEnabled if not self.CP.pcmCruise or not self.CP.pcmCruiseSpeed else cs_out.cruiseState.enabled
     if not self.enable_mads:
       if cs_out.cruiseState.enabled and not CS.out.cruiseState.enabled:
         CS.madsEnabled = True
@@ -455,7 +471,7 @@ class CarInterfaceBase(ABC):
     return next((key for key, value in gac_dict.items() if value == gac_tr), gac_max)
 
   def toggle_gac(self, cs_out, CS, gac_button, gac_min, gac_max, gac_default, inc_dec):
-    if (not (self.CP.openpilotLongitudinalControl or self.gac)) or (self.experimental_mode and self.CP.openpilotLongitudinalControl):
+    if not (self.CP.openpilotLongitudinalControl or self.gac):
       cs_out.gapAdjustCruiseTr = 4
       CS.gac_tr = gac_default
       return
@@ -547,6 +563,7 @@ class CarInterfaceBase(ABC):
       self.gac = self.param_s.get_bool("GapAdjustCruise")
       self.gac_mode = round(float(self.param_s.get("GapAdjustCruiseMode", encoding="utf8")))
       self.reverse_dm_cam = self.param_s.get_bool("ReverseDmCam")
+    return CS
 
 class RadarInterfaceBase(ABC):
   def __init__(self, CP):
@@ -648,6 +665,16 @@ class CarStateBase(ABC):
     self.right_blinker_prev = right_blinker_stalk
 
     return bool(left_blinker_stalk or self.left_blinker_cnt > 0), bool(right_blinker_stalk or self.right_blinker_cnt > 0)
+
+  def update_custom_stock_long(self, cruise_button, final_speed_kph, target_speed, v_set_dis, speed_diff, button_type):
+    customStockLong = car.CarState.CustomStockLong.new_message()
+    customStockLong.cruiseButton = 0 if cruise_button is None else cruise_button
+    customStockLong.finalSpeedKph = final_speed_kph
+    customStockLong.targetSpeed = target_speed
+    customStockLong.vSetDis = v_set_dis
+    customStockLong.speedDiff = speed_diff
+    customStockLong.buttonType = button_type
+    return customStockLong
 
   @staticmethod
   def parse_gear_shifter(gear: Optional[str]) -> car.CarState.GearShifter:

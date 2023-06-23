@@ -19,7 +19,7 @@ CAPNP_DECLARE_SCHEMA(baa8c5d505f727de);
 enum class EventName_baa8c5d505f727de: uint16_t {
   CAN_ERROR,
   STEER_UNAVAILABLE,
-  BRAKE_UNAVAILABLE,
+  BRAKE_UNAVAILABLE_D_E_P_R_E_C_A_T_E_D,
   GAS_UNAVAILABLE_D_E_P_R_E_C_A_T_E_D,
   WRONG_GEAR,
   DOOR_OPEN,
@@ -372,7 +372,7 @@ struct CarState {
   struct ButtonEvent;
 
   struct _capnpPrivate {
-    CAPNP_DECLARE_STRUCT_HEADER(9da4fa09e052903c, 8, 7)
+    CAPNP_DECLARE_STRUCT_HEADER(9da4fa09e052903c, 9, 7)
     #if !CAPNP_LITE
     static constexpr ::capnp::_::RawBrandedSchema const* brand() { return &schema->defaultBrand; }
     #endif  // !CAPNP_LITE
@@ -963,6 +963,10 @@ public:
 
   inline bool getRegenBraking() const;
 
+  inline float getEngineRpm() const;
+
+  inline bool getCarFaultedNonCritical() const;
+
   inline bool getMadsEnabled() const;
 
   inline bool getLeftBlinkerOn() const;
@@ -1175,6 +1179,12 @@ public:
 
   inline bool getRegenBraking();
   inline void setRegenBraking(bool value);
+
+  inline float getEngineRpm();
+  inline void setEngineRpm(float value);
+
+  inline bool getCarFaultedNonCritical();
+  inline void setCarFaultedNonCritical(bool value);
 
   inline bool getMadsEnabled();
   inline void setMadsEnabled(bool value);
@@ -2539,6 +2549,8 @@ public:
 
   inline bool getCustomStockLongAvailable() const;
 
+  inline  ::uint32_t getSpFlags() const;
+
 private:
   ::capnp::_::StructReader _reader;
   template <typename, ::capnp::Kind>
@@ -2837,6 +2849,9 @@ public:
 
   inline bool getCustomStockLongAvailable();
   inline void setCustomStockLongAvailable(bool value);
+
+  inline  ::uint32_t getSpFlags();
+  inline void setSpFlags( ::uint32_t value);
 
 private:
   ::capnp::_::StructBuilder _builder;
@@ -4940,130 +4955,158 @@ inline void CarState::Builder::setRegenBraking(bool value) {
       ::capnp::bounded<361>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getMadsEnabled() const {
+inline float CarState::Reader::getEngineRpm() const {
+  return _reader.getDataField<float>(
+      ::capnp::bounded<15>() * ::capnp::ELEMENTS);
+}
+
+inline float CarState::Builder::getEngineRpm() {
+  return _builder.getDataField<float>(
+      ::capnp::bounded<15>() * ::capnp::ELEMENTS);
+}
+inline void CarState::Builder::setEngineRpm(float value) {
+  _builder.setDataField<float>(
+      ::capnp::bounded<15>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool CarState::Reader::getCarFaultedNonCritical() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<362>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getMadsEnabled() {
+inline bool CarState::Builder::getCarFaultedNonCritical() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<362>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setMadsEnabled(bool value) {
+inline void CarState::Builder::setCarFaultedNonCritical(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<362>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getLeftBlinkerOn() const {
+inline bool CarState::Reader::getMadsEnabled() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<363>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getLeftBlinkerOn() {
+inline bool CarState::Builder::getMadsEnabled() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<363>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setLeftBlinkerOn(bool value) {
+inline void CarState::Builder::setMadsEnabled(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<363>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getRightBlinkerOn() const {
+inline bool CarState::Reader::getLeftBlinkerOn() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<364>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getRightBlinkerOn() {
+inline bool CarState::Builder::getLeftBlinkerOn() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<364>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setRightBlinkerOn(bool value) {
+inline void CarState::Builder::setLeftBlinkerOn(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<364>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getDisengageByBrake() const {
+inline bool CarState::Reader::getRightBlinkerOn() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<365>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getDisengageByBrake() {
+inline bool CarState::Builder::getRightBlinkerOn() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<365>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setDisengageByBrake(bool value) {
+inline void CarState::Builder::setRightBlinkerOn(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<365>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getBelowLaneChangeSpeed() const {
+inline bool CarState::Reader::getDisengageByBrake() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<366>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getBelowLaneChangeSpeed() {
+inline bool CarState::Builder::getDisengageByBrake() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<366>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setBelowLaneChangeSpeed(bool value) {
+inline void CarState::Builder::setDisengageByBrake(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<366>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getAccEnabled() const {
+inline bool CarState::Reader::getBelowLaneChangeSpeed() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<367>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getAccEnabled() {
+inline bool CarState::Builder::getBelowLaneChangeSpeed() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<367>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setAccEnabled(bool value) {
+inline void CarState::Builder::setBelowLaneChangeSpeed(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<367>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool CarState::Reader::getLatActive() const {
+inline bool CarState::Reader::getAccEnabled() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<368>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getLatActive() {
+inline bool CarState::Builder::getAccEnabled() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<368>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setLatActive(bool value) {
+inline void CarState::Builder::setAccEnabled(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<368>() * ::capnp::ELEMENTS, value);
 }
 
-inline  ::int32_t CarState::Reader::getGapAdjustCruiseTr() const {
-  return _reader.getDataField< ::int32_t>(
-      ::capnp::bounded<15>() * ::capnp::ELEMENTS);
-}
-
-inline  ::int32_t CarState::Builder::getGapAdjustCruiseTr() {
-  return _builder.getDataField< ::int32_t>(
-      ::capnp::bounded<15>() * ::capnp::ELEMENTS);
-}
-inline void CarState::Builder::setGapAdjustCruiseTr( ::int32_t value) {
-  _builder.setDataField< ::int32_t>(
-      ::capnp::bounded<15>() * ::capnp::ELEMENTS, value);
-}
-
-inline bool CarState::Reader::getEndToEndLong() const {
+inline bool CarState::Reader::getLatActive() const {
   return _reader.getDataField<bool>(
       ::capnp::bounded<369>() * ::capnp::ELEMENTS);
 }
 
-inline bool CarState::Builder::getEndToEndLong() {
+inline bool CarState::Builder::getLatActive() {
   return _builder.getDataField<bool>(
       ::capnp::bounded<369>() * ::capnp::ELEMENTS);
 }
-inline void CarState::Builder::setEndToEndLong(bool value) {
+inline void CarState::Builder::setLatActive(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<369>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::int32_t CarState::Reader::getGapAdjustCruiseTr() const {
+  return _reader.getDataField< ::int32_t>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS);
+}
+
+inline  ::int32_t CarState::Builder::getGapAdjustCruiseTr() {
+  return _builder.getDataField< ::int32_t>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS);
+}
+inline void CarState::Builder::setGapAdjustCruiseTr( ::int32_t value) {
+  _builder.setDataField< ::int32_t>(
+      ::capnp::bounded<16>() * ::capnp::ELEMENTS, value);
+}
+
+inline bool CarState::Reader::getEndToEndLong() const {
+  return _reader.getDataField<bool>(
+      ::capnp::bounded<370>() * ::capnp::ELEMENTS);
+}
+
+inline bool CarState::Builder::getEndToEndLong() {
+  return _builder.getDataField<bool>(
+      ::capnp::bounded<370>() * ::capnp::ELEMENTS);
+}
+inline void CarState::Builder::setEndToEndLong(bool value) {
+  _builder.setDataField<bool>(
+      ::capnp::bounded<370>() * ::capnp::ELEMENTS, value);
 }
 
 inline bool CarState::Reader::hasCustomStockLong() const {
@@ -7631,6 +7674,20 @@ inline bool CarParams::Builder::getCustomStockLongAvailable() {
 inline void CarParams::Builder::setCustomStockLongAvailable(bool value) {
   _builder.setDataField<bool>(
       ::capnp::bounded<997>() * ::capnp::ELEMENTS, value);
+}
+
+inline  ::uint32_t CarParams::Reader::getSpFlags() const {
+  return _reader.getDataField< ::uint32_t>(
+      ::capnp::bounded<33>() * ::capnp::ELEMENTS);
+}
+
+inline  ::uint32_t CarParams::Builder::getSpFlags() {
+  return _builder.getDataField< ::uint32_t>(
+      ::capnp::bounded<33>() * ::capnp::ELEMENTS);
+}
+inline void CarParams::Builder::setSpFlags( ::uint32_t value) {
+  _builder.setDataField< ::uint32_t>(
+      ::capnp::bounded<33>() * ::capnp::ELEMENTS, value);
 }
 
 inline  ::cereal::CarParams::SafetyModel CarParams::SafetyConfig::Reader::getSafetyModel() const {

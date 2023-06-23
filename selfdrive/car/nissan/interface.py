@@ -44,14 +44,14 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_adas, self.cp_cam)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
     #be = car.CarState.ButtonEvent.new_message()
     #be.type = car.CarState.ButtonEvent.Type.accelCruise
     #buttonEvents.append(be)
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
     if ret.cruiseState.available:
       if self.enable_mads:

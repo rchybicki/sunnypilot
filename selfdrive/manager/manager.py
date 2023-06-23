@@ -7,6 +7,7 @@ import sys
 import traceback
 from typing import List, Tuple, Union
 
+from cereal import log
 import cereal.messaging as messaging
 import selfdrive.sentry as sentry
 from common.basedir import BASEDIR
@@ -17,7 +18,6 @@ from system.hardware import HARDWARE, PC
 from selfdrive.manager.helpers import unblock_stdout, write_onroad_params
 from selfdrive.manager.process import ensure_running
 from selfdrive.manager.process_config import managed_processes
-from selfdrive.sentry import CRASHES_DIR
 from selfdrive.athena.registration import register, UNREGISTERED_DONGLE_ID
 from system.swaglog import cloudlog, add_file_handler
 from system.version import is_dirty, get_commit, get_version, get_origin, get_short_branch, \
@@ -37,6 +37,8 @@ def manager_init() -> None:
 
   params = Params()
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
+  params.clear_all(ParamKeyType.CLEAR_ON_ONROAD_TRANSITION)
+  params.clear_all(ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION)
 
   default_params: List[Tuple[str, Union[str, bytes]]] = [
     ("CompletedTrainingVersion", "0"),
@@ -45,9 +47,11 @@ def manager_init() -> None:
     ("HasAcceptedTerms", "0"),
     ("LanguageSetting", "main_en"),
     ("OpenpilotEnabledToggle", "1"),
+    ("LongitudinalPersonality", str(log.LongitudinalPersonality.standard)),
 
     ("AccMadsCombo", "1"),
     ("AutoLaneChangeTimer", "0"),
+    ("AutoLaneChangeBsmDelay", "1"),
     ("BelowSpeedPause", "0"),
     ("BrakeLights", "0"),
     ("BrightnessControl", "0"),
@@ -58,12 +62,13 @@ def manager_init() -> None:
     ("CarModel", ""),
     ("CarModelText", ""),
     ("ChevronInfo", "1"),
+    ("MadsCruiseMain", "1"),
     ("CustomBootScreen", "0"),
     ("CustomOffsets", "0"),
     ("DevUI", "1"),
     ("DevUIInfo", "1"),
     ("DisableOnroadUploads", "0"),
-    ("DisengageLateralOnBrake", "1"),
+    ("DisengageLateralOnBrake", "0"),
     ("DynamicLaneProfile", "1"),
     ("DynamicLaneProfileToggle", "0"),
     ("EnableMads", "1"),
@@ -72,16 +77,18 @@ def manager_init() -> None:
     ("GapAdjustCruiseMax", "0"),
     ("GapAdjustCruiseMin", "0"),
     ("GapAdjustCruiseMode", "0"),
-    ("GapAdjustCruiseTr", "4"),
+    ("GapAdjustCruiseTr", "3"),
     ("GpxDeleteAfterUpload", "1"),
     ("GpxDeleteIfUploaded", "1"),
     ("HandsOnWheelMonitoring", "0"),
     ("HideVEgoUi", "0"),
     ("LastSpeedLimitSignTap", "0"),
+    ("LkasToggle", "0"),
     ("MadsIconToggle", "1"),
     ("MaxTimeOffroad", "9"),
-    ("OnroadScreenOff", "0"),
+    ("OnroadScreenOff", "-2"),
     ("OnroadScreenOffBrightness", "50"),
+    ("OnroadScreenOffEvent", "1"),
     ("PathOffset", "0"),
     ("ReverseAccChange", "0"),
     ("ShowDebugUI", "1"),
@@ -163,8 +170,8 @@ def manager_init() -> None:
                        dirty=is_dirty(),
                        device=HARDWARE.get_device_type())
 
-  if os.path.isfile(f'{CRASHES_DIR}/error.txt'):
-    os.remove(f'{CRASHES_DIR}/error.txt')
+  if os.path.isfile(os.path.join(sentry.CRASHES_DIR, 'error.txt')):
+    os.remove(os.path.join(sentry.CRASHES_DIR, 'error.txt'))
 
 
 def manager_prepare() -> None:
@@ -281,6 +288,9 @@ def main() -> None:
   elif params.get_bool("DoShutdown"):
     cloudlog.warning("shutdown")
     HARDWARE.shutdown()
+
+  if params.get_bool("HotspotOnBoot"):
+    os.system('nmcli con up Hotspot')
 
 
 if __name__ == "__main__":

@@ -47,7 +47,7 @@ procs = [
   NativeProcess("navmodeld", "selfdrive/modeld", ["./navmodeld"], enabled=False),
   NativeProcess("sensord", "system/sensord", ["./sensord"], enabled=not PC),
   NativeProcess("ui", "selfdrive/ui", ["./ui"], offroad=True, watchdog_max_dt=(5 if not PC else None)),
-  NativeProcess("soundd", "selfdrive/ui/soundd", ["./soundd"], offroad=True),
+  NativeProcess("soundd", "selfdrive/ui/soundd", ["./soundd"]),
   NativeProcess("locationd", "selfdrive/locationd", ["./locationd"]),
   NativeProcess("boardd", "selfdrive/boardd", ["./boardd"], enabled=False),
   PythonProcess("calibrationd", "selfdrive.locationd.calibrationd"),
@@ -74,7 +74,7 @@ procs = [
   PythonProcess("gpxd_uploader", "selfdrive.gpxd.gpx_uploader", offroad=True),
   PythonProcess("mapd", "selfdrive.mapd.mapd"),
   PythonProcess("otisserv", "selfdrive.navd.otisserv", offroad=True),
-  PythonProcess("dashcam_viewer", "system.dashcamviewer.dashcam_viewer", onroad=False, offroad=True),
+  PythonProcess("fleet_manager", "system.fleetmanager.fleet_manager", onroad=False, offroad=True),
 
   # debug procs
   NativeProcess("bridge", "cereal/messaging", ["./bridge"], onroad=False, callback=notcar),

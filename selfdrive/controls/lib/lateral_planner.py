@@ -26,9 +26,9 @@ STEERING_RATE_COST = 700.0
 
 
 class LateralPlanner:
-  def __init__(self, CP, use_lanelines=True, wide_camera=False):
+  def __init__(self, CP, use_lanelines=True):
     self.use_lanelines = use_lanelines
-    self.LP = LanePlanner(wide_camera)
+    self.LP = LanePlanner()
     self.DH = DesireHelper()
 
     # Vehicle model parameters used to calculate lateral movement of car
@@ -140,7 +140,7 @@ class LateralPlanner:
         self.last_cloudlog_t = t
         cloudlog.warning("Lateral mpc - nan: True")
 
-    if self.lat_mpc.cost > 20000. or mpc_nans:
+    if self.lat_mpc.cost > 1e6 or mpc_nans:
       self.solution_invalid_cnt += 1
     else:
       self.solution_invalid_cnt = 0

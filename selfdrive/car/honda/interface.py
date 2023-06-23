@@ -44,6 +44,7 @@ class CarInterface(CarInterfaceBase):
       ret.experimentalLongitudinalAvailable = True
       ret.openpilotLongitudinalControl = experimental_long
       ret.pcmCruise = not ret.openpilotLongitudinalControl
+      ret.customStockLongAvailable = True
     else:
       ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.hondaNidec)]
       ret.enableGasInterceptor = 0x201 in fingerprint[0]
@@ -313,8 +314,8 @@ class CarInterface(CarInterfaceBase):
     # min speed to enable ACC. if car can do stop and go, then set enabling speed
     # to a negative value, so it won't matter. Otherwise, add 0.5 mph margin to not
     # conflict with PCM acc
-    stop_and_go = candidate in (HONDA_BOSCH | {CAR.CIVIC, CAR.CLARITY}) or ret.enableGasInterceptor
-    ret.minEnableSpeed = -1. if stop_and_go else 25.5 * CV.MPH_TO_MS
+    ret.autoResumeSng = candidate in (HONDA_BOSCH | {CAR.CIVIC, CAR.CLARITY}) or ret.enableGasInterceptor
+    ret.minEnableSpeed = -1. if ret.autoResumeSng else 25.5 * CV.MPH_TO_MS
 
     # TODO: start from empirically derived lateral slip stiffness for the civic and scale by
     # mass and CG position, so all cars will have approximately similar dyn behaviors
@@ -334,7 +335,7 @@ class CarInterface(CarInterfaceBase):
   # returns a car.CarState
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam, self.cp_body)
-    self.sp_update_params(self.CS)
+    self.CS = self.sp_update_params(self.CS)
 
     buttonEvents = []
 
@@ -344,9 +345,9 @@ class CarInterface(CarInterfaceBase):
     if self.CS.cruise_setting != self.CS.prev_cruise_setting:
       buttonEvents.append(create_button_event(self.CS.cruise_setting, self.CS.prev_cruise_setting, {1: ButtonType.altButton1}))
 
-    self.CS.mads_enabled = False if not self.CS.control_initialized else ret.cruiseState.available
+    self.CS.mads_enabled = self.get_sp_cruise_main_state(ret, self.CS)
 
-    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret.cruiseState.available, self.CS.accEnabled,
+    self.CS.accEnabled, buttonEvents = self.get_sp_v_cruise_non_pcm_state(ret, self.CS.accEnabled,
                                                                           buttonEvents, c.vCruise)
 
     if ret.cruiseState.available:
@@ -360,14 +361,14 @@ class CarInterface(CarInterfaceBase):
     else:
       self.CS.madsEnabled = False
 
-    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0):
+    if not self.CP.pcmCruise or (self.CP.pcmCruise and self.CP.minEnableSpeed > 0) or not self.CP.pcmCruiseSpeed:
       if any(b.type == ButtonType.cancel for b in buttonEvents):
         self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
     if self.get_sp_pedal_disengage(ret):
       self.CS.madsEnabled, self.CS.accEnabled = self.get_sp_cancel_cruise_state(self.CS.madsEnabled)
       ret.cruiseState.enabled = False if self.CP.pcmCruise else self.CS.accEnabled
 
-    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0:
+    if self.CP.pcmCruise and self.CP.minEnableSpeed > 0 and self.CP.pcmCruiseSpeed:
       if ret.gasPressed and not ret.cruiseState.enabled:
         self.CS.accEnabled = False
       self.CS.accEnabled = ret.cruiseState.enabled or self.CS.accEnabled
@@ -378,14 +379,10 @@ class CarInterface(CarInterfaceBase):
 
     # events
     events = self.create_common_events(ret, c, extra_gears=[GearShifter.sport, GearShifter.low], pcm_enable=False)
-
-    events, ret = self.create_sp_events(self.CS, ret, events)
-
-    if self.CS.brake_error:
-      events.add(EventName.brakeUnavailable)
-
     if self.CP.pcmCruise and ret.vEgo < self.CP.minEnableSpeed and not self.CS.madsEnabled:
       events.add(EventName.belowEngageSpeed)
+
+    events, ret = self.create_sp_events(self.CS, ret, events)
 
     #if self.CP.pcmCruise:
     #  # we engage when pcm is active (rising edge)
@@ -401,6 +398,10 @@ class CarInterface(CarInterfaceBase):
     #      events.add(EventName.cruiseDisabled)
     if self.CS.CP.minEnableSpeed > 0 and ret.vEgo < 0.001:
       events.add(EventName.manualRestart)
+
+    ret.customStockLong = self.CS.update_custom_stock_long(self.CC.cruise_button, self.CC.final_speed_kph,
+                                                           self.CC.target_speed, self.CC.v_set_dis,
+                                                           self.CC.speed_diff, self.CC.button_type)
 
     ret.events = events.to_msg()
 

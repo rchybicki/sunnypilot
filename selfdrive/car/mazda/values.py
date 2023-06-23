@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 
 from cereal import car
 from selfdrive.car import dbc_dict
-from selfdrive.car.docs_definitions import CarInfo, Harness, HarnessKit
+from selfdrive.car.docs_definitions import CarHarness, CarInfo, CarParts
 from selfdrive.car.fw_query_definitions import FwQueryConfig, Request, StdQueries
 
 Ecu = car.CarParams.Ecu
@@ -34,10 +34,18 @@ class CAR:
   CX5_2022 = "MAZDA CX-5 2022"
 
 
+BUTTON_STATES = {
+  "accelCruise": False,
+  "decelCruise": False,
+  "cancel": False,
+  "resumeCruise": False,
+}
+
+
 @dataclass
 class MazdaCarInfo(CarInfo):
   package: str = "All"
-  harness_kit: HarnessKit = HarnessKit(Harness.mazda)
+  car_parts: CarParts = CarParts.common([CarHarness.mazda])
 
 
 CAR_INFO: Dict[str, Union[MazdaCarInfo, List[MazdaCarInfo]]] = {

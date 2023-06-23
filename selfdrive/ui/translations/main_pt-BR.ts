@@ -354,6 +354,46 @@ Please use caution when using this feature. Only use the blinker when traffic an
         <translation>Revisar</translation>
     </message>
     <message>
+        <source>TOGGLE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable PIN requirement for Fleet Manager access.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to turn off PIN requirement?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Troubleshoot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display error from the tmux session when an error has occurred from a system process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset Mapbox Access Token</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to reset the Mapbox access token?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset sunnypilot Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to reset all sunnypilot settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Review the rules, features, and limitations of sunnypilot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -400,11 +440,11 @@ Please use caution when using this feature. Only use the blinker when traffic an
     <name>ExperimentalModeButton</name>
     <message>
         <source>EXPERIMENTAL MODE ON</source>
-        <translation>MODO EXPERIMENTAL ATIVADO</translation>
+        <translation>MODO EXPERIMENTAL ON</translation>
     </message>
     <message>
         <source>CHILL MODE ON</source>
-        <translation>MODO CHILL ATIVADO</translation>
+        <translation>MODO CHILL ON</translation>
     </message>
 </context>
 <context>
@@ -741,14 +781,6 @@ trabalho definido</translation>
         <source>comma prime</source>
         <translation>comma prime</translation>
     </message>
-    <message>
-        <source>CONNECT.COMMA.AI</source>
-        <translation>CONNECT.COMMA.AI</translation>
-    </message>
-    <message>
-        <source>COMMA POINTS</source>
-        <translation>PONTOS COMMA</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -874,11 +906,27 @@ Isso pode levar até um minuto.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Toggle M.A.D.S. with Cruise Main</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allows M.A.D.S. engagement/disengagement with &quot;Cruise Main&quot; cruise control button from the steering wheel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Pause Lateral Below Speed w/ Blinker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable this toggle to pause lateral actuation with blinker when traveling below 30 MPH or 50 KM/H.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block Lane Change: Road Edge Detection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this toggle to block lane change when road edge is detected on the stalk actuated side.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -903,6 +951,14 @@ Isso pode levar até um minuto.</translation>
     </message>
     <message>
         <source>Add custom offsets to Camera and Path in sunnypilot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Lane Change: Delay with Blind Spot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle to enable a delay timer for seamless lane changes when blind spot monitoring (BSM) detects a obstructing vehicle, ensuring safe maneuvering.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -931,10 +987,6 @@ Isso pode levar até um minuto.</translation>
     </message>
     <message>
         <source>Enables live tune for Torque lateral control.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must restart your car or your device to apply these changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1005,13 +1057,13 @@ Isso pode levar até um minuto.</translation>
         <source>OSM: Use Offline Database</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You must restart your car or your device to apply these changes.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SPGeneralPanel</name>
-    <message>
-        <source>VIEW</source>
-        <translation type="unfinished">VER</translation>
-    </message>
     <message>
         <source>Quiet Drive 🤫</source>
         <translation type="unfinished"></translation>
@@ -1041,11 +1093,27 @@ Isso pode levar até um minuto.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom Boot Screen</source>
+        <source>Retain hotspot/tethering state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display sunnypilot welcome screen while booting the device.</source>
+        <source>Enabling this toggle will retain the hotspot/tethering toggle state across reboots.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Driving Screen Off: Non-Critical Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When &lt;b&gt;Driving Screen Off Timer&lt;/b&gt; is not set to &lt;b&gt;&quot;Always On&quot;&lt;/b&gt;:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled: Wake the brightness of the screen to display all events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled: Wake the brightness of the screen to display critical events.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1054,14 +1122,6 @@ Isso pode levar até um minuto.</translation>
     </message>
     <message>
         <source>Disable uploads completely when onroad. Necessary to avoid high data usage when connected to Wi-Fi hotspot. Turn on this feature if you are looking to utilize map-based features, such as Speed Limit Control (SLC) and Map-based Turn Speed Control (MTSC).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Troubleshoot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display error from the tmux session when an error has occurred from a system process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1074,13 +1134,25 @@ Isso pode levar até um minuto.</translation>
     </message>
 </context>
 <context>
-    <name>SPVehiclesPanel</name>
+    <name>SPVehiclesTogglesPanel</name>
+    <message>
+        <source>Hyundai/Kia/Genesis</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Toyota/Lexus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Volkswagen MQB/PQ</source>
+        <source>Allow M.A.D.S. toggling w/ LKAS Button (Beta)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allows M.A.D.S. engagement/disengagement with &quot;LKAS&quot; button from the steering wheel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note: Enabling this toggle may have unexpected behavior with steering control. It is the driver&apos;s responsibility to observe their environment and make decisions accordingly.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1155,12 +1227,6 @@ Isso pode levar até um minuto.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&quot;Enable Mapbox Navigation&quot;
-You must restart your car or your device to apply these changes.
-Reboot now?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Speedometer: Display True Speed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1178,6 +1244,20 @@ Reboot now?</source>
     </message>
     <message>
         <source>Enable this will display an icon that appears when the End-to-end model decides to start or stop.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display CPU Temperature on Sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable this will display the CPU core with the highest temperature on the sidebar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;Enable Mapbox Navigation&quot;
+You must restart your car or your device to apply these changes.
+Reboot now?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1456,8 +1536,28 @@ Reboot now?</source>
         <translation>Desinstalar</translation>
     </message>
     <message>
-        <source>Reboot</source>
-        <translation type="unfinished">Reiniciar</translation>
+        <source>failed to check for update</source>
+        <translation>falha ao verificar por atualizações</translation>
+    </message>
+    <message>
+        <source>up to date, last checked %1</source>
+        <translation>atualizado, última verificação %1</translation>
+    </message>
+    <message>
+        <source>DOWNLOAD</source>
+        <translation>BAIXAR</translation>
+    </message>
+    <message>
+        <source>update available</source>
+        <translation>atualização disponível</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>nunca</translation>
+    </message>
+    <message>
+        <source>Current Driving Model</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Database updates can be downloaded while the car is off.</source>
@@ -1471,6 +1571,10 @@ Reboot now?</source>
         <source>Are you sure you want to reboot and perform a database update?
 Estimated time: 30-90 minutes</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reboot</source>
+        <translation type="unfinished">Reiniciar</translation>
     </message>
     <message>
         <source>OpenStreetMap Database</source>
@@ -1640,7 +1744,7 @@ Estimated time: 30-90 minutes</source>
     </message>
     <message>
         <source>When enabled, pressing the accelerator pedal will disengage openpilot.</source>
-        <translation type="vanished">Quando ativado, pressionar o pedal do acelerador desacionará o openpilot.</translation>
+        <translation>Quando ativado, pressionar o pedal do acelerador desacionará o openpilot.</translation>
     </message>
     <message>
         <source>Show ETA in 24h Format</source>
@@ -1691,10 +1795,6 @@ Estimated time: 30-90 minutes</source>
         <translation>O controle longitudinal openpilot pode vir em uma atualização futura.</translation>
     </message>
     <message>
-        <source>An experimental version of openpilot longitudinal control can be tested, along with Experimental mode, on non-release branches.</source>
-        <translation>Uma versão experimental do controle longitudinal openpilot pode ser testada, juntamente com o modo Experimental, em branches de desenvolvimento.</translation>
-    </message>
-    <message>
         <source>Enable experimental longitudinal control to allow Experimental mode.</source>
         <translation>Ative o controle longitudinal experimental para permitir o modo Experimental.</translation>
     </message>
@@ -1711,6 +1811,30 @@ Estimated time: 30-90 minutes</source>
         <translation>Neste carro, o openpilot tem como padrão o ACC embutido do carro em vez do controle longitudinal do openpilot. Habilite isso para alternar para o controle longitudinal openpilot. Recomenda-se ativar o modo Experimental ao ativar o alfa de controle longitudinal openpilot.</translation>
     </message>
     <message>
+        <source>Aggressive</source>
+        <translation>Disputa</translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation>Neutro</translation>
+    </message>
+    <message>
+        <source>Relaxed</source>
+        <translation>Calmo</translation>
+    </message>
+    <message>
+        <source>Driving Personality</source>
+        <translation>Temperamento de Direção</translation>
+    </message>
+    <message>
+        <source>Standard is recommended. In aggressive mode, openpilot will follow lead cars closer and be more aggressive with the gas and brake. In relaxed mode openpilot will stay further away from lead cars.</source>
+        <translation>Neutro é o recomendado. No modo disputa o openpilot seguirá o carro da frente mais de perto e será mais agressivo com a aceleração e frenagem. No modo calmo o openpilot se manterá mais longe do carro da frente.</translation>
+    </message>
+    <message>
+        <source>An alpha version of openpilot longitudinal control can be tested, along with Experimental mode, on non-release branches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Enable sunnypilot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1719,7 +1843,12 @@ Estimated time: 30-90 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>When enabled, pressing the accelerator pedal will disengage sunnypilot.</source>
+        <source>Custom Stock Longitudinal Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, sunnypilot will attempt to control stock longitudinal control with ACC button presses.
+This feature must be used along with SLC, and/or V-TSC, and/or M-TSC.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1781,22 +1910,27 @@ Estimated time: 30-90 minutes</source>
     </message>
 </context>
 <context>
-    <name>VwAccType</name>
+    <name>WiFiPromptWidget</name>
     <message>
-        <source>Short Press +1/-1 Type</source>
-        <translation type="unfinished"></translation>
+        <source>Setup Wi-Fi</source>
+        <translation>Configurar
+Wi-Fi</translation>
     </message>
     <message>
-        <source>Define the type of ACC control your car has with short press to +1 or -1.</source>
-        <translation type="unfinished"></translation>
+        <source>Connect to Wi-Fi to upload driving data and help improve openpilot</source>
+        <translation>Conecte se ao Wi-Fi para upload de dados de condução e ajudar a melhorar o openpilot</translation>
     </message>
     <message>
-        <source>+/-</source>
-        <translation type="unfinished"></translation>
+        <source>Open Settings</source>
+        <translation>Abrir Configurações</translation>
     </message>
     <message>
-        <source>RES/SET</source>
-        <translation type="unfinished"></translation>
+        <source>Uploading training data</source>
+        <translation>Subindo dados para treinamento</translation>
+    </message>
+    <message>
+        <source>Your data is used to train driving models and help improve openpilot</source>
+        <translation>Seus dados são utilizados para treinar modelos de direção e ajudar a melhorar o openpilot</translation>
     </message>
 </context>
 <context>

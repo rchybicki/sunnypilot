@@ -1,6 +1,99 @@
-sunnypilot - 0.9.2.x (2023-02-22)
+sunnypilot - 0.9.3.1 (2023-XX-XX)
 ========================
+* UPDATED: Synced with commaai's 0.9.3 release
+* NEW❗: Hot Coffee driving model
+* NEW❗: HKG CAN: Smoother Stopping Performance (Beta) toggle
+  * Smoother stopping behind a stopped car or desired stopping event.
+  * This is only applicable to HKG CAN platforms using openpilot longitudinal control
+
+sunnypilot - 0.9.2.3 (2023-06-18)
+========================
+* NEW❗: Auto Lane Change: Delay with Blind Spot
+  * Toggle to enable a delay timer for seamless lane changes when blind spot monitoring (BSM) detects an obstructing vehicle, ensuring safe maneuvering
+* NEW❗: Driving Screen Off: Wake with Non-Critical Events
+  * When Driving Screen Off Timer is not set to "Always On":
+    * Enabled: Wake the brightness of the screen to display all events
+    * Disabled: Wake the brightness of the screen to display critical events
+  * Currently, all non-nudge modes are default to continue lane change after 1 seconds of blind spot detection
+* NEW❗: Fleet Manager PIN Requirement toggle
+  * User can now enable or disable PIN requirement on the comma device before accessing Fleet Manager
+* NEW❗: Reset all sunnypilot settings toggle
+* NEW❗: Turn signals display on screen when blinker is used
+  * Green: Blinker is on
+  * Red: Blinker is on, car detected in the adjacent blind spot or road edge detected
+* IMPROVED: mapd: better exceptions handling when loading dependencies
+* UPDATED: Green Traffic Light Chime no longer displays an orange border when executed
+* FIXED: mapd: Road name flashing caused by desync with last GPS timestamp
+* FIXED: Ram HD (2500/3500): Ignore paramsd sanity check
+  * Live parameters have trouble with self-tuning on this platform with upstream openpilot 0.9.2
+* Hyundai: Longitudinal support for CAN-based Camera SCC cars thanks to Zack1010OP's Patreon sponsor!
+
+sunnypilot - 0.9.2.2 (2023-06-13)
+========================
+* NEW❗: Toyota: Allow M.A.D.S. toggling with LKAS Button (Beta)
+* IMPROVED: Ram: cruise button handling
+
+sunnypilot - 0.9.2.1 (2023-06-10)
+========================
+* UPDATED: Synced with commaai's 0.9.2 release
+* UPDATED: feature revamp with better stability
+* UPDATED:
+  * M.A.D.S.
+    * Path color becomes LIGHT ORANGE during Driver Steering Override
+  * Gap Adjust Cruise (now known as Driving Personality in upstream openpilot 0.9.3):
+    * Updated profiles and jerk changes
+    * Experimental Mode support
+    * Three settings: Stock, Aggressive, and Maniac
+    * Stock is recommended and the default
+    * In Aggressive/Maniac mode, lead follow distance is shorter and quicker gas/brake response
+  * Dynamic Lane Profile
+    * Display blue borders on both sides of the driving path when Laneline mode is being used in the planner
+    * Auto Mode optimization
+      * Permanent: Laneless during Auto Lane Change execution
+  * Mapd
+    * OpenStreetMap Database: new regions added
+  * Developer UI (Dev UI)
+    * REMOVED: 2-column design
+    * NEW❗: 1-column + 1-row design
+  * Custom Stock Longitudinal Control
+    * NEW❗: Chrysler/Jeep/Ram support
+    * NEW❗: Mazda support
+    * NEW❗: Volkswagen PQ support
+    * DISABLED: Hyundai/Kia/Genesis CAN-FD platforms
+* NEW❗: Switch between Chill (openpilot ACC) and Experimental (E2E longitudinal) with DISTANCE button on the steering wheel
+  * To switch between Chill and Experimental Mode: press and hold the DISTANCE button on the steering wheel for over 0.5 second
+  * All openpilot longitudinal capable cars support
+* NEW❗: Nicki Minaj driving model
+* NEW❗: Nissan and Mazda upstream models support
+* NEW❗: Pre-Global Subaru upstream models support
+* NEW❗: Display End-to-end Longitudinal Status (Beta)
+  * Display an icon that appears when the End-to-end model decides to start or stop
+* NEW❗: Green Traffic Light Chime (Beta)
+  * A chime will play when the traffic light you are waiting for turns green, and you have no vehicle in front of you.
+* NEW❗: Lead Vehicle Departure Alert
+  * Notify when the leading vehicle drives away
+* NEW❗: Speedometer: Display True Speed
+  * Display the true vehicle current speed from wheel speed sensors.
+* NEW❗: Speedometer: Hide from Onroad Screen
+* NEW❗: Auto-Hide UI Buttons
+  * Hide UI buttons on driving screen after a 30-second timeout. Tap on the screen at anytime to reveal the UI buttons
+  * Applicable to Dynamic Lane Profile (DLP) and Gap Adjust Cruise (GAC)
+* NEW❗: Display DM Camera in Reverse Gear
+  * Show Driver Monitoring camera while the car is in reverse gear
+* NEW❗: Block Lane Change: Road Edge Detection (Beta)
+  * Block lane change when road edge is detected on the stalk actuated side
+* NEW❗: Display CPU Temperature on Sidebar
+  * Display the CPU core with the highest temperature on the sidebar
+* NEW❗: Display current driving model in Software settings
+* NEW❗: HKG: smartMDPS automatic detection (installed with applicable firmware)
+* FIXED: Unintended siren/alarm from the comma device if the vehicle is turned off too quickly in PARK gear
+* FIXED: mapd: Exception handling for loading dependencies
+* Fleet Manager via Browser support thanks to actuallylemoncurd, AlexandreSato, ntegan1, and royjr!
+  * Access your dashcam footage, screen recordings, and error logs when the car is turned off
+  * Connect to the device via Wi-Fi, mobile hotspot, or tethering on the comma device, then navigate to http://ipAddress:5050 to access.
 * Honda Clarity 2018-22 support thanks to mcallbosco, vanillagorillaa and wirelessnet2!
+* Ram: Steer to 0/7 MPH support thanks to vincentw56!
+* Retain hotspot/tethering state across reboots thanks to rogerioaguas!
 
 sunnypilot - Version Latest (2023-02-22)
 ========================
