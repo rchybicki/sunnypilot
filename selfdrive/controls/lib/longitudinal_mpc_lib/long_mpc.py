@@ -76,15 +76,16 @@ def get_jerk_factor(desired_tf=1.25):
 def get_T_FOLLOW(carstate, exp_mode):
   gac_tr = carstate.gapAdjustCruiseTr
   if exp_mode:
-    1.0
-  if gac_tr == 4:
-    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
+    follow = 1.0
+  elif gac_tr == 4:
+    follow = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP4)
   elif gac_tr == 2:
-    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
+    follow = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP2)
   elif gac_tr == 1:
-    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
+    follow = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP1)
   else:
-    np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+    follow = np.interp(carstate.vEgo, DIST_V_BP, DIST_V_GAP3)
+  return float(follow)
     
 def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
   distance = (v_lead**2) / (2 * COMFORT_BRAKE)
