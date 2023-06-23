@@ -295,9 +295,9 @@ class CarController:
 
         if accelerating:
           jerk_limit_v_bp = [ 0.,   1.,   7.    ]
-          jerk_limit_v_k =  [ 0.03, 0.15, 0.03 ]          
+          jerk_limit_v_k =  [ 0.01, 0.15, 0.03 ]          
           jerk_limit_a_bp = [ 0.,   0.5   ]
-          jerk_limit_a_k =  [ 0.02, 0.15  ]
+          jerk_limit_a_k =  [ 0.01, 0.15  ]
           max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
           
         lower_jerk = clip(abs(accel - self.accel_last) * 20, min_required_jerk, max_required_jerk)
