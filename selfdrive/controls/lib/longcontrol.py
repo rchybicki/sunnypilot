@@ -142,7 +142,7 @@ class LongControl:
         breakpoint_kpV = interp(CS.aEgo, breakpoint_kpV_bp, breakpoint_kpV_v)
 
 
-      kpV = [ 0.06 if error < 0 else 0.006, 0.006, breakpoint_kpV, breakpoint_kpV, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 else 0.005 ]
+      kpV = [ 0.1 if error < 0 else 0.006, 0.006, breakpoint_kpV, breakpoint_kpV, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 else 0.005 ]
       self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
 
       error = error if error < 0 or error > abs(0.15 * CS.aEgo) else 0.
