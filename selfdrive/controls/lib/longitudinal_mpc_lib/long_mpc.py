@@ -55,7 +55,7 @@ T_DIFFS = np.diff(T_IDXS, prepend=[0.])
 MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 5. # was 5.5
+STOP_DISTANCE = 6. # was 5.5
 
 # DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
 # DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
@@ -63,7 +63,7 @@ STOP_DISTANCE = 5. # was 5.5
 # DIST_V_GAP1 = [ 0.5,  0.8,  0.8,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0  ]
 
 DIST_V_GAP4 = [ 1.45, 1.45, 1.40, 1.40, 1.35, 1.3,  1.25, 1.25, 1.25, 1.25, 1.25 ]
-DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.1,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0 ]
+DIST_V_GAP3 = [ 1.25, 1.25, 1.20, 1.1,  1.1,  1.1,  1.1,  1.1,  1.1,  1.1,  1.1 ]
 DIST_V_GAP2 = DIST_V_GAP3 # [ 1.1,  1.1,  1.05, 1.05, 1.00, 0.95, 0.90, 0.8,  0.8,  0.8,  0.8 ]
 DIST_V_GAP1 = DIST_V_GAP3 # [ 1.0,  1.0,  0.95, 0.95, 0.90, 0.85, 0.80, 0.7,  0.7,  0.7,  0.7 ]
    # in kph       0    16    32    48    64    80    96   112   128   144   160
@@ -325,7 +325,7 @@ class LongitudinalMpc:
     a_ego = self.x0[2]
     if lead is not None and lead.status:
       additional_dist_rel_bp =  [ 5.,  15.]
-      exp_mode_dist_reduction = [ 4.,  0.]
+      exp_mode_dist_reduction = [ 3.5,  0.]
       exp_modified_distance = np.interp(lead.dRel, additional_dist_rel_bp, exp_mode_dist_reduction)
       a_adjusted_distance_mod_bp = [ -2,   -0.75 ]
       a_adjusted_distance_mod =    [  0.,   1.   ]
