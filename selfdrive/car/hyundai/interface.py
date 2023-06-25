@@ -351,7 +351,7 @@ class CarInterface(CarInterfaceBase):
       disable_ecu(logcan, sendcan, bus=CanBus(CP).ECAN, addr=0x7B1, com_cont_req=b'\x28\x83\x01')
 
     # for cars that have a radar that turns off when the car is off
-    if CP.carFingerprint in [CAR.SANTA_FE_HEV_2022]:
+    if CP.openpilotLongitudinalControl and CP.carFingerprint in [CAR.SANTA_FE_PHEV_2022, CAR.SANTA_FE_HEV_2022, CAR.SANTA_FE_2022]:
       enable_radar_tracks(CP, logcan, sendcan)
 
   def _update(self, c):
