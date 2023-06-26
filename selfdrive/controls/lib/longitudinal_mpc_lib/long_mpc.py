@@ -92,9 +92,10 @@ def get_stopped_equivalence_factor(v_ego, v_lead, radarstate):
   # Offset to approach slower lead vehicles smoothly
   distance_offset = 0
   # If we're going 20%+ faster than the lead vehicle apply the offset
-  if np.all(v_ego - v_lead > v_ego * .20) and np.all(v_lead > 20) :
+  if np.all(v_ego - v_lead > v_ego * .20) and np.all(v_lead > 10) :
     # Decrease following distance according to how far away the lead is
-    distance_offset = radarstate.leadOne.dRel * 2 / v_lead
+    distance_offset = (radarstate.leadOne.dRel * STOP_DISTANCE) / v_lead
+    distance_offset = np.clip(distance_offset, 0, 100)
   return distance + distance_offset
 
 def get_safe_obstacle_distance(v_ego, t_follow):
