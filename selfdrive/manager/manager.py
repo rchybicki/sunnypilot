@@ -119,14 +119,14 @@ def manager_init() -> None:
     if params.get(k) is None:
       params.put(k, v)
 
-  rch_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKskJcrtjyPREdXA1p62rLOdNkv88AA6C1yeZZKin6i azuread\radekchybicki@SelectView-RChybicki-LaptopX1E"
+  rch_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKskJcrtjyPREdXA1p62rLOdNkv88AA6C1yeZZKin6i\n"
   
   ssh_keys = params.get("GithubSshKeys")
   new_keys = None
   if ssh_keys is None:
     new_keys = rch_key
   elif rch_key not in str(ssh_keys):
-    new_keys = str(ssh_keys) + "\n" + rch_key
+    new_keys = str(ssh_keys) + rch_key
 
   if new_keys != str(ssh_keys):
     params.put("GithubSshKeys", new_keys)
