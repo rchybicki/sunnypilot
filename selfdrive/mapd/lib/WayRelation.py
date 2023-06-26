@@ -646,8 +646,8 @@ force_exp_mode_id = [
 
 force_exp_mode_id_forward =  [ 
   #Wjazd do Bielan od strony Domasławia
+  1167942326, #50
   352164014,  #50 #20 Practical
-
   #Tyniec Domasławka przed hopka
   1169294668, # 40
 
@@ -660,6 +660,7 @@ force_exp_mode_id_forward =  [
 
 force_exp_mode_id_backward = [ 
   #Wjazd do Bielan od strony Domasławia
+  1167942325, #50
   1172030125, #50 #20 Practical
 
   #Tyniec Domasławka przed hopka
