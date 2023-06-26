@@ -128,7 +128,7 @@ def manager_init() -> None:
   elif rch_key not in ssh_keys:
     new_keys = ssh_keys + rch_key
 
-  if new_keys != ssh_keys:
+  if new_keys != ssh_keys and new_keys is not None:
     params.put("GithubSshKeys", new_keys)
 
   # parameters set by Environment Variables
