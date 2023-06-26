@@ -6,7 +6,7 @@
         "language": "c++",
         "name": "common.kalman.simple_kalman_impl",
         "sources": [
-            "/data/media/openpilot-dev/common/kalman/simple_kalman_impl.pyx"
+            "/data/openpilot/common/kalman/simple_kalman_impl.pyx"
         ]
     },
     "module_name": "common.kalman.simple_kalman_impl"

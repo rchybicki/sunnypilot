@@ -7,7 +7,7 @@
         "language": "c++",
         "name": "selfdrive.boardd.boardd_api_impl",
         "sources": [
-            "/data/media/openpilot-dev/selfdrive/boardd/boardd_api_impl.pyx"
+            "/data/openpilot/selfdrive/boardd/boardd_api_impl.pyx"
         ]
     },
     "module_name": "selfdrive.boardd.boardd_api_impl"

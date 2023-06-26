@@ -7,7 +7,7 @@
         "language": "c++",
         "name": "common.clock",
         "sources": [
-            "/data/media/openpilot-dev/common/clock.pyx"
+            "/data/openpilot/common/clock.pyx"
         ]
     },
     "module_name": "common.clock"

@@ -471,10 +471,10 @@ class CarInterfaceBase(ABC):
     return next((key for key, value in gac_dict.items() if value == gac_tr), gac_max)
 
   def toggle_gac(self, cs_out, CS, gac_button, gac_min, gac_max, gac_default, inc_dec):
-    if not (self.CP.openpilotLongitudinalControl or self.gac):
+    if not self.CP.openpilotLongitudinalControl or not self.gac:
       cs_out.gapAdjustCruiseTr = 4
       CS.gac_tr = gac_default
-      return
+      return cs_out, CS
     if self.gac_min != gac_min:
       self.gac_min = gac_min
       put_nonblocking("GapAdjustCruiseMin", str(self.gac_min))
@@ -492,6 +492,7 @@ class CarInterfaceBase(ABC):
         self.gac_button_counter = 0
     self.prev_gac_button = gac_button
     cs_out.gapAdjustCruiseTr = self.get_sp_distance(CS.gac_tr, gac_max)
+    return cs_out, CS
 
   def create_sp_events(self, CS, cs_out, events, main_enabled=False, allow_enable=True, enable_pressed=False,
                        enable_from_brake=False, enable_pressed_long=False,
@@ -560,7 +561,6 @@ class CarInterfaceBase(ABC):
     self._frame += 1
     if self._frame % 300 == 0:
       self._frame = 0
-      self.gac = self.param_s.get_bool("GapAdjustCruise")
       self.gac_mode = round(float(self.param_s.get("GapAdjustCruiseMode", encoding="utf8")))
       self.reverse_dm_cam = self.param_s.get_bool("ReverseDmCam")
     return CS

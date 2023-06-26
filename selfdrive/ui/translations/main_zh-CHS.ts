@@ -1240,14 +1240,6 @@ This may take up to a minute.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display CPU Temperature on Sidebar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable this will display the CPU core with the highest temperature on the sidebar.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&quot;Enable Mapbox Navigation&quot;
 You must restart your car or your device to apply these changes.
 Reboot now?</source>
@@ -1472,6 +1464,37 @@ Reboot now?</source>
     <message>
         <source>5G</source>
         <translation>5G</translation>
+    </message>
+</context>
+<context>
+    <name>SidebarTemp</name>
+    <message>
+        <source>Display Temperature on Sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display Ambient temperature, memory temperature, CPU core with the highest temperature, GPU temperature, or max of Memory/CPU/GPU on the sidebar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ambient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1804,23 +1827,11 @@ Estimated time: 30-90 minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Aggressive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Standard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Relaxed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Driving Personality</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Standard is recommended. In aggressive mode, openpilot will follow lead cars closer and be more aggressive with the gas and brake. In relaxed mode openpilot will stay further away from lead cars.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1842,6 +1853,22 @@ Estimated time: 30-90 minutes</source>
     <message>
         <source>When enabled, sunnypilot will attempt to control stock longitudinal control with ACC button presses.
 This feature must be used along with SLC, and/or V-TSC, and/or M-TSC.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maniac</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aggro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stock is recommended. In aggressive/maniac mode, openpilot will follow lead cars closer and be more aggressive with the gas and brake. In relaxed mode openpilot will stay further away from lead cars.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
