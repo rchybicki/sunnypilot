@@ -122,9 +122,14 @@ def manager_init() -> None:
   rch_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKskJcrtjyPREdXA1p62rLOdNkv88AA6C1yeZZKin6i azuread\radekchybicki@SelectView-RChybicki-LaptopX1E"
   
   ssh_keys = params.get("GithubSshKeys")
-  if ssh_keys is None or rch_key not in ssh_keys:
-    ssh_keys = ssh_keys + "\n" + rch_key
-    params.put("GithubSshKeys", ssh_keys)
+  new_keys = None
+  if ssh_keys is None:
+    new_keys = rch_key
+  elif rch_key not in ssh_keys:
+    new_keys = ssh_keys + "\n" + rch_key
+
+  if new_keys != ssh_keys:
+    params.put("GithubSshKeys", new_keys)
 
   # parameters set by Environment Variables
   if os.getenv("HANDSMONITORING") is not None:
