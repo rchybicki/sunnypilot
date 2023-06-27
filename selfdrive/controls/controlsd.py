@@ -89,7 +89,7 @@ class Controls:
                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'testJoystick'])
 
     experimental_long_allowed = self.params.get_bool("ExperimentalLongitudinalEnabled") and not is_release_branch()
-    self.params.put("OnroadScreenOffBrightness", "0" if not experimental_long_allowed else "50")
+    self.params.put("OnroadScreenOff", "-1" if not experimental_long_allowed else "-2")
 
     if CI is None:
       # wait for one pandaState and one CAN packet
