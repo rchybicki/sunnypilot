@@ -93,7 +93,7 @@ def manager_init() -> None:
     ("LkasToggle", "0"),
     ("MadsIconToggle", "0"),
     ("MaxTimeOffroad", "9"),
-    ("OnroadScreenOff", "0"),
+    ("OnroadScreenOff", "-2"),
     ("OnroadScreenOffBrightness", "50"),
     ("OnroadScreenOffEvent", "1"),
     ("PathOffset", "0"),
