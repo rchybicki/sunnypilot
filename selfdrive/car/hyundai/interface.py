@@ -350,7 +350,7 @@ class CarInterface(CarInterfaceBase):
     if CP.flags & HyundaiFlags.ENABLE_BLINKERS:
       disable_ecu(logcan, sendcan, bus=CanBus(CP).ECAN, addr=0x7B1, com_cont_req=b'\x28\x83\x01')
 
-    # for cars that have a radar that turns off when the car is off
+    # for cars that lose radar tracks every time the car is turned off
     if CP.openpilotLongitudinalControl and CP.carFingerprint in [CAR.SANTA_FE_PHEV_2022, CAR.SANTA_FE_HEV_2022, CAR.SANTA_FE_2022]:
       enable_radar_tracks(CP, logcan, sendcan)
 

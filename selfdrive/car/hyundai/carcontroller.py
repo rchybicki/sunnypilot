@@ -304,7 +304,7 @@ class CarController:
 
         #allow highest jerk instantly for emergency braking
         if accel < -3.:
-          upper_jerk = 3.
+          upper_jerk = 5.
 
         # upper_jerk = lower_jerk + 0.5
         lower_jerk = 0
