@@ -300,13 +300,14 @@ class CarController:
           jerk_limit_a_k =  [ 0.015, 0.15  ]
           max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
           
-        lower_jerk = clip(abs(accel - self.accel_last) * 20, min_required_jerk, max_required_jerk)
+        upper_jerk = clip(abs(accel - self.accel_last) * 20, min_required_jerk, max_required_jerk)
 
         #allow highest jerk instantly for emergency braking
         if accel < -3.:
-          lower_jerk = 3.
+          upper_jerk = 3.
 
-        upper_jerk = lower_jerk + 0.5
+        # upper_jerk = lower_jerk + 0.5
+        lower_jerk = 0
         stopping = stopping and CS.out.vEgoRaw < 0.01
         can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
