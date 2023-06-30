@@ -17,14 +17,13 @@ def _radar_tracks_enable_query(rdr_fw, logcan, sendcan, debug):
                                    [WRITE_DAT_REQUEST+dataId+new_config], [WRITE_DAT_RESPONSE], debug=debug)
         query.get_data(0)
 
-def _enable_radar_tracks(CP, rdr_fw, logcan, sendcan, debug):
+def _enable_radar_tracks(rdr_fw, logcan, sendcan, debug):
     try:
         for retries in range(10):
             query = _verify_radar(rdr_fw, logcan, sendcan, debug)
             print(f"radar_tracks: ecu write data by id try {retries+1} ...")
             if query.get_data(0.1):  # Check if any data is returned
               _radar_tracks_enable_query(rdr_fw, logcan, sendcan, debug)
-            CP.radarUnavailable = False
             break
     except Exception as e:
         time.sleep(3)
@@ -37,7 +36,7 @@ def enable_radar_tracks(CP, logcan, sendcan, debug=False):
 
     if rdr_fw is not None:
         print(f"radar_tracks: Found fwdRadar: {rdr_fw.fwVersion}")
-        _enable_radar_tracks(CP, rdr_fw, logcan, sendcan, debug)
+        _enable_radar_tracks(rdr_fw, logcan, sendcan, debug)
         print("radar_tracks: Radar tracks enabled.")
     else:
         print("radar_tracks: Failed to find fwdRadar")
