@@ -108,13 +108,13 @@ class LongControl:
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
       self.stopping_pid.reset()
       self.stopping_breakpoint_recorded = False
-      # initial_stopping_accel = random.random() * -0.6 -0.1 if force_stop else CS.aEgo
-      # initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
-      initial_stopping_accel = -0.3 if force_stop else CS.aEgo
-      initial_stopping_speed =  0.6 if force_stop else CS.vEgo
+      initial_stopping_accel = random.random() * -0.9 -0.1 if force_stop else CS.aEgo
+      initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
+      # initial_stopping_accel = -0.3 if force_stop else CS.aEgo
+      # initial_stopping_speed =  0.6 if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,   0.1,   0.25, 0.39,                                      0.4,                                       max(initial_stopping_speed,  0.6)  ]
-      self.stopping_accel = [-0.1, -0.1,  -0.15, clip(initial_stopping_accel, -0.45, -0.2), clip(initial_stopping_accel, -0.45, -0.2), min(initial_stopping_accel, -0.45) ] 
+      self.stopping_v_bp =  [ 0.,    0.1,   max(initial_stopping_speed,  1.)  ]
+      self.stopping_accel = [-0.01, -0.1,   min(initial_stopping_accel, -0.45) ] 
       
       kiBP = [ 0. ]
       kiV = [ 0. ]
@@ -128,34 +128,47 @@ class LongControl:
       self.reset(CS.vEgo)
       output_accel = 0.
 
-    elif self.long_control_state == LongCtrlState.stopping:
+    # elif self.long_control_state == LongCtrlState.stopping:
       
-      # smooth expected stopping accel
-      expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
-      error = expected_accel - CS.aEgo
+    #   # smooth expected stopping accel
+    #   expected_accel = interp(CS.vEgo, self.stopping_v_bp, self.stopping_accel)
+    #   error = expected_accel - CS.aEgo
 
-      breakpoint_kpV = 0.015
+    #   breakpoint_kpV = 0.015
 
-      if not self.stopping_breakpoint_recorded and CS.vEgo < 0.4:
-        self.stopping_breakpoint_recorded = True
-        breakpoint_kpV_bp = [ -1.,  -0.1 ]
-        breakpoint_kpV_v =  [ 0.02,  0.01 ]
+    #   if not self.stopping_breakpoint_recorded and CS.vEgo < 0.4:
+    #     self.stopping_breakpoint_recorded = True
+    #     breakpoint_kpV_bp = [ -1.,  -0.1 ]
+    #     breakpoint_kpV_v =  [ 0.02,  0.01 ]
 
-        breakpoint_kpV = interp(CS.aEgo, breakpoint_kpV_bp, breakpoint_kpV_v)
+    #     breakpoint_kpV = interp(CS.aEgo, breakpoint_kpV_bp, breakpoint_kpV_v)
 
 
-      kpV = [ 0.01 if error < 0 else 0.006, 0.006, breakpoint_kpV, breakpoint_kpV, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 else 0.005 ]
-      self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
+    #   kpV = [ 0.01 if error < 0 else 0.006, 0.006, breakpoint_kpV, breakpoint_kpV, 0.005, 0.035 if CS.aEgo < -0.7 and error > 0.0 else 0.005 ]
+    #   self.stopping_pid._k_p = (self.stopping_v_bp, kpV)
 
-      error = error if error < 0 or error > abs(0.15 * CS.aEgo) else 0.
-      next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
-      update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
-      output_accel += update
+    #   error = error if error < 0 or error > abs(0.15 * CS.aEgo) else 0.
+    #   next = 0. # interp(CS.vEgo + expected_accel * 0.01, self.stopping_v_bp, self.stopping_accel) - expected_accel
+    #   update = self.stopping_pid.update(error, speed=CS.vEgo, feedforward=next)
+    #   output_accel += update
+
+    #   output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+    #   # print(f"clipped output_accel {output_accel}")    
+
+    #   self.reset(CS.vEgo)
+    elif self.long_control_state == LongCtrlState.stopping:  
+      output_accel = min(output_accel, 0.0)
+                    # km/h       0.72   2.7     14
+      stopping_v_bp =  [ 0.,     0.15, 0.75,    4.0 ]
+      stopping_accel = [-0.001, -0.1,  -0.5,   -2.5 ]
+
+      expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
+
+      if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
+        step_factor = 2. if CS.aEgo < expected_accel else 0.5
+        output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
-      # print(f"clipped output_accel {output_accel}")    
-
-      self.reset(CS.vEgo)
 
     elif self.long_control_state == LongCtrlState.starting:
       output_accel = self.CP.startAccel
