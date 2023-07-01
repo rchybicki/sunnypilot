@@ -290,26 +290,27 @@ class CarController:
         braking = accel < 0 and accel - self.accel_last <= 0
         # long_plan.accels can be empty, use current accel as a fallback
         req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) else accel
-        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (10 if braking else 5))
+        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15))
         max_required_jerk = 3.0
 
-        if accelerating:
-          jerk_limit_v_bp = [ 0.,    1.,   7.    ]
-          jerk_limit_v_k =  [ 0.015, 0.15, 0.03 ]          
-          jerk_limit_a_bp = [ 0.,    0.5   ]
-          jerk_limit_a_k =  [ 0.015, 0.15  ]
-          max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
+        # if accelerating:
+        #   jerk_limit_v_bp = [ 0.,    1.,   7.    ]
+        #   jerk_limit_v_k =  [ 0.03, 0.3, 0.06 ]          
+        #   jerk_limit_a_bp = [ 0.,   0.5   ]
+        #   jerk_limit_a_k =  [ 0.03, 0.3  ]
+        #   max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
           
-        upper_jerk = clip(abs(accel - self.accel_last) * 20, min_required_jerk, max_required_jerk)
+        jerk = clip(abs(accel - self.accel_last) * 50 * 2, min_required_jerk, max_required_jerk)
 
         #allow highest jerk instantly for emergency braking
         if accel < -3.:
-          upper_jerk = 5.
+          jerk = 5.
 
         # upper_jerk = lower_jerk + 0.5
-        lower_jerk = 0
-        stopping = stopping and CS.out.vEgoRaw < 0.01
-        can_sends.extend(hyundaican.create_acc_commands(self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
+        upper_jerk = jerk
+        lower_jerk = jerk
+        
+        can_sends.extend(hyundaican.create_acc_commands(CS.out.vEgoRaw, self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc, self.CP.carFingerprint))
         self.accel_last = accel
