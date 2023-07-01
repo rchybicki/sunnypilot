@@ -30,7 +30,7 @@ SUPPORTED_FW_VERSIONS = {
 
 
 def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_data_id=b'\x01\x42', timeout=0.1, retry=10, debug=False):
-  cloudlog.warning("radar_tracks: enabling...")
+  print("radar_tracks: enabling...")
 
   for i in range(retry):
     try:
@@ -44,8 +44,8 @@ def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_
       time.sleep(3)
       cloudlog.exception(f"radar_tracks exception: {e}")
 
-    cloudlog.error(f"radar_tracks retry ({i + 1}) ...")
-  cloudlog.error(f"radar_tracks: failed")
+    print(f"radar_tracks retry ({i + 1}) ...")
+  print(f"radar_tracks: failed")
 
 
 def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug):
@@ -56,15 +56,15 @@ def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_da
                              [WRITE_DATA_REQUEST + config_data_id + new_config], [WRITE_DATA_RESPONSE], debug=debug)
   query.get_data(0)
 
-  cloudlog.warning("radar_tracks: successfully enabled")
+  print("radar_tracks: successfully enabled")
 
 
 def enable_radar_tracks(CP, logcan, sendcan):
-  cloudlog.warning("radar_tracks: Try to enable radar tracks")
+  print("radar_tracks: Try to enable radar tracks")
 
   fw_version = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
 
   if fw_version is not None and fw_version in SUPPORTED_FW_VERSIONS.keys():
     _enable_radar_tracks(logcan, sendcan, fw_version)
   else:
-    cloudlog.error("radar_tracks: radar not supported! Skipping...")
+    print("radar_tracks: radar not supported! Skipping...")
