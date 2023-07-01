@@ -1,42 +1,70 @@
 import time
+from typing import NamedTuple
+
 from selfdrive.car.isotp_parallel_query import IsoTpParallelQuery
+from system.swaglog import cloudlog
 
-def _fetch_rdr_fw(CP):
-    return next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
+DIAG_REQUEST = b'\x10\x07'
+DIAG_RESPONSE = b'\x50\x07'
 
-def _verify_radar(rdr_fw, logcan, sendcan, debug):
-    return IsoTpParallelQuery(sendcan, logcan, 0, [rdr_fw.address], [b'\x10\x07'], [b'\x50\x07'], debug=debug)
+WRITE_DATA_REQUEST = b'\x2e'
+WRITE_DATA_RESPONSE = b'\x68'
 
-def _radar_tracks_enable_query(rdr_fw, logcan, sendcan, debug):
-    
-        new_config = b"\x00\x00\x00\x01\x00\x01"
-        dataId = b'\x01\x42'
-        WRITE_DAT_REQUEST = b'\x2e'
-        WRITE_DAT_RESPONSE = b'\x68'
-        query = IsoTpParallelQuery(sendcan, logcan, 0, [rdr_fw.address],
-                                   [WRITE_DAT_REQUEST+dataId+new_config], [WRITE_DAT_RESPONSE], debug=debug)
-        query.get_data(0)
 
-def _enable_radar_tracks(rdr_fw, logcan, sendcan, debug):
+class ConfigValues(NamedTuple):
+  tracks_enabled: bytes
+
+
+# If your radar supports changing data identifier 0x0142 as well make a PR to
+# this file to add your firmware version. Make sure to post a drive as proof!
+SUPPORTED_FW_VERSIONS = {
+  # 2022 Santa Fe
+  b'\xf1\x00TM__ SCC FHCUP      1.00 1.00 99110-S1500         ': ConfigValues(
+    tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
+  ),
+  # 2022 Santa Fe HEV
+  b'\xf1\x00TMhe SCC FHCUP      1.00 1.00 99110-CL500         ': ConfigValues(
+    tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
+  ),
+}
+
+
+def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_data_id=b'\x01\x42', timeout=0.1, retry=10, debug=False):
+  print("radar_tracks: enabling...")
+
+  for i in range(retry):
     try:
-        for retries in range(10):
-            query = _verify_radar(rdr_fw, logcan, sendcan, debug)
-            print(f"radar_tracks: ecu write data by id try {retries+1} ...")
-            if query.get_data(0.1):  # Check if any data is returned
-              _radar_tracks_enable_query(rdr_fw, logcan, sendcan, debug)
-            break
+      query = IsoTpParallelQuery(sendcan, logcan, bus, [addr], [DIAG_REQUEST], [DIAG_RESPONSE], debug=debug)
+
+      for _, _ in query.get_data(timeout).items():
+        _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug)
+        break
+
     except Exception as e:
-        time.sleep(3)
-        print(f"radar_tracks: Failed {retries} try: {e}")
+      time.sleep(3)
+      cloudlog.exception(f"radar_tracks exception: {e}")
 
-def enable_radar_tracks(CP, logcan, sendcan, debug=False):
-    print("radar_tracks: Try to enable radar tracks")
+    print(f"radar_tracks retry ({i + 1}) ...")
+  print(f"radar_tracks: failed")
 
-    rdr_fw = _fetch_rdr_fw(CP)
 
-    if rdr_fw is not None:
-        print(f"radar_tracks: Found fwdRadar: {rdr_fw.fwVersion}")
-        _enable_radar_tracks(rdr_fw, logcan, sendcan, debug)
-        print("radar_tracks: Radar tracks enabled.")
-    else:
-        print("radar_tracks: Failed to find fwdRadar")
+def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug):
+  config_value = SUPPORTED_FW_VERSIONS[fw_version]
+  new_config = config_value.tracks_enabled
+
+  query = IsoTpParallelQuery(sendcan, logcan, bus, [addr],
+                             [WRITE_DATA_REQUEST + config_data_id + new_config], [WRITE_DATA_RESPONSE], debug=debug)
+  query.get_data(0)
+
+  print("radar_tracks: successfully enabled")
+
+
+def enable_radar_tracks(CP, logcan, sendcan):
+  print("radar_tracks: Try to enable radar tracks")
+
+  radarFw = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
+
+  if radarFw is not None and radarFw.fwVersion in SUPPORTED_FW_VERSIONS.keys():
+    _enable_radar_tracks(logcan, sendcan, radarFw.fwVersion)
+  else:
+    print(f"radar_tracks: radar not supported!\n version:\n{radarFw.fwVersion}\n address:{radarFw.address}\n Skipping...")
