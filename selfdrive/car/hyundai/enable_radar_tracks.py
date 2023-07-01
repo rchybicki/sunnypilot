@@ -67,4 +67,4 @@ def enable_radar_tracks(CP, logcan, sendcan):
   if fw_version is not None and fw_version in SUPPORTED_FW_VERSIONS.keys():
     _enable_radar_tracks(logcan, sendcan, fw_version)
   else:
-    print("radar_tracks: radar not supported! Skipping...")
+    print(f"radar_tracks: radar not supported!\n version:\n{fw_version}\n Skipping...")
