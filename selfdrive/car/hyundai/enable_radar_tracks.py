@@ -62,9 +62,9 @@ def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_da
 def enable_radar_tracks(CP, logcan, sendcan):
   print("radar_tracks: Try to enable radar tracks")
 
-  fw_version = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
+  radarFw = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
 
-  if fw_version is not None and fw_version in SUPPORTED_FW_VERSIONS.keys():
-    _enable_radar_tracks(logcan, sendcan, fw_version)
+  if radarFw is not None and radarFw.fwVersion in SUPPORTED_FW_VERSIONS.keys():
+    _enable_radar_tracks(logcan, sendcan, radarFw.fwVersion)
   else:
-    print(f"radar_tracks: radar not supported!\n version:\n{fw_version.fwVersion}\n address:{fw_version.address}\n Skipping...")
+    print(f"radar_tracks: radar not supported!\n version:\n{radarFw.fwVersion}\n address:{radarFw.address}\n Skipping...")
