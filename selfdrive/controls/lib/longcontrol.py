@@ -159,16 +159,16 @@ class LongControl:
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
                     # km/h       0.72   2.7     14
-      stopping_v_bp =  [ 0.,     0.15, 0.75,    4.0 ]
-      stopping_accel = [-0.001, -0.1,  -0.5,   -2.5 ]
+      stopping_v_bp =  [ 0.1,   0.1,   0.75,    4.0 ]
+      stopping_accel = [-0.01, -0.1,  -0.5,   -1.5 ]
 
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
       if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
-        step_factor = 2. if CS.aEgo < expected_accel else 0.5
+        step_factor = 1. if CS.aEgo < expected_accel else 0.5
         output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
-      output_accel = clip(output_accel, self.CP.stopAccel, 0.0)
+      output_accel = clip(output_accel, self.CP.stopAccel, -0.05)
 
     elif self.long_control_state == LongCtrlState.starting:
       output_accel = self.CP.startAccel
