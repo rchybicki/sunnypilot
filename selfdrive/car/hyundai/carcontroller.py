@@ -291,7 +291,7 @@ class CarController:
         braking = accel < 0 and accel - self.accel_last <= 0
         # long_plan.accels can be empty, use current accel as a fallback
         req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) else accel
-        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15))
+        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15)) if not stopping else 0
         max_required_jerk = 3.0
 
         # if accelerating:
@@ -308,13 +308,13 @@ class CarController:
           jerk = 5.
 
         # upper_jerk = lower_jerk + 0.5
-        upper_jerk = jerk
-        lower_jerk = jerk
+        upper_jerk = jerk if accel > self.accel_last else 0
+        lower_jerk = jerk if accel < self.accel_last else 0
 
         self.stopping_cnt = 0 if not stopping else self.stopping_cnt + 1
 
         
-        can_sends.extend(hyundaican.create_acc_commands(self.stopping_cnt, CS.out.vEgoRaw, self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
+        can_sends.extend(hyundaican.create_acc_commands(self.stopping_cnt, CS.out.vEgoRaw, CS.out.aEgo, self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc, self.CP.carFingerprint))
         self.accel_last = accel

@@ -100,7 +100,7 @@ def create_lfahda_mfc(packer, enabled, lat_active, lateral_paused, blinking_icon
   }
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
-def create_acc_commands(stopping_cnt, vEgo, packer, enabled, accel, upper_jerk, lower_jerk, idx, lead_visible, set_speed, stopping, long_override, main_enabled,
+def create_acc_commands(stopping_cnt, vEgo, aEgo, packer, enabled, accel, upper_jerk, lower_jerk, idx, lead_visible, set_speed, stopping, long_override, main_enabled,
                         CS, escc, car_fingerprint):
   commands = []
 
@@ -119,8 +119,8 @@ def create_acc_commands(stopping_cnt, vEgo, packer, enabled, accel, upper_jerk, 
 
   scc12_values = {
     "ACCMode": 2 if enabled and long_override else 1 if enabled else 0,
-    "StopReq": 1 if stopping and vEgo < 0.01 else 0,
-    "aReqRaw": max(accel * (min(stopping_cnt, 100) / 100) * 2, -3.5) if stopping else accel,
+    "StopReq": 1 if stopping and (vEgo < 0.01 or vEgo < 0.01 and aEgo > -0.01) else 0,
+    "aReqRaw": max(accel + accel * (min(stopping_cnt, 100) / 100), -3.5) if stopping else accel,
     "aReqValue": accel,  # stock ramps up and down respecting jerk limit until it reaches aReqRaw
     "CR_VSM_Alive": idx % 0xF,
     

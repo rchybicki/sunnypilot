@@ -65,7 +65,9 @@ class LongControl:
     self.v_pid = 0.0
     self.last_output_accel = 0.0
     self.stopping_accel = []
-    self.stopping_v_bp = []
+    self.stopping_v_bp = []    
+    self.initial_stopping_accel = -2
+    self.initial_stopping_speed = 1
     self.stopping_breakpoint_recorded = False
 
   def reset(self, v_pid):
@@ -108,13 +110,13 @@ class LongControl:
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
       self.stopping_pid.reset()
       self.stopping_breakpoint_recorded = False
-      initial_stopping_accel = random.random() * -0.9 -0.1 if force_stop else CS.aEgo
-      initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
+      self.initial_stopping_accel = random.random() * -0.9 -0.1 if force_stop else CS.aEgo
+      self.initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
       # initial_stopping_accel = -0.3 if force_stop else CS.aEgo
       # initial_stopping_speed =  0.6 if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,    0.1,   max(initial_stopping_speed,  1.)  ]
-      self.stopping_accel = [-0.01, -0.1,   min(initial_stopping_accel, -0.45) ] 
+      self.stopping_v_bp =  [ 0.,    0.1,   max(self.initial_stopping_speed,  1.)  ]
+      self.stopping_accel = [-0.01, -0.1,   min(self.initial_stopping_accel, -0.45) ] 
       
       kiBP = [ 0. ]
       kiV = [ 0. ]
@@ -158,14 +160,14 @@ class LongControl:
     #   self.reset(CS.vEgo)
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
-                    # km/h       0.72   2.7     14
-      stopping_v_bp =  [ 0.1,   0.1,   0.75,    4.0 ]
-      stopping_accel = [-0.01, -0.1,  -0.5,   -1.5 ]
+                    # km/h      0.72  
+      stopping_v_bp =  [ 0.01,  0.1,  clip(self.initial_stopping_speed,  0.2, 1.)  ]
+      stopping_accel = [-0.001,-0.1,  min(self.initial_stopping_accel, -0.45) ]
 
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
       if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
-        step_factor = 1. if CS.aEgo < expected_accel else 0.5
+        step_factor = 0.75 if CS.aEgo < expected_accel else 0.25
         output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, -0.05)

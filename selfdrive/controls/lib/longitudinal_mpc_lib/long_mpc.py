@@ -55,7 +55,7 @@ T_DIFFS = np.diff(T_IDXS, prepend=[0.])
 MIN_ACCEL = -3.5
 MAX_ACCEL = 2.0
 COMFORT_BRAKE = 2.5
-STOP_DISTANCE = 6. # was 5.5
+STOP_DISTANCE = 7.5 # was 5.5
 
 # DIST_V_GAP3 = [ 1.25, 1.25, 1.30, 1.30, 1.35, 1.40, 1.45, 1.45, 1.45, 1.45, 1.45 ]
 # DIST_V_GAP4 = [ 1.45, 1.45, 1.50, 1.50, 1.55, 1.60, 1.65, 1.65, 1.65, 1.65, 1.65 ]
