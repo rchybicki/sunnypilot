@@ -121,7 +121,8 @@ def create_acc_commands(stopping_cnt, vEgo, aEgo, packer, enabled, accel, upper_
     "ACCMode": 2 if enabled and long_override else 1 if enabled else 0,
     "StopReq": 1 if stopping and (vEgo < 0.01 or vEgo < 0.04 and aEgo > -0.04) else 0,
     "aReqRaw": max(accel + accel * (min(stopping_cnt, 100) / 100), -3.5) if stopping else accel,
-    "aReqValue": accel /2 if stopping and vEgo < 0.1 else accel,  # stock ramps up and down respecting jerk limit until it reaches aReqRaw
+    "aReqValue": accel,  # stock ramps up and down respecting jerk limit until it reaches aReqRaw
+    # "aReqValue": accel /2 if stopping and vEgo < 0.1 else accel,  # stock ramps up and down respecting jerk limit until it reaches aReqRaw
     "CR_VSM_Alive": idx % 0xF,
     
     "AEB_CmdAct": CS.escc_cmd_act,
