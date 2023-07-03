@@ -64,6 +64,7 @@ class LongControl:
                              k_f=CP.longitudinalTuning.kf, rate=1 / DT_CTRL)
     self.v_pid = 0.0
     self.last_output_accel = 0.0
+    self.prep_stopping = False
     self.stopping_accel = []
     self.stopping_v_bp = []    
     self.initial_stopping_accel = -2
@@ -106,25 +107,34 @@ class LongControl:
     force_stop = self.CP.carName == "hyundai" and CS.gapAdjustCruiseTr == 1 and CS.vEgo < 15.
     new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo, CS.aEgo,
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill, force_stop)
-
+    
     if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
       self.stopping_pid.reset()
       self.stopping_breakpoint_recorded = False
-      self.initial_stopping_accel = random.random() * -0.9 -0.1 if force_stop else CS.aEgo
-      self.initial_stopping_speed = random.random() * 5. + 1. if force_stop else CS.vEgo
-      # initial_stopping_accel = -0.3 if force_stop else CS.aEgo
-      # initial_stopping_speed =  0.6 if force_stop else CS.vEgo
 
-      self.stopping_v_bp =  [ 0.,    0.1,   max(self.initial_stopping_speed,  1.)  ]
-      self.stopping_accel = [-0.01, -0.1,   min(self.initial_stopping_accel, -0.45) ] 
+      if not self.prep_stopping:
+        self.initial_stopping_accel = random.random() * -1. -0.2 if force_stop else CS.aEgo
+        self.initial_stopping_speed = random.random() * 0.8 + 0.2 if force_stop else CS.vEgo
+        
+        # initial_stopping_accel = -0.3 if force_stop else CS.aEgo
+        # initial_stopping_speed =  0.6 if force_stop else CS.vEgo
+
+        self.stopping_v_bp =  [ 0.,    0.1,   max(self.initial_stopping_speed,  1.)  ]
+        self.stopping_accel = [-0.01, -0.1,   min(self.initial_stopping_accel, -0.45) ] 
       
-      kiBP = [ 0. ]
-      kiV = [ 0. ]
+        kiBP = [ 0. ]
+        kiV = [ 0. ]
 
-      self.stopping_pid._k_i = (kiBP, kiV)
+        self.stopping_pid._k_i = (kiBP, kiV)
+
+      if force_stop:
+        self.prep_stopping = True
       # print(f"Starting to stop, initial accel {self.initial_stopping_accel}")                            
     
-    self.long_control_state = new_control_state
+    if self.prep_stopping:
+      self.long_control_state = LongCtrlState.pid
+    else:
+      self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
@@ -158,6 +168,11 @@ class LongControl:
     #   # print(f"clipped output_accel {output_accel}")    
 
     #   self.reset(CS.vEgo)
+    elif self.prep_stopping == True:
+      if CS.vEgo < self.initial_stopping_speed:
+        self.prep_stopping = False
+      output_accel = self.initial_stopping_accel
+
     elif self.long_control_state == LongCtrlState.stopping:  
       output_accel = min(output_accel, 0.0)
                     # km/h      0.72  
