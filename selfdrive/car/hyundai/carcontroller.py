@@ -290,8 +290,8 @@ class CarController:
         accelerating = accel > 0 and accel - self.accel_last >= 0
         braking = accel < 0 and accel - self.accel_last <= 0
         # long_plan.accels can be empty, use current accel as a fallback
-        req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) else accel
-        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15)) if not stopping else 0
+        req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) and not stopping else accel
+        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15))
         max_required_jerk = 3.0
 
         # if accelerating:
@@ -308,8 +308,8 @@ class CarController:
           jerk = 5.
 
         # upper_jerk = lower_jerk + 0.5
-        upper_jerk = jerk if accel > self.accel_last else 0
-        lower_jerk = jerk if accel < self.accel_last else 0
+        upper_jerk = jerk if accel >= self.accel_last else 0
+        lower_jerk = jerk if accel <= self.accel_last else 0
 
         self.stopping_cnt = 0 if not stopping else self.stopping_cnt + 1
 

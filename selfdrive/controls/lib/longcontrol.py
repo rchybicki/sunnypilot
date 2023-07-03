@@ -65,6 +65,7 @@ class LongControl:
     self.v_pid = 0.0
     self.last_output_accel = 0.0
     self.prep_stopping = False
+    self.breakpoint_v = 1.
     self.stopping_accel = []
     self.stopping_v_bp = []    
     self.initial_stopping_accel = -2
@@ -108,13 +109,17 @@ class LongControl:
     new_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo, CS.aEgo,
                                                        v_target, v_target_1sec, CS.brakePressed, CS.cruiseState.standstill, force_stop)
     
-    if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:    
-      self.stopping_pid.reset()
-      self.stopping_breakpoint_recorded = False
+    if self.long_control_state != LongCtrlState.stopping and new_control_state == LongCtrlState.stopping:
+      if self.prep_stopping:
+        if CS.vEgo < self.initial_stopping_speed:
+          self.prep_stopping = False
+          self.initial_stopping_accel = CS.aEgo
+      else:
+        self.stopping_pid.reset()
+        self.stopping_breakpoint_recorded = False
 
-      if not self.prep_stopping:
-        self.initial_stopping_accel = random.random() * -1. -0.2 if force_stop else CS.aEgo
-        self.initial_stopping_speed = random.random() * 0.8 + 0.2 if force_stop else CS.vEgo
+        self.initial_stopping_accel = random.random() * -0.6 -0.2 if force_stop else CS.aEgo
+        self.initial_stopping_speed = random.random() * 1.5 + 0.2 if force_stop else CS.vEgo
         
         # initial_stopping_accel = -0.3 if force_stop else CS.aEgo
         # initial_stopping_speed =  0.6 if force_stop else CS.vEgo
@@ -127,17 +132,18 @@ class LongControl:
 
         self.stopping_pid._k_i = (kiBP, kiV)
 
-      if force_stop:
-        self.prep_stopping = True
+        if force_stop:
+          self.prep_stopping = True
       # print(f"Starting to stop, initial accel {self.initial_stopping_accel}")                            
     
-    if self.prep_stopping:
+    if new_control_state in (LongCtrlState.stopping, LongCtrlState.pid) and self.prep_stopping:
       self.long_control_state = LongCtrlState.pid
     else:
       self.long_control_state = new_control_state
 
     if self.long_control_state == LongCtrlState.off:
       self.reset(CS.vEgo)
+      self.prep_stopping = False
       output_accel = 0.
 
     # elif self.long_control_state == LongCtrlState.stopping:
@@ -169,20 +175,26 @@ class LongControl:
 
     #   self.reset(CS.vEgo)
     elif self.prep_stopping == True:
-      if CS.vEgo < self.initial_stopping_speed:
-        self.prep_stopping = False
       output_accel = self.initial_stopping_accel
 
     elif self.long_control_state == LongCtrlState.stopping:  
-      output_accel = min(output_accel, 0.0)
-                    # km/h      0.72  
-      stopping_v_bp =  [ 0.01,  0.1,  clip(self.initial_stopping_speed,  0.2, 1.)  ]
-      stopping_accel = [-0.001,-0.1,  min(self.initial_stopping_accel, -0.45) ]
+
+      if not self.stopping_breakpoint_recorded and CS.vEgo < 0.4:
+        self.stopping_breakpoint_recorded = True
+        breakpoint_v_bp = [ -1.,   -0.1  ]
+        breakpoint_v_v =  [  2.,   0.45 ]
+
+        self.breakpoint_v = interp(CS.aEgo, breakpoint_v_bp, breakpoint_v_v)
+
+      output_accel = min(output_accel, -0.1)
+                    # km/h      
+      stopping_v_bp =  [ 0.01,   0.1,   max(self.initial_stopping_speed, 0.4)  ]
+      stopping_accel = [-0.001, -0.15,  min(self.initial_stopping_accel, -0.3) ]
 
       expected_accel = interp(CS.vEgo, stopping_v_bp, stopping_accel)
 
       if abs((CS.aEgo - expected_accel) / expected_accel) > 0.1 :
-        step_factor = 0.75 if CS.aEgo < expected_accel else 0.25
+        step_factor = self.breakpoint_v if CS.aEgo < expected_accel else 0.25
         output_accel += (expected_accel - CS.aEgo) * step_factor * DT_CTRL
 
       output_accel = clip(output_accel, self.CP.stopAccel, -0.05)
