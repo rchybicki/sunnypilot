@@ -58,6 +58,7 @@ class CarController:
     self.apply_steer_last = 0
     self.car_fingerprint = CP.carFingerprint
     self.last_button_frame = 0
+    self.stopping_cnt = 0
 
     self.disengage_blink = 0.
     self.lat_disengage_init = False
@@ -309,8 +310,11 @@ class CarController:
         # upper_jerk = lower_jerk + 0.5
         upper_jerk = jerk
         lower_jerk = jerk
+
+        self.stopping_cnt = 0 if not stopping else self.stopping_cnt + 1
+
         
-        can_sends.extend(hyundaican.create_acc_commands(CS.out.vEgoRaw, self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
+        can_sends.extend(hyundaican.create_acc_commands(self.stopping_cnt, CS.out.vEgoRaw, self.packer, CC.enabled and CS.out.cruiseState.enabled, accel, upper_jerk, lower_jerk, int(self.frame / 2),
                                                         hud_control.leadVisible, set_speed_in_units, stopping, CC.cruiseControl.override, CS.mainEnabled,
                                                         CS, escc, self.CP.carFingerprint))
         self.accel_last = accel
