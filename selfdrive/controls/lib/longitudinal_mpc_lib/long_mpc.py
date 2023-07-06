@@ -88,15 +88,14 @@ def get_T_FOLLOW(carstate, exp_mode):
   return float(follow)
     
 def get_stopped_equivalence_factor(v_ego, v_lead, radarstate, t_follow):
-  distance = (v_lead**2) / (2 * COMFORT_BRAKE)
   # Offset to approach slower lead vehicles smoothly
   distance_offset = 0
   # If we're going 20%+ faster than the lead vehicle apply the offset
   if np.all(v_ego - v_lead > v_ego * 0.2) and np.all(v_lead > 10) :
       # Decrease following distance according to how far away the lead is
-      distance_offset = (radarstate.leadOne.dRel * COMFORT_BRAKE) / v_ego
+      distance_offset = (radarstate.leadOne.dRel * 3.) / v_ego
       distance_offset = np.clip(distance_offset, 0, 100)
-  return distance + distance_offset
+  return (v_lead**2) / (2 * COMFORT_BRAKE) + distance_offset
 
 def get_safe_obstacle_distance(v_ego, t_follow):
   return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + STOP_DISTANCE
