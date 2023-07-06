@@ -130,6 +130,10 @@ speed_overrides_id = {
   #Zjazd z obwodnicy od Kobierzyc w stronę Tyńca
   112228338: 70, # 40
   112260512: 50, # 50
+  
+  #A4 wjazd na obwodnicę w stronę Tyńca od strony Bielan
+  272595878: 55, # 40
+  272595879: 80, # 40
 
   #Zjazd z A4 od strony Tyńca na Bielany
   322214383: 55, # 40
@@ -138,6 +142,16 @@ speed_overrides_id = {
   272688747: 45, # 40
   249134773: 45, # 40
   15800485:  55, # 40
+
+  #Łacznik z A4 na obwodnicę w stronę miasta:
+  39192514:  90, # 60
+  286767071: 90, # 60
+  112317785: 80, # 60
+  286767067: 90, # 60
+
+  #Łacznik z A4 na obwodnicę w stronę Kobierzyc:
+  39192520:  90, # 60
+  112228317: 80, # 60
 
   #Łacznik z obwodnicy na A4 w stronę Katowic
   111977997: 60, # 50
