@@ -588,7 +588,6 @@ speed_overrides_id_forward = {
 speed_overrides_id_backward = {
   #Wjazd do Bielan od strony Domasławia łezka
   1172030125: 30, #50 #20 Practical
-
 }
 
 force_exp_mode_id = [
