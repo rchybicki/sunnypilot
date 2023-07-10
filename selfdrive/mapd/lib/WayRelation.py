@@ -575,7 +575,7 @@ speed_overrides_id = {
 
 speed_overrides_id_forward = {
   #Wjazd do Bielan od strony Domasławia łezka
-  352164014:  50, #50 #20 Practical
+  352164014:  30, #50 #20 Practical
 
   #Mokronos Stawowa
   1171143758: 42,  # 40
@@ -587,7 +587,7 @@ speed_overrides_id_forward = {
 
 speed_overrides_id_backward = {
   #Wjazd do Bielan od strony Domasławia łezka
-  1172030125: 50, #50 #20 Practical
+  1172030125: 30, #50 #20 Practical
 
 }
 
