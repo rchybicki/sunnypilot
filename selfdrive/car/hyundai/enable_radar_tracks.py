@@ -22,15 +22,15 @@ SUPPORTED_FW_VERSIONS = {
   b'\xf1\x00TM__ SCC FHCUP      1.00 1.00 99110-S1500         ': ConfigValues(
     tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
   ),
-  # 2022 Santa Fe HEV
-  b'\xf1\x00TMhe SCC FHCUP      1.00 1.00 99110-CL500         ': ConfigValues(
-    tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
-  ),
+  # # 2022 Santa Fe HEV
+  # b'\xf1\x00TMhe SCC FHCUP      1.00 1.00 99110-CL500         ': ConfigValues(
+  #   tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
+  # ),
 }
 
 
 def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_data_id=b'\x01\x42', timeout=0.1, retry=10, debug=False):
-  print("radar_tracks: enabling...")
+  cloudlog.warning("radar_tracks: enabling...")
 
   for i in range(retry):
     try:
@@ -44,8 +44,8 @@ def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_
       time.sleep(3)
       cloudlog.exception(f"radar_tracks exception: {e}")
 
-    print(f"radar_tracks retry ({i + 1}) ...")
-  print(f"radar_tracks: failed")
+    cloudlog.warning(f"radar_tracks retry ({i + 1}) ...")
+  cloudlog.exception(f"radar_tracks: failed")
 
 
 def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug):
@@ -56,15 +56,15 @@ def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_da
                              [WRITE_DATA_REQUEST + config_data_id + new_config], [WRITE_DATA_RESPONSE], debug=debug)
   query.get_data(0)
 
-  print("radar_tracks: successfully enabled")
+  cloudlog.warning("radar_tracks: successfully enabled")
 
 
 def enable_radar_tracks(CP, logcan, sendcan):
-  print("radar_tracks: Try to enable radar tracks")
+  cloudlog.warning("radar_tracks: Try to enable radar tracks")
 
   radarFw = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
 
   if radarFw is not None and radarFw.fwVersion in SUPPORTED_FW_VERSIONS.keys():
     _enable_radar_tracks(logcan, sendcan, radarFw.fwVersion)
   else:
-    print(f"radar_tracks: radar not supported!\n version:\n{radarFw.fwVersion}\n address:{radarFw.address}\n Skipping...")
+    cloudlog.exception(f"radar_tracks: radar not supported!\n version:\n{radarFw.fwVersion}\n address:{radarFw.address}\n Skipping...")
