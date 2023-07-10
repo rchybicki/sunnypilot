@@ -320,7 +320,7 @@ class LongitudinalMpc:
     a_ego = self.x0[2]
     if lead is not None and lead.status:
       additional_dist_rel_bp =  [ 5.,  15.]
-      exp_mode_dist_reduction = [ 3.,  0.]
+      exp_mode_dist_reduction = [ 2.,  0.]
       exp_modified_distance = np.interp(lead.dRel, additional_dist_rel_bp, exp_mode_dist_reduction)
       a_adjusted_distance_mod_bp = [ -2,   -0.75 ]
       a_adjusted_distance_mod =    [  0.,   1.   ]
