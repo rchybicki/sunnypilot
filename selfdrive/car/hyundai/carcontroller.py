@@ -291,7 +291,7 @@ class CarController:
         braking = accel < 0 and accel - self.accel_last <= 0
         # long_plan.accels can be empty, use current accel as a fallback
         req_accel = self.sm['longitudinalPlan'].accels[0] if len(self.sm['longitudinalPlan'].accels) and not stopping else accel
-        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (30 if braking else 15))
+        min_required_jerk = min(2.5, abs(req_accel - CS.out.aEgo) * (40 if braking else 20))
         max_required_jerk = 3.0
 
         # if accelerating:
