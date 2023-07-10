@@ -63,7 +63,7 @@ class ExperimentalController():
   # Stop sign and stop light detection - Credit goes to the DragonPilot team!
   def stop_sign_and_light(self, lead, standstill):
     lead_speed = self.radarState.leadOne.vLead
-    if abs(self.carState.steeringAngleDeg) <= 60 and not standstill:
+    if abs(self.carState.steeringAngleDeg) <= 60 and (not standstill or self.stop_light_count >= THRESHOLD):
       # Check to make sure we don't have a lead that's stopping for the red light / stop sign
       if lead and not (self.previous_lead_speed >= lead_speed or self.radarState.leadOne.dRel <= 5 or lead_speed <= 1) or not lead:
         if len(self.modelData.orientation.x) == len(self.modelData.position.x) == TRAJECTORY_SIZE:
