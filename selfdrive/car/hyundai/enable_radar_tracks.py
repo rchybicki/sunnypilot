@@ -22,10 +22,10 @@ SUPPORTED_FW_VERSIONS = {
   b'\xf1\x00TM__ SCC FHCUP      1.00 1.00 99110-S1500         ': ConfigValues(
     tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
   ),
-  # # 2022 Santa Fe HEV
-  # b'\xf1\x00TMhe SCC FHCUP      1.00 1.00 99110-CL500         ': ConfigValues(
-  #   tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
-  # ),
+  # 2022 Santa Fe HEV
+  b'\xf1\x00TMhe SCC FHCUP      1.00 1.00 99110-CL500         ': ConfigValues(
+    tracks_enabled=b"\x00\x00\x00\x01\x00\x01"
+  ),
 }
 
 
