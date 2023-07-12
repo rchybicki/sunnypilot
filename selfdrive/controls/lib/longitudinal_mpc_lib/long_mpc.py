@@ -325,7 +325,7 @@ class LongitudinalMpc:
       a_adjusted_distance_mod_bp = [ -2,   -0.75 ]
       a_adjusted_distance_mod =    [  0.,   1.   ]
       accel_adjusted_distance_modifier = np.interp(a_ego, a_adjusted_distance_mod_bp, a_adjusted_distance_mod)
-      x_lead = lead.dRel + ((exp_modified_distance * accel_adjusted_distance_modifier) if exp_mode else 0.)
+      x_lead = lead.dRel #+ ((exp_modified_distance * accel_adjusted_distance_modifier) if exp_mode else 0.)
       v_lead = lead.vLead 
       a_lead = lead.aLeadK
       a_lead_tau = lead.aLeadTau

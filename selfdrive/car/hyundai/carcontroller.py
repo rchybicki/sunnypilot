@@ -301,7 +301,7 @@ class CarController:
         #   jerk_limit_a_k =  [ 0.03, 0.3  ]
         #   max_required_jerk = min(interp(CS.out.vEgoRaw, jerk_limit_v_bp, jerk_limit_v_k), interp(CS.out.aEgo, jerk_limit_a_bp, jerk_limit_a_k))
           
-        jerk = clip(abs(accel - self.accel_last) * 50 * 2, min_required_jerk, max_required_jerk)
+        jerk = clip(abs(accel - self.accel_last) * 50 * 2.2, min_required_jerk, max_required_jerk)
 
         #allow highest jerk instantly for emergency braking
         if accel < -3.:
