@@ -37,34 +37,34 @@ def _enable_radar_tracks(logcan, sendcan, fw_version, bus=0, addr=0x7d0, config_
       query = IsoTpParallelQuery(sendcan, logcan, bus, [addr], [DIAG_REQUEST], [DIAG_RESPONSE], debug=debug)
 
       for _, _ in query.get_data(timeout).items():
-        _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug)
-        break
+        cloudlog.warning("radar_tracks: reconfigure radar to output radar points ...")
+        config_value = SUPPORTED_FW_VERSIONS[fw_version]
+        new_config = config_value.tracks_enabled
+
+        query = IsoTpParallelQuery(sendcan, logcan, bus, [addr],
+                                   [WRITE_DATA_REQUEST + config_data_id + new_config],
+                                   [WRITE_DATA_RESPONSE], debug=debug)
+        query.get_data(0)
+
+        cloudlog.warning("radar_tracks: successfully enabled")
+        return True
 
     except Exception as e:
-      time.sleep(3)
       cloudlog.exception(f"radar_tracks exception: {e}")
 
-    cloudlog.warning(f"radar_tracks retry ({i + 1}) ...")
-  cloudlog.exception(f"radar_tracks: failed")
+    cloudlog.error(f"radar_tracks retry ({i + 1}) ...")
+  cloudlog.error(f"radar_tracks: failed")
+  return False
 
-
-def _radar_tracks_enable_query(logcan, sendcan, fw_version, bus, addr, config_data_id, debug):
-  config_value = SUPPORTED_FW_VERSIONS[fw_version]
-  new_config = config_value.tracks_enabled
-
-  query = IsoTpParallelQuery(sendcan, logcan, bus, [addr],
-                             [WRITE_DATA_REQUEST + config_data_id + new_config], [WRITE_DATA_RESPONSE], debug=debug)
-  query.get_data(0)
-
-  cloudlog.warning("radar_tracks: successfully enabled")
 
 
 def enable_radar_tracks(CP, logcan, sendcan):
   cloudlog.warning("radar_tracks: Try to enable radar tracks")
 
-  radarFw = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
+  has_radar = next((fw for fw in CP.carFw if fw.ecu == "fwdRadar"), None)
+  fw_version = has_radar.fwVersion if has_radar is not None else None
 
-  if radarFw is not None and radarFw.fwVersion in SUPPORTED_FW_VERSIONS.keys():
-    _enable_radar_tracks(logcan, sendcan, radarFw.fwVersion)
+  if fw_version is not None and fw_version in SUPPORTED_FW_VERSIONS.keys():
+    _enable_radar_tracks(logcan, sendcan, fw_version)
   else:
-    cloudlog.exception(f"radar_tracks: radar not supported!\n version:\n{radarFw.fwVersion}\n address:{radarFw.address}\n Skipping...")
+    cloudlog.error("radar_tracks: radar not supported! Skipping ...")
