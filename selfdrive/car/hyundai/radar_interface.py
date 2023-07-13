@@ -56,18 +56,22 @@ class RadarInterface(RadarInterfaceBase):
     self.rcp = get_radar_can_parser(CP)
 
   def update(self, can_strings):
+    print("radar_interface start")
     if self.radar_off_can or (self.rcp is None):
+      print("radar_interface first check")
       return super().update(None)
 
     vls = self.rcp.update_strings(can_strings)
     self.updated_messages.update(vls)
 
     if self.trigger_msg not in self.updated_messages:
+      print("radar_interface second check")
       return super().update(None)
 
     rr = self._update(self.updated_messages)
     self.updated_messages.clear()
-
+    
+    print("radar_interface all good")
     return rr
 
   def _update(self, updated_messages):
