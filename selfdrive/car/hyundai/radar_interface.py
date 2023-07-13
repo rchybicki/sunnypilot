@@ -67,7 +67,8 @@ class RadarInterface(RadarInterfaceBase):
 
     if self.trigger_msg not in self.updated_messages:
       cloudlog.warning("radar_interface second check")
-      return super().update(None)
+      return None
+      # return super().update(None)
 
     rr = self._update(self.updated_messages)
     self.updated_messages.clear()
