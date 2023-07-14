@@ -93,7 +93,7 @@ def get_stopped_equivalence_factor(v_ego, v_lead, radarstate, t_follow):
   # If we're going 20%+ faster than the lead vehicle apply the offset
   if np.all(v_ego - v_lead > v_ego * 0.2) and np.all(v_lead > 10) :
       # Decrease following distance according to how far away the lead is
-      distance_offset = (radarstate.leadOne.dRel * 3.) / v_ego
+      distance_offset = (radarstate.leadOne.dRel * (v_ego - v_lead)) / v_ego
       distance_offset = np.clip(distance_offset, 0, 100)
   return (v_lead**2) / (2 * COMFORT_BRAKE) + distance_offset
 
